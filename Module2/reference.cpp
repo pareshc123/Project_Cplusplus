@@ -47,7 +47,7 @@ int main() {
 	cout << "New Value of reference after modifying through reference: refvar: " << refvar << endl;
 
 	// Modifying the value using the variable
-	refvar = 200;
+	var = 200;
 	cout << "\nNew value of var after modifying through reference: var: " << var << endl;
 	cout << "New Value of reference after modifying through reference: refvar: " << refvar << endl;
 
