@@ -17,7 +17,8 @@
 		Syntax: const int* const ptr = &variable;
 
 	4. Constant with References:
-		References in C++ can also be made constant, meaning the reference cannot be changed to refer to another variable.
+		A constant (const) reference in C++ is a reference that does not allow modification of the value it refers to.
+		Once a reference (const or not) is initialized, it cannot be changed to refer to another variable.
 		Syntax: const int& ref = variable;
 
 	Reading Pointer Declarations “Right to Left”:
