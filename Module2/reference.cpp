@@ -36,7 +36,7 @@ int main() {
 	cout << "Current Value of var: " << var << endl;
 	cout << "Current Value of reference refvar: " << refvar << endl;
 
-	cout << "n" << endl;
+	cout << "\n";
 
 	cout << "Current Address of var: " << &var << endl;
 	cout << "Current Address of reference refvar: " << &refvar << endl;
@@ -47,11 +47,11 @@ int main() {
 	cout << "New Value of reference after modifying through reference: refvar: " << refvar << endl;
 
 	// Modifying the value using the variable
-	refvar = 200;
+	var = 200;
 	cout << "\nNew value of var after modifying through reference: var: " << var << endl;
 	cout << "New Value of reference after modifying through reference: refvar: " << refvar << endl;
 
-	cout << "n" << endl;
+	cout << "\n";
 
 	cout << "Current Address of var after modification: " << &var << endl;
 	cout << "Current Address of reference refvar after modification: " << &refvar << endl;

@@ -5,7 +5,7 @@
 	It then shows how the values of the variables change after each swap operation.
 
 	Note:
-		A simple swap function (pass by value) is not included here, as it would not modify the original variables in the main function.
+		A simple swap function (pass by value) is also included here. It would not modify the original variables in the main function.
 		but it will be swap the variables within the function scope only.
 */
 
