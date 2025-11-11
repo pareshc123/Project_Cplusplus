@@ -1,5 +1,22 @@
 /*
 	Declaration and Initialization
+
+	Common types of Initialization in C++:
+	1. Copy Initialization                 --> int myInt = 10; Assignment (=) operator --> should be avoided for user-defined types
+	2. Direct Initialization               --> int myInt(10); should be avoided for user-defined types
+	3. Uniform Initialization              --> int myInt{10}; preferred for all types --> Widely used in modern C++
+	4. Default Initialization              --> int myInt; (uninitialized for built-in types, default constructor for user-defined types)
+	5. Value Initialization                --> int myInt{}; (zero-initialized for built-in types, default constructor for user-defined types)
+	6. Zero Initialization                 --> int myInt = 0; (explicitly set to zero)
+	7. Aggregate Initialization            --> int myArray[5] = {1, 2, 3, 4, 5}; (for arrays and structs)
+	8. List Initialization                 --> std::vector<int> myVector = {1, 2, 3, 4, 5}; (for STL containers)
+	9. Dynamic Initialization              --> int* myIntPtr = new int(10); (for dynamic memory allocation)
+	10. Constant Initialization            --> const int myConstInt = 10; (for constants)
+	11. Reference Initialization           --> int& myRefInt = myInt; (for references)
+	12. Brace-or-equal Initializer         --> int myInt = {10}; (combination of copy and uniform initialization)
+	13. In-Class Member Initializer        --> class MyClass { int myInt{10}; }; (for class members)
+	14. Nested Brace Initialization        --> int myArray[2][3] = { {1, 2, 3}, {4, 5, 6} }; (for multi-dimensional arrays)
+	15. Implicit Conversion Initialization --> double myDouble = 10; (int to double conversion)
 */
 
 #include <iostream>
