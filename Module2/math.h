@@ -2,3 +2,6 @@
 
 // function prototype for addition
 int add(int a, int b); 
+
+// function prototype for subtraction
+int subtract(int a, int b);
