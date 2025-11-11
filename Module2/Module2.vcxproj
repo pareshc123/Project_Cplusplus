@@ -130,10 +130,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="math.cpp" />
-    <ClCompile Include="pointersbasics.cpp" />
+    <ClCompile Include="pointersbasics.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="primitivetypes.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="reference.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math.h" />

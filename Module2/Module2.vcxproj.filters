@@ -30,6 +30,9 @@
     <ClCompile Include="pointersbasics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="reference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math.h">
