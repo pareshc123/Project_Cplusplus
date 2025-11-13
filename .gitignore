@@ -361,7 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Module2/Module2.vcxproj
-/Module2/Module2.vcxproj.filters
-/Module3_Memory-Management/Module3_Memory-Management.vcxproj
-/Module3_Memory-Management/Module3_Memory-Management.vcxproj.filters
