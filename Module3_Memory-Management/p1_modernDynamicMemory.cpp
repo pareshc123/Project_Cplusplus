@@ -40,10 +40,94 @@
 
 using namespace std;
 
+void New();
+void NewArrays();
+void Strings();
+
 int main() {
+
+	cout << "--- Memory Allocation using new in C++ ---" << endl;
+
+	New();
+	NewArrays();
+	Strings();
 
 	// End of Program
 	return 0;
 }
 
+void New() {
 
+	cout << "\n--- Memory Allocation using new for interger ---" << endl;
+
+	// Allocate memory for a single integer using new
+	int* p = new int;
+
+	// Always check if allocation was successful
+	if (p == nullptr) {
+		cout << "Memory Allocation Failed" << endl;
+		return;
+	}
+
+	// Initialize the allocated memory
+	*p = 10;
+
+	cout << "Value of allocated integer: " << *p << endl;
+	
+	// Free the allocated memory
+	delete p;
+
+	// Avoid dangling pointer
+	p = nullptr;  
+	cout << "Memory for single integer freed successfully." << endl;		
+}
+
+void NewArrays() {
+
+	cout << "\n--- Memory Allocation using new for Array ---" << endl;
+
+	// Allocate memory for an array of integers using new
+	int size = 5;
+
+	int* arrPtr = new int[5];
+
+	// Always check if allocation was successful
+	if(arrPtr == nullptr) {
+		cout << "Memory Allocation for array Failed" << endl;
+		return;
+	}
+
+	// Initialize the allocated array
+	for (int i = 0; i < size; i++) {
+		arrPtr[i] = i + 1;
+
+	}
+
+	cout << "Values in allocated integer array: ";
+	for (int i = 0; i < size; i++) {
+		cout << arrPtr[i] << " ";
+	}
+
+	cout << endl;
+
+	// Free the allocated memory for the array
+	delete[] arrPtr;
+
+	arrPtr = nullptr;  // Avoid dangling pointer
+
+	cout << "Memory for integer array freed successfully." << endl;
+
+}
+
+void Strings() {
+
+	cout << "\n--- Memory Allocation using new for String ---" << endl;
+
+	char* str = new char[4];
+
+	strcpy_s(str, 4, "C++"); // note: use strcpy_s for safety (avoid bufferflow) and allocate one extra byte for null terminator
+
+	cout << str << endl;
+
+	delete[] str;
+}
