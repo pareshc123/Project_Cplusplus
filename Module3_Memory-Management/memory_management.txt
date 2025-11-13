@@ -1,0 +1,43 @@
+File: memory_management.txt
+-------------------------
+Topic: Memory Management in C/C++
+
+Description: 
+This files explaine the three main memory areas used in C/C++ programs:
+        
+1. Stack:
+    - Used for storing local (automatic) variables and function call information.
+    - Memory is managed automatically by the compiler.
+    - Allocation and deallocation happen when functions are called and return.
+    - Example: int x = 10;  // stored on stack
+
+2. Data Section:
+    - Stores global and static variables.
+    - These variables exist for the entire lifetime of the program.
+    - Divided into:
+        - Initialized data segment: for global/static variables with initial values.
+        - Uninitialized (BSS) segment: for variables without explicit initialization.
+    - Example:
+        static int counter;  // BSS segment
+        int total = 100;     // Initialized data segment
+
+3. Heap:
+    - Used for dynamic memory allocation (runtime allocation).
+    - Memory is manually managed by the programmer.
+    - Allocated using malloc(), calloc(), realloc()
+    - Freed using free() to prevent memory leaks.
+    - Example:
+        int* ptr = (int*)malloc(sizeof(int));
+        *ptr = 5;
+        free(ptr);
+        ptr = NULL; // avoid dangling pointer
+
+Notes:
+    - Memory allocated on the stack and data section is automatically handled.
+    - Memory on the heap must be explicitly freed.
+    - Dangling pointers occur when freed memory is still accessed.
+    - Always set freed pointers to NULL to prevent crashes.
+
+References:
+    1. Coursera:
+        -> Foundation of Modern C++ - Module 3: Memory Management - Par 1
