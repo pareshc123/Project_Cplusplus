@@ -1,5 +1,6 @@
 /*
-
+	Traditiional Way to allocate memory in C++ using malloc() function
+	
 	In C and C++, malloc() is a function that allocates raw memory from the heap.
 		void* malloc(size_t size);
 
