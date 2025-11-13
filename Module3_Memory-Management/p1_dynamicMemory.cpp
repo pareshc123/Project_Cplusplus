@@ -34,7 +34,38 @@
 
 using namespace std;
 
+int memoryAllocationInteger(int& x);
+int memoryAllocationArray(int& arr);
+
 int main() {
+
+	cout << "--- Memory Allocation using malloc() in C++ ---" << endl;
+
+	cout << "\n1. Memory Allocation for a single Integer:" << endl;
+	int intVar;
+	int intReturn = memoryAllocationInteger(intVar);
+
+	if (intReturn == 0) {
+		cout << "Memory allocation for single integer was successful." << endl;
+	}
+	else {
+		cout << "Memory allocation for single integer failed." << endl;
+	}
+
+	cout << "\n2. Memory Allocation for an Array of Integers:" << endl;
+	int arrVar;
+	int arrReturn = memoryAllocationArray(arrVar);
+	if (arrReturn == 0) {
+		cout << "\nMemory allocation for integer array was successful." << endl;
+	} else {
+		cout << "\nMemory allocation for integer array failed." << endl;
+	}
+	
+	return 0;
+}
+
+
+int memoryAllocationInteger(int& x) {
 
 	// Allocate memory for one integer using malloc -- Explicit cast required in C++
 	int* mptr = (int*)malloc(sizeof(int));
@@ -54,6 +85,37 @@ int main() {
 
 	// After freeing, make pointer NULL to avoid dangling pointer
 	mptr = nullptr;
+
+	return 0;
+}
+
+int memoryAllocationArray(int& arr) {
+
+	// Allocate memory for an array of 5 integers using malloc
+	int* arrPtr = (int*)malloc(5 * sizeof(int));
+
+	// Always check if allocation was successful
+	if (arrPtr == nullptr) {
+		cout << "Memory Allocation Failed" << endl;
+		return -1;
+	}
+
+	// Initialize the allocated array
+	for( int i =0; i < 5; i++) {
+		arrPtr[i] = i + 1;  // Assign values 1 to 5
+	}
+
+	// Print the values in the allocated array
+	cout << "Values in the allocated array: ";
+	for( int i =0; i < 5; i++) {
+		cout << arrPtr[i] << " ";
+	}
+
+	// Free the allocated memory (return it to the heap)
+	free(arrPtr);
+
+	// After freeing, make pointer NULL to avoid dangling pointer
+	arrPtr = nullptr;
 
 	return 0;
 }
