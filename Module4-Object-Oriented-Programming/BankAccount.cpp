@@ -28,14 +28,15 @@ BankAccount::~BankAccount() {
 // Deposit function
 void BankAccount::Deposit(double amount) {
 	balance += amount;
-	cout << "\nHello " << accountHolder << "New Transaction alert !!" << endl;
+	cout << "\nHello " << accountHolder << ". New Transaction alert !!" << endl;
 	cout << amount << " credited to your account. New Balance: " << balance << endl;
 }
 
 // Withdraw function
 void BankAccount::Withdraw(double amount) {
 
-	cout << "\nNew Withdraw Request initiated for account holder: " << accountHolder << endl;
+	cout << "\nHello " << accountHolder << ". New Transaction alert !!" << endl;
+	cout << "New Withdraw Request initiated." << endl;
 	
 	if (balance < amount) {
 		cout << "Request not possible. Insufficient Balance !! Please request a lower amount." << endl;
@@ -50,8 +51,9 @@ void BankAccount::Withdraw(double amount) {
 }
 
 // Display method
-void BankAccount::DisplayBalance() const {
+void BankAccount::DisplayBankDetials() const {
 
+	cout << "\nDisplaying the Current Bank Details for " << accountHolder << endl;
 	cout << "Account Holder: " << accountHolder << endl;
 	cout << "Account Number: " << accountNumber << endl;
 	cout << "Balance: " << balance << endl;

@@ -27,7 +27,7 @@ public:
 	// Member
 	void Deposit(double amount);
 	void Withdraw(double amount);
-	void DisplayBalance() const;
+	void DisplayBankDetials() const;
 
 };
 

@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BankAccount.cpp" />
+    <ClCompile Include="mainBankAccount.cpp" />
     <ClCompile Include="OOPs-IntroDescription.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
