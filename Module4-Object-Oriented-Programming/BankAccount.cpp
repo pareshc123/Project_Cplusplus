@@ -3,15 +3,14 @@
 // Default constructor
 BankAccount::BankAccount() {
 
-	accountNumber = 0;
-	balance = 0.0;
-	customer = { "Unknown", "N/A", "N/A" };
+	// Non-Static member initializers handles the data members 
 	cout << "\nDefalut Constructor called for Account: " << customer.name << endl;
 }
 
 // Parameterized constructor
 BankAccount::BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance) {
 
+	// Constructor overrides default non-static members values
 	customer = cust;
 	accountNumber = accNumber;
 	balance = initialBalance;

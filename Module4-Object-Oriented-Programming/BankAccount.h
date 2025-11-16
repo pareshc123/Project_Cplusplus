@@ -10,11 +10,16 @@ using namespace std;
 class BankAccount {
 
 private:
-	string accountHolder;
-	int accountNumber;
-	double balance;
 
-	CustomerInfo customer;
+	int accountNumber = 0;     // non static data member initializer
+	double balance = 0.0;     // non-static data member initializer
+
+	// Default struct initialization
+	CustomerInfo customer = {
+		"Unknown",
+		"Not-Available",
+		"0000-0000"
+	};    
 
 public:
 
