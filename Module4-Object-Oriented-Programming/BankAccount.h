@@ -15,6 +15,8 @@ private:
 	double balance = 0.0;				 // non-static data member initializer
 	static int totalCustomers;			// Stati data member
 
+	float* creditScorePtr;
+
 	// Default struct initialization
 	CustomerInfo customer = {
 		"Unknown",
@@ -28,7 +30,10 @@ public:
 	BankAccount();
 
 	// Parameterized  Constructor
-	BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance);
+	BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance, float creditScore);
+
+	// Copy Constructor
+	BankAccount(const BankAccount& other);
 
 	// Destructor
 	~BankAccount();

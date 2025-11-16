@@ -9,15 +9,21 @@ BankAccount::BankAccount() {
 	// Increment the count of number of customers when the constructor is called
 	++totalCustomers;
 
+	// allcoation of memory in constructor
+	creditScorePtr = new float(0);
+
 	// Non-Static member initializers handles the data members 
 	cout << "\nDefalut Constructor called for Account: " << customer.name << endl;
 }
 
 // Parameterized constructor
-BankAccount::BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance) {
+BankAccount::BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance, float creditScore) {
 
 	// Increment the count of number of customers when the constructor is called
 	++totalCustomers;
+
+	// allcoation of memory in constructor
+	creditScorePtr = new float(creditScore);
 
 	// Constructor overrides default non-static members values
 	customer = cust;
@@ -26,11 +32,30 @@ BankAccount::BankAccount(const CustomerInfo& cust, int accNumber, double initial
 	cout << "\nParameterized constructor called for account: " << customer.name << endl;
 }
 
+// Copy Constructor
+BankAccount::BankAccount(const BankAccount& other) {
+
+	customer = other.customer;
+	accountNumber = other.accountNumber;
+	balance = other.balance;
+	creditScorePtr = new float(*(other.creditScorePtr));   // deep copy
+
+	++totalCustomers; // increment total customers for the new copy
+	cout << "\nCopy Construtctor was initiated for " << customer.name << endl;
+
+}
+
+
 // Destructor
 BankAccount::~BankAccount() {
 	
-	// Decrement the count of number of customers when the de-constructor is called
+	// Decrement the count of number of customers when the destructor is called
 	--totalCustomers;
+
+	// Free memory in destructor	
+	delete creditScorePtr;
+	creditScorePtr = nullptr;
+
 	cout << "\nDestructor was called for account: " << customer.name << endl;
 }
 
@@ -71,6 +96,7 @@ void BankAccount::DisplayBankDetials() const {
 	cout << "  Phone:   " << customer.phonenumber << endl;
 	cout << "  Account Number: " << accountNumber << endl;
 	cout << "  Balance: " << balance << endl;
+	cout << "  Credit Score: " << *creditScorePtr << endl;
 
 }
 
