@@ -1,4 +1,5 @@
 #include "BankAccount.h"
+#include "ctime"	// for timestamp
 
 // Initialize the static data members
 int BankAccount::totalCustomers = 0; // Defualt is always set to zero, since data type is int
@@ -84,7 +85,23 @@ BankAccount::~BankAccount() {
 void BankAccount::Deposit(double amount) {
 	balance += amount;
 	cout << "\nHello " << customer.name << ". New Transaction alert !!" << endl;
-	cout << amount << " credited to your account. New Balance: " << balance << endl;
+
+	// Get Current time as string
+	time_t now = time(nullptr);
+	char buffer[26];  // buffer to store time string
+	ctime_s(buffer, sizeof(buffer), &now);
+	string dt(buffer);
+
+	// Remove newline character added by ctime_s
+	if (!dt.empty() && dt.back() == '\n') {
+		dt.pop_back();
+	}
+
+	cout << amount << " credited to your account on: " << dt << ".New Balance: " << balance << endl;
+
+	// Record transactions
+	bankstatement.push_back(BankStatement(amount, "deposited", dt));
+
 }
 
 // Withdraw function
@@ -100,13 +117,29 @@ void BankAccount::Withdraw(double amount) {
 	}
 	else {
 		balance -= amount;
-		cout << amount << " debited from  account. New Balance: " << balance << endl;
+
+		// Get Current time as string
+		time_t now = time(nullptr);
+		char buffer[26];  // buffer to store time string
+		ctime_s(buffer, sizeof(buffer), &now);
+		string dt(buffer);
+
+		// Remove newline character added by ctime_s
+		if (!dt.empty() && dt.back() == '\n') {
+			dt.pop_back();
+		}
+
+		cout << amount << " debited from  account on: " << dt << ". New Balance : " << balance << endl;
+
+		// Record transaction
+		bankstatement.push_back(BankStatement(amount, "withdrawn", dt));
+
 	}
 	
 }
 
-// Display method
-void BankAccount::DisplayBankDetials() const {
+// Display Customer Account details:
+void BankAccount::DisplayBankDetails() const {
 
 	cout << "\nDisplaying the Customer Bank Details ... " << endl;
 
@@ -117,6 +150,14 @@ void BankAccount::DisplayBankDetials() const {
 	cout << "  Balance: " << balance << endl;
 	cout << "  Credit Score: " << *creditScorePtr << endl;
 
+}
+
+// Display BankStatement:
+void BankAccount::DisplayBankStatement() const {
+	cout << "\nBank Statement for " << customer.name << ":\n";
+	for (const auto& b : bankstatement) {
+		b.ShowBankStatement();
+	}
 }
 
 // Static Member:

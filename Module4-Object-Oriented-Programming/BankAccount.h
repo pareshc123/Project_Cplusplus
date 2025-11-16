@@ -3,7 +3,9 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 #include "CustomerInfo.h"
+#include "BankStatement.h"
 
 using namespace std;
 
@@ -22,7 +24,9 @@ private:
 		"Unknown",
 		"Not-Available",
 		"0000-0000"
-	};    
+	};
+
+	vector<BankStatement> bankstatement;  // Bankstatment to keep track of all the transactions
 
 public:
 
@@ -44,7 +48,8 @@ public:
 	// Non static Member functions
 	void Deposit(double amount);
 	void Withdraw(double amount);
-	void DisplayBankDetials() const;
+	void DisplayBankDetails() const;
+	void DisplayBankStatement() const;
 
 	// Static member functions
 	static void DisplayTotalCustomers();
