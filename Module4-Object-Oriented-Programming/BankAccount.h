@@ -11,8 +11,9 @@ class BankAccount {
 
 private:
 
-	int accountNumber = 0;     // non static data member initializer
-	double balance = 0.0;     // non-static data member initializer
+	int accountNumber = 0;				  // non static data member initializer
+	double balance = 0.0;				 // non-static data member initializer
+	static int totalCustomers;			// Stati data member
 
 	// Default struct initialization
 	CustomerInfo customer = {
@@ -32,11 +33,13 @@ public:
 	// Destructor
 	~BankAccount();
 
-	// Member
+	// Non static Member functions
 	void Deposit(double amount);
 	void Withdraw(double amount);
 	void DisplayBankDetials() const;
 
+	// Static member functions
+	static void DisplayTotalCustomers();
 };
 
 #endif

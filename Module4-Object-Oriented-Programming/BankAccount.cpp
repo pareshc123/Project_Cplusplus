@@ -1,7 +1,13 @@
 #include "BankAccount.h"
 
+// Initialize the static data members
+int BankAccount::totalCustomers = 0; // Defualt is always set to zero, since data type is int
+
 // Default constructor
 BankAccount::BankAccount() {
+	
+	// Increment the count of number of customers when the constructor is called
+	++totalCustomers;
 
 	// Non-Static member initializers handles the data members 
 	cout << "\nDefalut Constructor called for Account: " << customer.name << endl;
@@ -9,6 +15,9 @@ BankAccount::BankAccount() {
 
 // Parameterized constructor
 BankAccount::BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance) {
+
+	// Increment the count of number of customers when the constructor is called
+	++totalCustomers;
 
 	// Constructor overrides default non-static members values
 	customer = cust;
@@ -19,6 +28,9 @@ BankAccount::BankAccount(const CustomerInfo& cust, int accNumber, double initial
 
 // Destructor
 BankAccount::~BankAccount() {
+	
+	// Decrement the count of number of customers when the de-constructor is called
+	--totalCustomers;
 	cout << "\nDestructor was called for account: " << customer.name << endl;
 }
 
@@ -62,3 +74,8 @@ void BankAccount::DisplayBankDetials() const {
 
 }
 
+// Static Member:
+void BankAccount::DisplayTotalCustomers() {
+
+	cout << "\nTotal Customers associated with the bank: " << totalCustomers << endl;
+}

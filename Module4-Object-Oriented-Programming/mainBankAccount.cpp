@@ -2,6 +2,9 @@
 
 int main() {
 
+    // Display the total number of customers
+    BankAccount::DisplayTotalCustomers();
+
     // Object using default constructor
     BankAccount acc1;
     acc1.DisplayBankDetials();
@@ -21,6 +24,9 @@ int main() {
     acc2.Withdraw(1500); // should show insufficient balance
     acc2.Withdraw(200);
     acc2.DisplayBankDetials();
+
+    // Display the total number of customers
+    BankAccount::DisplayTotalCustomers();
 
     return 0;
 }
