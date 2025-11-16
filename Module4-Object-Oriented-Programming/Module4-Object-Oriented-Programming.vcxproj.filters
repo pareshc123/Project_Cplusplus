@@ -27,6 +27,9 @@
     <ClCompile Include="OOPs-IntroTHISptr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OOPs-IntroCopyConstructor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BankAccount.h">
