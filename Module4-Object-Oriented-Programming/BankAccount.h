@@ -35,6 +35,9 @@ public:
 	// Copy Constructor
 	BankAccount(const BankAccount& other);
 
+	// Copy Assignment operator
+	BankAccount& operator=(const BankAccount& other);
+
 	// Destructor
 	~BankAccount();
 

@@ -45,6 +45,25 @@ BankAccount::BankAccount(const BankAccount& other) {
 
 }
 
+BankAccount& BankAccount::operator=(const BankAccount& other)
+{
+	if (this != &other) {  // Self-assignment check
+		customer = other.customer;
+		accountNumber = other.accountNumber;
+		balance = other.balance;
+
+		// Deep copy the credit score
+		if (creditScorePtr == nullptr) {           // in case pointer is not allocated
+			creditScorePtr = new float(*(other.creditScorePtr));
+		}
+		else {
+			*creditScorePtr = *(other.creditScorePtr);
+		}
+	}
+
+	cout << "\nCopy Assignment Operator was initiated for " << customer.name << endl;
+	return *this;
+}
 
 // Destructor
 BankAccount::~BankAccount() {
