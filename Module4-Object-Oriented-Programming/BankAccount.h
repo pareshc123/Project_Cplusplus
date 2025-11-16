@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "CustomerInfo.h"
 
 using namespace std;
 
@@ -13,13 +14,15 @@ private:
 	int accountNumber;
 	double balance;
 
+	CustomerInfo customer;
+
 public:
 
 	// defualt Constructor
 	BankAccount();
 
 	// Parameterized  Constructor
-	BankAccount(const string& accHolder, int accNumber, double initialBalance);
+	BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance);
 
 	// Destructor
 	~BankAccount();

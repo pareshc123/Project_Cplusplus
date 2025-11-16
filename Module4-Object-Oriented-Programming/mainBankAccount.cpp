@@ -10,7 +10,12 @@ int main() {
     acc1.DisplayBankDetials();
 
     // Object using parameterized constructor
-    BankAccount acc2("Alice", 12345, 1000.0);
+    CustomerInfo cust;
+    cust.name = "Alice Wonderland";
+    cust.address = "Wallstreet 159753, Unites States";
+    cust.phonenumber = "1234567890";
+
+    BankAccount acc2(cust, 12345, 1000.0);
     acc2.DisplayBankDetials();
     acc2.Deposit(300);
     acc2.Withdraw(1500); // should show insufficient balance

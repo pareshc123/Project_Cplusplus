@@ -3,24 +3,24 @@
 // Default constructor
 BankAccount::BankAccount() {
 
-	accountHolder = "Unknown";
 	accountNumber = 0;
 	balance = 0.0;
-	cout << "\nDefalut Constructor called for Account: " << accountHolder << endl;
+	customer = { "Unknown", "N/A", "N/A" };
+	cout << "\nDefalut Constructor called for Account: " << customer.name << endl;
 }
 
 // Parameterized constructor
-BankAccount::BankAccount(const string& accHolder, int accNumber, double initialBalance) {
+BankAccount::BankAccount(const CustomerInfo& cust, int accNumber, double initialBalance) {
 
-	accountHolder = accHolder;
+	customer = cust;
 	accountNumber = accNumber;
 	balance = initialBalance;
-	cout << "\nParameterized constructor called for account: " << accountHolder << endl;
+	cout << "\nParameterized constructor called for account: " << customer.name << endl;
 }
 
 // Destructor
 BankAccount::~BankAccount() {
-	cout << "\nDestructor was called for account: " << accountHolder << endl;
+	cout << "\nDestructor was called for account: " << customer.name << endl;
 }
 
 //Member functions
@@ -28,14 +28,14 @@ BankAccount::~BankAccount() {
 // Deposit function
 void BankAccount::Deposit(double amount) {
 	balance += amount;
-	cout << "\nHello " << accountHolder << ". New Transaction alert !!" << endl;
+	cout << "\nHello " << customer.name << ". New Transaction alert !!" << endl;
 	cout << amount << " credited to your account. New Balance: " << balance << endl;
 }
 
 // Withdraw function
 void BankAccount::Withdraw(double amount) {
 
-	cout << "\nHello " << accountHolder << ". New Transaction alert !!" << endl;
+	cout << "\nHello " << customer.name << ". New Transaction alert !!" << endl;
 	cout << "New Withdraw Request initiated." << endl;
 	
 	if (balance < amount) {
@@ -45,7 +45,7 @@ void BankAccount::Withdraw(double amount) {
 	}
 	else {
 		balance -= amount;
-		cout << amount << " debited from users account. New Balance: " << balance << endl;
+		cout << amount << " debited from  account. New Balance: " << balance << endl;
 	}
 	
 }
@@ -53,10 +53,13 @@ void BankAccount::Withdraw(double amount) {
 // Display method
 void BankAccount::DisplayBankDetials() const {
 
-	cout << "\nDisplaying the Current Bank Details for " << accountHolder << endl;
-	cout << "Account Holder: " << accountHolder << endl;
-	cout << "Account Number: " << accountNumber << endl;
-	cout << "Balance: " << balance << endl;
+	cout << "\nDisplaying the Customer Bank Details ... " << endl;
+
+	cout << "Account Holder: " << customer.name << endl;
+	cout << "  Address: " << customer.address << endl;
+	cout << "  Phone:   " << customer.phonenumber << endl;
+	cout << "  Account Number: " << accountNumber << endl;
+	cout << "  Balance: " << balance << endl;
 
 }
 
