@@ -85,7 +85,7 @@ CANFrame CANFrame::generateRandomFrame()
 	// Use unsigned int instead of uint8_t (as uint_8 is typedef of unsigned char
 	// not allowed as a template type for Uniform distribution)
 	uniform_int_distribution<unsigned int> idDist(0x000, 0x7FF);
-	uniform_int_distribution<unsigned int> dlcDist(0, 8);
+	uniform_int_distribution<unsigned int> dlcDist(0x0, 0x8);
 	uniform_int_distribution<unsigned int> byteDist(0x00, 0xFF);
 
 	// Generate and cast back the ID and DLC code
