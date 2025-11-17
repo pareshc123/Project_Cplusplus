@@ -34,7 +34,7 @@ ECUDataBuffer::ECUDataBuffer(size_t s) : size(s) {
 // 1. allocate new momeory --> 2.deep copy the values
 ECUDataBuffer::ECUDataBuffer(const ECUDataBuffer& other) : size(other.size) {
 
-	cout << "\n[Copy Constructor] Deep copying buffer initiated ...";
+	cout << "[Copy Constructor] Deep copying buffer initiated ..." << endl;
 
 	// deep copy for array pointer
 	if (size > 0) {
@@ -53,7 +53,7 @@ ECUDataBuffer::ECUDataBuffer(const ECUDataBuffer& other) : size(other.size) {
 // 1. do not delete old memory --> 2. do not allocate new momeory --> 3. steal the values
 ECUDataBuffer::ECUDataBuffer(ECUDataBuffer&& other) noexcept : dataPtr(other.dataPtr), size(other.size) {
 
-	cout << "\n[Move Constructor] Stealing buffer from temporary initiated ...";
+	cout << "[Move Constructor] Stealing buffer from temporary initiated ..." << endl;
 
 	// Leave the source in a safe state
 	other.dataPtr = nullptr;
@@ -65,7 +65,7 @@ ECUDataBuffer::ECUDataBuffer(ECUDataBuffer&& other) noexcept : dataPtr(other.dat
 // 1. delete old memory --> 2. allocate new momeory --> 2. deep copy the values
 ECUDataBuffer& ECUDataBuffer::operator=(const ECUDataBuffer& other) {
 
-	cout << "\n[Copy Assignment] Copying buffer ...";
+	cout << "[Copy Assignment] Copying buffer ..." << endl;
 
 	// Self assignment check
 	if (this != &other) {
@@ -86,7 +86,7 @@ ECUDataBuffer& ECUDataBuffer::operator=(const ECUDataBuffer& other) {
 
 	}
 	else {
-		cout << "\n[nCopy Assignment] failed, both objects are same. Provide two different objects" << endl;
+		cout << "[nCopy Assignment] failed, both objects are same. Provide two different objects" << endl;
 	}
 	return *this;
 
@@ -96,7 +96,7 @@ ECUDataBuffer& ECUDataBuffer::operator=(const ECUDataBuffer& other) {
 // 1. delete old memory --> 2. steal the momory --> 2. clear others
 ECUDataBuffer& ECUDataBuffer::operator=(ECUDataBuffer&& other) noexcept {
 
-	cout << "\n[Move Assignment] Moving buffer ...";
+	cout << "[Move Assignment] Moving buffer ..." << endl;
 
 	if (this != &other) {
 
@@ -112,7 +112,7 @@ ECUDataBuffer& ECUDataBuffer::operator=(ECUDataBuffer&& other) noexcept {
 
 	}
 	else {
-		cout << "\n[Move Assignment] failed, both objects are same. Provide two different objects" << endl;
+		cout << "[Move Assignment] failed, both objects are same. Provide two different objects" << endl;
 	}
 	
 	return *this;
@@ -121,7 +121,7 @@ ECUDataBuffer& ECUDataBuffer::operator=(ECUDataBuffer&& other) noexcept {
 
 int ECUDataBuffer::GetPtrValue() const
 {
-	cout << "\nGetting the buffer size for ---" << this << endl;
+	cout << "Getting the buffer size for ---" << this << endl;
 
 	if (dataPtr)
 		return *dataPtr;
@@ -131,7 +131,7 @@ int ECUDataBuffer::GetPtrValue() const
 
 void ECUDataBuffer::SetPtrValue(size_t s)
 {
-	cout << "\nSetting the new buffer size for ---" << this << endl;
+	cout << "Setting the new buffer size for ---" << this << endl;
 	cout << "Previous buffer size: " << size << ". Pointer points to: " << dataPtr << endl;
 
 	// set the new value and then modify the existing pointer
@@ -155,6 +155,6 @@ void ECUDataBuffer::SetPtrValue(size_t s)
 // Destructor
 ECUDataBuffer::~ECUDataBuffer()
 {
-	cout << "\n[Destructor] Releasing buffer of size " << size << endl;
+	cout << "[Destructor] Releasing buffer of size " << size << endl;
 	delete[] dataPtr;
 }
