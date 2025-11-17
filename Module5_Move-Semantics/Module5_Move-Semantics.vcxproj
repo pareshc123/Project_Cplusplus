@@ -123,8 +123,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CANFrame.cpp" />
+    <ClCompile Include="ECUBufferOps.cpp" />
     <ClCompile Include="ECUDataBuffer.cpp" />
-    <ClCompile Include="mainECUDataBuffer.cpp" />
+    <ClCompile Include="mainECUDataBuffer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="mainOperatorOverloading.cpp" />
     <ClCompile Include="ValueCategories.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>

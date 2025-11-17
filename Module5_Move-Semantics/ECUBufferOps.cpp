@@ -1,0 +1,3 @@
+/*
+	Contains definitions for operator overloading CAN Frames
+*/
