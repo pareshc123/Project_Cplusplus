@@ -14,7 +14,13 @@ int main() {
 	CANFrame f1(0x100, 3, { 0x11, 0x22, 0x33, 0,0,0,0,0 });
 	CANFrame f2(0x200, 2, { 0xAA, 0xBB, 0,0,0,0,0,0 });
 
-	cout << f1.toString() << "\n";
-	cout << f2.toString() << "\n";
+	cout << "User-Defined: " << f1.toString() << "\n";
+	cout << "User-Defined: " << f2.toString() << "\n";
+
+	CANFrame f3 = CANFrame::generateRandomFrame();
+	CANFrame f4 = CANFrame::generatePatternFrame();
+
+	std::cout << "Random:   " << f3.toString() << "\n";
+	std::cout << "Pattern:  " << f4.toString() << "\n";
 
 }
