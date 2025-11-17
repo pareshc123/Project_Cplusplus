@@ -18,5 +18,16 @@
     <ClCompile Include="ValueCategories.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ECUDataBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainECUDataBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ECUDataBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
