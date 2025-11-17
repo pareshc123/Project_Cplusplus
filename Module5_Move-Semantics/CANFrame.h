@@ -24,6 +24,9 @@
 #include <array>
 #include <string>
 #include <cstdint>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -40,7 +43,7 @@ public:
 
 	// ---- Constructors ----
 	CANFrame();
-	CANFrame(uint32_t id, uint8_t dlc, array<uint8_t, 8>& data);
+	CANFrame(uint32_t id, uint8_t dlc, const array<uint8_t, 8>& data);
 
 	// ---- Getters ---- 
 	uint32_t getID() const;
@@ -55,11 +58,11 @@ public:
 	// ---- Utility Function to print the CAN Frame ---- 
 	string toString() const;
 
-	//// ---- Random CANFrame Generator ---- 
-	//static CANFrame generateRandomFrame();
+	// ---- Random CANFrame Generator ---- 
+	static CANFrame generateRandomFrame();
 
-	//// ---- Pattern Based generator ---- 
-	//static CANFrame generatePatternFrame();
+	// ---- Pattern Based generator ---- 
+	static CANFrame generatePatternFrame();
 
 	// ---- Destructors ---- 
 	~CANFrame();

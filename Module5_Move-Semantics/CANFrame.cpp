@@ -1,7 +1,5 @@
 #include "CANFrame.h"
-#include <iostream>
-#include <sstream>
-#include <iomanip>
+
 
 /*
 	This .cpp file contains the definitions (/Prototype) of CANFrame Funcitons
@@ -11,13 +9,24 @@
 CANFrame::CANFrame() : m_id(0), m_dlc(0), m_data{ 0 } {}
 
 // ---- Parametrized Constructor ----
-CANFrame::CANFrame(uint32_t id, uint8_t dlc, array<uint8_t, 8>& data)
+CANFrame::CANFrame(uint32_t id, uint8_t dlc, const array<uint8_t, 8>& data)
 	: m_id(id), m_dlc(dlc <= 8 ? dlc : 8), m_data(data) {}
 
 // Destructor
 CANFrame::~CANFrame()
 {
-	cout << "Destructor was called for CANFrame (ID: " << m_id << ")." << endl;
+
+	ostringstream oss;
+	oss << "Destructor Called for CAN Frame: {ID: 0x" << hex << uppercase << m_id
+		<< ", DLC: " << m_dlc << dec << static_cast<int>(m_dlc)
+		<< ", Data: ";
+
+	for (size_t i = 0; i < m_dlc; ++i) {
+		oss << hex << setw(2) << setfill('0')
+			<< static_cast<int>(m_data[i]) << (i + 1 < m_dlc ? " " : "}");
+	}
+
+	cout << oss.str() << endl;
 }
 
 // ---- Getters ----
@@ -54,7 +63,7 @@ void CANFrame::setDATA(const array<uint8_t, 8>& data)
 
 string CANFrame::toString() const
 {
-	std::ostringstream oss;
+	ostringstream oss;
 	oss << "ID: 0x" << hex << uppercase << m_id
 		<< " DLC: " << dec << static_cast<int>(m_dlc)
 		<< " Data: ";
@@ -68,14 +77,14 @@ string CANFrame::toString() const
 	return oss.str();
 }
 
-//CANFrame CANFrame::generateRandomFrame()
-//{	
-//
-//	return CANFrame();
-//}
-//
-//CANFrame CANFrame::generatePatternFrame()
-//{
-//
-//	return CANFrame();
-//}
+CANFrame CANFrame::generateRandomFrame()
+{	
+
+	return CANFrame();
+}
+
+CANFrame CANFrame::generatePatternFrame()
+{
+
+	return CANFrame();
+}
