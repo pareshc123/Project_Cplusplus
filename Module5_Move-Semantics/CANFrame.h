@@ -52,6 +52,15 @@ public:
 	void setDLC(uint32_t dlc);
 	void setDATA(const array<uint8_t,8>& data);
 
+	// ---- Utility Function to print the CAN Frame ---- 
+	string toString() const;
+
+	//// ---- Random CANFrame Generator ---- 
+	//static CANFrame generateRandomFrame();
+
+	//// ---- Pattern Based generator ---- 
+	//static CANFrame generatePatternFrame();
+
 	// ---- Destructors ---- 
 	~CANFrame();
 
