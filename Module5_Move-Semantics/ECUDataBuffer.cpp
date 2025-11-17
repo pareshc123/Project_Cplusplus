@@ -119,6 +119,39 @@ ECUDataBuffer& ECUDataBuffer::operator=(ECUDataBuffer&& other) noexcept {
 
 }
 
+int ECUDataBuffer::GetPtrValue() const
+{
+	cout << "\nGetting the buffer size for ---" << this << endl;
+
+	if (dataPtr)
+		return *dataPtr;
+	else
+		return 0; // or some default value/error handling
+}
+
+void ECUDataBuffer::SetPtrValue(size_t s)
+{
+	cout << "\nSetting the new buffer size for ---" << this << endl;
+	cout << "Previous buffer size: " << size << ". Pointer points to: " << dataPtr << endl;
+
+	// set the new value and then modify the existing pointer
+	size = s;
+
+	delete[] dataPtr;// free old buffer
+	dataPtr = nullptr;
+
+	// allocate a new buffer and initialize it to zero
+	if (size > 0) {
+		dataPtr = new int[size]();   // () is basically a initializer and sets the value ot zero [0,0,0 ...,0]
+	}
+	else {
+		dataPtr = nullptr;
+	}
+	
+	cout << "New Buffer size: " << size << ". Pointer points to: " << dataPtr << endl;
+
+}
+
 // Destructor
 ECUDataBuffer::~ECUDataBuffer()
 {

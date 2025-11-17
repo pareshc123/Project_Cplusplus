@@ -27,4 +27,8 @@ int main()
     C = generateTempBuffer();
 
     cout << "\n--- End of Program: Destructors will run for A, B, C ---\n";
+
+    size_t Value = C.GetPtrValue();
+    cout << "The Buffer size value for is: " << Value << endl;
+    C.SetPtrValue(5000);
 }

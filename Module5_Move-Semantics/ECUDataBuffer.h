@@ -21,6 +21,10 @@ public:
 	ECUDataBuffer& operator=(const ECUDataBuffer& other);		 // Copy Assignment
 	ECUDataBuffer& operator=(ECUDataBuffer&& other) noexcept;   // Move Assignment 
 
+	// Getters and Setters
+	int GetPtrValue() const;
+	void SetPtrValue(size_t s);
+
 	// Destructor
 	~ECUDataBuffer();  
 };
