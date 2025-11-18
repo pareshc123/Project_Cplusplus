@@ -73,13 +73,13 @@
         But if you want to move from an L-value, you MUST use std::move.
 
     Example:
-        ECUDataBuffer buf1(100);
-        ECUDataBuffer buf2 = buf1;   // --> copy (slow)
+        ECUDataBuffer ecu1(100);
+        ECUDataBuffer ecu2 = ecu1;   // --> copy (slow)
         
         You wanted to MOVE buf1 into buf2, BUT compiler chooses copy because buf1 is an L-value.
         So you must write:
             
-            ECUDataBuffer buf2 = std::move(buf1);  // --> move (fast)
+            ECUDataBuffer ecu2 = std::move(ecu1);  // --> move (fast)
             
             - Now the move constructor runs instead of copy
 
@@ -90,42 +90,15 @@
 #include "ECUDataBuffer.h"
 using namespace std;
 
-// Function that returns a temporary (R-value)
-ECUDataBuffer generateTempBuffer()
-{
-    ECUDataBuffer temp(1000);  // large temporary buffer
-    return temp;               // returns an R-value (temporary) --> triggers MOVE
-}
-
 int main()
 {
     cout << "\n--- Creating Buffer A (Parametrized constructor) ---\n";
     ECUDataBuffer A(500);
+    ECUDataBuffer B(600);
 
-    cout << "\n--- Creating Buffer B using COPY CONSTRUCTOR ---\n";
-    ECUDataBuffer B = A;   // copy
+    cout << "\n--- End of Program: Destructors will be inititated for all the objects---\n";
 
-    cout << "\n--- Creating Buffer C using MOVE CONSTRUCTOR ---\n";
-    ECUDataBuffer C = generateTempBuffer();  // move
-
-    cout << "\n--- Assigning B = A (COPY ASSIGNMENT) ---\n";
-    B = A;
-
-    cout << "\n--- Assigning C = generateTempBuffer() (MOVE ASSIGNMENT) ---\n";
-    C = generateTempBuffer();
-
-    size_t Value = C.GetPtrValue();
-    cout << "The Buffer size value for is: " << Value << endl;
-    C.SetPtrValue(5000);
-
-    cout << "\n--- Assigning E = Additional Move Test: Forcing a move with std::move\n";
-    ECUDataBuffer D(200);
-    ECUDataBuffer E = std::move(D); // forces move constructor
-
-    cout << "\n--- Assigning F = Additional Move Assignment Test: std::move ---\n";
-    ECUDataBuffer F(300);
-    F = std::move(E); // forces move assignment
-
-    cout << "\n--- End of Program: Destructors will run for A, B, C ---\n";
+    // End of program
+    return 0;
 
 }
