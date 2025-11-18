@@ -27,7 +27,7 @@
     <ClCompile Include="ECUBufferOps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainOperatorOverloading.cpp">
+    <ClCompile Include="CANFrameOps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CANFrame.cpp">
