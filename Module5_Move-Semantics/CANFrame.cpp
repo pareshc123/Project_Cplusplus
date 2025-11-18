@@ -44,22 +44,6 @@ void CANFrame::setDATA(const array<uint8_t, 8>& data)
 	m_data = data;
 }
 
-string CANFrame::toString() const
-{
-	ostringstream oss;
-	oss << "ID: 0x" << hex << uppercase << m_id
-		<< " DLC: " << dec << static_cast<int>(m_dlc)
-		<< " Data: ";
-
-	for (size_t i = 0; i < m_dlc; ++i)
-	{
-		oss << hex << setw(2) << setfill('0')
-			<< static_cast<int>(m_data[i]) << " ";
-	}
-
-	return oss.str();
-}
-
 CANFrame CANFrame::generateRandomFrame()
 {	
 	static random_device rd;		// Hardware-based random number source (seed).

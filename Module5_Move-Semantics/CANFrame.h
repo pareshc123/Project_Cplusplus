@@ -55,14 +55,24 @@ public:
 	void setDLC(uint32_t dlc);
 	void setDATA(const array<uint8_t,8>& data);
 
-	// ---- Utility Function to print the CAN Frame ---- 
-	string toString() const;
-
 	// ---- Random CANFrame Generator ---- 
 	static CANFrame generateRandomFrame();
 
 	// ---- Pattern Based generator ---- 
 	static CANFrame generatePatternFrame();
+
+	// ---- Operation overloading ----
+	string toString() const;     // Utility function to print a CAN Frame
+
+	// Functions Useful for message filtering, IDS/IPS comparisons, pattern matching.
+	bool operator==(const CANFrame& other) const;    // Equality
+	bool operator!=(const CANFrame& other) const;    // Inequality
+
+	// access data byte
+	uint8_t operator[](size_t index) const;   // if index = 4, print the 4th byte
+
+	// compare IDs for sorting
+	bool operator<(const CANFrame& other) const;
 
 };
 
