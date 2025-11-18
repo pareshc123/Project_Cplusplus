@@ -12,12 +12,6 @@ CANFrame::CANFrame() : m_id(0), m_dlc(0), m_data{ 0 } {}
 CANFrame::CANFrame(uint32_t id, uint8_t dlc, const array<uint8_t, 8>& data)
 	: m_id(id), m_dlc(dlc <= 8 ? dlc : 8), m_data(data) {}
 
-//// Destructor
-//CANFrame::~CANFrame()
-//{
-//	std::cout << "Destructor Called for CANFrame\n";
-//}
-
 // ---- Getters ----
 uint32_t CANFrame::getID() const
 {

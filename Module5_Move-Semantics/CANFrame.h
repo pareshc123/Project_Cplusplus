@@ -64,9 +64,6 @@ public:
 	// ---- Pattern Based generator ---- 
 	static CANFrame generatePatternFrame();
 
-	//// ---- Destructors ---- 
-	//~CANFrame();
-
 };
 
 #endif
