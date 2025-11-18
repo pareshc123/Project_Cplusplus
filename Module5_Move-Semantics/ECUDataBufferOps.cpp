@@ -8,6 +8,8 @@ ECUDataBuffer& ECUDataBuffer::operator+=(const CANFrame& frame) {
 
 	// Add Frame to the list
 	CANbufferList.push_back(frame);
+	
+	cout << "CAN Frame Added, Current Buffer size: " << CANbufferList.size() << endl;
 
 	return *this;		// so you can chain: ecu += f1 += f2;
 }

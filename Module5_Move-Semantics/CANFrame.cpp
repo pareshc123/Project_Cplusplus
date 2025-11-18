@@ -12,22 +12,11 @@ CANFrame::CANFrame() : m_id(0), m_dlc(0), m_data{ 0 } {}
 CANFrame::CANFrame(uint32_t id, uint8_t dlc, const array<uint8_t, 8>& data)
 	: m_id(id), m_dlc(dlc <= 8 ? dlc : 8), m_data(data) {}
 
-// Destructor
-CANFrame::~CANFrame()
-{
-
-	ostringstream oss;
-	oss << "Destructor Called for CAN Frame: {ID: 0x" << hex << uppercase << m_id
-		<< ", DLC: " << m_dlc << dec << static_cast<int>(m_dlc)
-		<< ", Data: ";
-
-	for (size_t i = 0; i < m_dlc; ++i) {
-		oss << hex << setw(2) << setfill('0')
-			<< static_cast<int>(m_data[i]) << (i + 1 < m_dlc ? " " : "}");
-	}
-
-	cout << oss.str() << endl;
-}
+//// Destructor
+//CANFrame::~CANFrame()
+//{
+//	std::cout << "Destructor Called for CANFrame\n";
+//}
 
 // ---- Getters ----
 uint32_t CANFrame::getID() const

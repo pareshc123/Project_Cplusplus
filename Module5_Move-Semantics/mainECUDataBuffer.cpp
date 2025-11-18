@@ -96,14 +96,14 @@ int main()
     ECUDataBuffer ecu1(500);
 
     cout << "\n--- Creating mulitple CANFrames to add them to buffer ---" << endl;
-    const CANFrame f1(0x153, 8, { 0x01, 0x04, 0x19, 0x98, 0x30, 0x11, 0x19, 0x98});
-    const CANFrame f2(0x122, 8, { 0x15, 0x08, 0x20, 0x19, 0x31, 0x12, 0x20, 0x30});
+    CANFrame f1(0x153, 8, { 0x01, 0x04, 0x19, 0x98, 0x30, 0x11, 0x19, 0x98});
+    CANFrame f2(0x122, 8, { 0x15, 0x08, 0x20, 0x19, 0x31, 0x12, 0x20, 0x30});
 
     cout << "User-Defined CAN Frame f1 generated: " << f1.toString() << endl;
     cout << "User-Defined CAN Frame f2 generated: " << f2.toString() << endl;
 
-    const CANFrame f3 = CANFrame::generateRandomFrame();
-    const CANFrame f4 = CANFrame::generatePatternFrame();
+    CANFrame f3 = CANFrame::generateRandomFrame();
+    CANFrame f4 = CANFrame::generatePatternFrame();
 
     std::cout << "CAN Frame f3 generated with Random generator: " << f3.toString() << endl;
     std::cout << "CAN Frame f4 generated with Pattern geneartor: " << f4.toString() << endl;
@@ -116,7 +116,8 @@ int main()
     cout << ecu1;
 
     cout << "\n--- Indexing CANFrames from CANbufferList in ECU via OpsOverloading [] ---" << endl;
-    ecu1[2];
+    CANFrame f5 = ecu1[2];
+    cout << "Frame f5 received from ECU[2]: " << f5.toString() << endl;
 
     cout << "\n--- End of Program: Destructors will be inititated for all the ECU and CAN objects---\n" << endl;
 
