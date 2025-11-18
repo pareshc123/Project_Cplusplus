@@ -1,5 +1,5 @@
 /*
-	Contains definitions for operator overloading CAN Frames
+	Contains definitions for operator overloading in ECU class
 */
 
 #include "ECUDataBuffer.h"

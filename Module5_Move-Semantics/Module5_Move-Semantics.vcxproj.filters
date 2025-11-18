@@ -24,7 +24,7 @@
     <ClCompile Include="mainECUDataBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ECUBufferOps.cpp">
+    <ClCompile Include="ECUDataBufferOps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CANFrameOps.cpp">
