@@ -73,59 +73,55 @@
         But if you want to move from an L-value, you MUST use std::move.
 
     Example:
-        ECUDataBuffer buf1(100);
-        ECUDataBuffer buf2 = buf1;   // --> copy (slow)
+        ECUDataBuffer ecu1(100);
+        ECUDataBuffer ecu2 = ecu1;   // --> copy (slow)
         
         You wanted to MOVE buf1 into buf2, BUT compiler chooses copy because buf1 is an L-value.
         So you must write:
             
-            ECUDataBuffer buf2 = std::move(buf1);  // --> move (fast)
+            ECUDataBuffer ecu2 = std::move(ecu1);  // --> move (fast)
             
             - Now the move constructor runs instead of copy
 
 */
 
-
 #include <iostream>
 #include "ECUDataBuffer.h"
-using namespace std;
 
-// Function that returns a temporary (R-value)
-ECUDataBuffer generateTempBuffer()
-{
-    ECUDataBuffer temp(1000);  // large temporary buffer
-    return temp;               // returns an R-value (temporary) --> triggers MOVE
-}
+using namespace std;
 
 int main()
 {
-    cout << "\n--- Creating Buffer A (Parametrized constructor) ---\n";
-    ECUDataBuffer A(500);
+    cout << "\n--- Creating ECUDataBuffer - Parametrized constructor ---" << endl;
+    ECUDataBuffer ecu1(500);
 
-    cout << "\n--- Creating Buffer B using COPY CONSTRUCTOR ---\n";
-    ECUDataBuffer B = A;   // copy
+    cout << "\n--- Creating mulitple CANFrames to add them to buffer ---" << endl;
+    CANFrame f1(0x153, 8, { 0x01, 0x04, 0x19, 0x98, 0x30, 0x11, 0x19, 0x98});
+    CANFrame f2(0x122, 8, { 0x15, 0x08, 0x20, 0x19, 0x31, 0x12, 0x20, 0x30});
 
-    cout << "\n--- Creating Buffer C using MOVE CONSTRUCTOR ---\n";
-    ECUDataBuffer C = generateTempBuffer();  // move
+    cout << "User-Defined CAN Frame f1 generated: " << f1.toString() << endl;
+    cout << "User-Defined CAN Frame f2 generated: " << f2.toString() << endl;
 
-    cout << "\n--- Assigning B = A (COPY ASSIGNMENT) ---\n";
-    B = A;
+    CANFrame f3 = CANFrame::generateRandomFrame();
+    CANFrame f4 = CANFrame::generatePatternFrame();
 
-    cout << "\n--- Assigning C = generateTempBuffer() (MOVE ASSIGNMENT) ---\n";
-    C = generateTempBuffer();
+    std::cout << "CAN Frame f3 generated with Random generator: " << f3.toString() << endl;
+    std::cout << "CAN Frame f4 generated with Pattern geneartor: " << f4.toString() << endl;
 
-    size_t Value = C.GetPtrValue();
-    cout << "The Buffer size value for is: " << Value << endl;
-    C.SetPtrValue(5000);
+    cout << "\n--- Adding CANFrames to CANbufferList in ECU via OpsOverloading += ---" << endl;
+    for (const auto& f : { f1, f2, f3, f4 })
+        ecu1 += f;
 
-    cout << "\n--- Assigning E = Additional Move Test: Forcing a move with std::move\n";
-    ECUDataBuffer D(200);
-    ECUDataBuffer E = std::move(D); // forces move constructor
+    cout << "\n--- Get complete CANbufferList from ECU via OpsOverloading << ---" << endl;
+    cout << ecu1;
 
-    cout << "\n--- Assigning F = Additional Move Assignment Test: std::move ---\n";
-    ECUDataBuffer F(300);
-    F = std::move(E); // forces move assignment
+    cout << "\n--- Indexing CANFrames from CANbufferList in ECU via OpsOverloading [] ---" << endl;
+    CANFrame f5 = ecu1[2];
+    cout << "Frame f5 received from ECU[2]: " << f5.toString() << endl;
 
-    cout << "\n--- End of Program: Destructors will run for A, B, C ---\n";
+    cout << "\n--- End of Program: Destructors will be inititated for all the ECU and CAN objects---\n" << endl;
+
+    // End of program
+    return 0;
 
 }

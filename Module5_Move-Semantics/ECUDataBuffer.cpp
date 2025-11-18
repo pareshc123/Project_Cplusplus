@@ -6,6 +6,11 @@ using namespace std;
 // Default Constructor
 ECUDataBuffer::ECUDataBuffer() : size(0) {
 	
+	/*
+		Example usage:
+		ECUDataFrame ecu1;
+	*/
+	
 	if (size > 0) {
 		dataPtr = new int[size];    // an array of size
 	}
@@ -19,6 +24,11 @@ ECUDataBuffer::ECUDataBuffer() : size(0) {
 // Parametrized Constructor
 ECUDataBuffer::ECUDataBuffer(size_t s) : size(s) {
 
+	/*
+		Example usage:
+		ECUDataFrame ecu2(500);
+	*/
+
 	if (size > 0) {
 		dataPtr = new int[size];    // an array of size
 	}
@@ -31,8 +41,16 @@ ECUDataBuffer::ECUDataBuffer(size_t s) : size(s) {
 }
 
 // Copy constructor: when pointers are involved 
-// 1. allocate new momeory --> 2.deep copy the values
 ECUDataBuffer::ECUDataBuffer(const ECUDataBuffer& other) : size(other.size) {
+
+	/*
+		When pointers are involved (Rule of 5 must be followed) 
+		This constructor does the follwoing in order: 
+				--> 1. allocate new momeory --> 2.deep copy the values
+		
+		Example usage:
+		ECUDataFrame ecu3 = ecu2;
+	*/
 
 	cout << "[Copy Constructor] Deep copying buffer initiated ..." << endl;
 
@@ -50,8 +68,24 @@ ECUDataBuffer::ECUDataBuffer(const ECUDataBuffer& other) : size(other.size) {
 }
 
 // Move Constructor: when pointers are involved 
-// 1. do not delete old memory --> 2. do not allocate new momeory --> 3. steal the values
 ECUDataBuffer::ECUDataBuffer(ECUDataBuffer&& other) noexcept : dataPtr(other.dataPtr), size(other.size) {
+
+	/*
+		When pointers are involved (Rule of 5 must be followed) 
+		This constructor does the follwoing in order: 
+				--> 1. do not delete old memory --> 2. do not allocate new momeory --> 3. steal the values
+		
+		Example usage:
+		
+		// Function that returns a temporary (R-value) (must be implemented to get the R-Value)
+		ECUDataBuffer generateTempBuffer()
+		{
+			ECUDataBuffer temp(1000);  // large temporary buffer
+			return temp;               // returns an R-value (temporary) --> triggers MOVE
+		}
+
+		ECUDataFrame ecu4 = generateTempBuffer()
+	*/
 
 	cout << "[Move Constructor] Stealing buffer from temporary initiated ..." << endl;
 
@@ -62,8 +96,16 @@ ECUDataBuffer::ECUDataBuffer(ECUDataBuffer&& other) noexcept : dataPtr(other.dat
 }
 
 // Copy Assignment: when pointers are involved 
-// 1. delete old memory --> 2. allocate new momeory --> 2. deep copy the values
 ECUDataBuffer& ECUDataBuffer::operator=(const ECUDataBuffer& other) {
+
+	/*
+		When pointers are involved (Rule of 5 must be followed) 
+		This constructor does the follwoing in order: 
+				--> 1. delete old memory --> 2. allocate new momeory --> 2. deep copy the values
+		
+		Example usage:
+		ecu2 = ecu1;
+	*/
 
 	cout << "[Copy Assignment] Copying buffer ..." << endl;
 
@@ -92,9 +134,25 @@ ECUDataBuffer& ECUDataBuffer::operator=(const ECUDataBuffer& other) {
 
 }
 
-// Move Assignment: when pointers are involved 
-// 1. delete old memory --> 2. steal the momory --> 2. clear others
+// Move Assignment:  
 ECUDataBuffer& ECUDataBuffer::operator=(ECUDataBuffer&& other) noexcept {
+
+	/*
+		When pointers are involved (Rule of 5 must be followed) 
+		This constructor does the follwoing in order: 
+				--> 1. delete old memory --> 2. steal the momory --> 2. clear others
+		
+		Example usage:
+		
+		// Function that returns a temporary (R-value) (must be implemented to get the R-Value)
+		ECUDataBuffer generateTempBuffer()
+		{
+			ECUDataBuffer temp(1000);  // large temporary buffer
+			return temp;               // returns an R-value (temporary) --> triggers MOVE
+		}
+
+		ecu5 = generateTempBuffer()
+	*/
 
 	cout << "[Move Assignment] Moving buffer ..." << endl;
 
