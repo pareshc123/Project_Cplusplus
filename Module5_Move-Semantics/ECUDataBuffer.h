@@ -34,6 +34,8 @@ public:
 	ECUDataBuffer& operator+=(const CANFrame& frame);       // Add a CAN frame to ECU buffer
 	const CANFrame& operator[](size_t index) const;			// Access stored CAN frames
 	friend std::ostream& operator<<(std::ostream& os, const ECUDataBuffer& buffer);   // << (friend) to print the whole buffer
+	ECUDataBuffer operator+(const ECUDataBuffer& other) const;      // Combine two ECU buffers into a new one
+	bool operator==(const ECUDataBuffer& other) const;			 // Compare two ECU buffers frame-by-frame
 	
 	// Destructor
 	~ECUDataBuffer();
