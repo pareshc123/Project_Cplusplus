@@ -28,19 +28,27 @@ string CANFrame::toString() const
 // Compare CAN Frame
 bool CANFrame::operator==(const CANFrame& other) const {      // Equality
 
-	
+	return (m_id == other.m_id && m_dlc == other.m_dlc && m_data == other.m_data);
 }
 
 bool CANFrame::operator!=(const CANFrame& other) const {     // Inequality
 
+	return !(*this == other);
 }
 
 // Sort CANFrame
 bool CANFrame::operator<(const CANFrame& other) const {
 
+	return m_id < other.m_id;
 }
 
 // Access DataByte from CAN Frame
 uint8_t CANFrame::operator[](size_t index) const {
 
+	if (index >= m_dlc) {
+
+		throw std::out_of_range("CANFrame: Data index out of range");
+	}
+
+	return m_data[index];
 }

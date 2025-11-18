@@ -71,7 +71,7 @@ public:
 	// access data byte
 	uint8_t operator[](size_t index) const;   // if index = 4, print the 4th byte
 
-	// compare IDs for sorting
+	// compare IDs for sorting: ID only, because in CAN arbitration only the ID matters.
 	bool operator<(const CANFrame& other) const;
 
 };
