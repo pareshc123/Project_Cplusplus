@@ -1,4 +1,7 @@
 /*
+	
+	Geeks for Geeks: https://www.geeksforgeeks.org/cpp/cpp-pointers/
+	
 	Modern Dynamic Memory in C++
 	
 	In modern C++, the preferred way to allocate dynamic memory is by using the new and delete operators.
