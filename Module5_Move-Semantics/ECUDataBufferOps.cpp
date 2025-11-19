@@ -24,41 +24,42 @@ const CANFrame& ECUDataBuffer::operator[](size_t size) const {
 	return CANbufferList[size];
 }
 
-ECUDataBuffer& ECUDataBuffer::operator+(const ECUDataBuffer& other) const
-{
-	ECUDataBuffer result;
-
-	// Merge CAN frames from *this
-	for (const auto& frame : CANbufferList)
-		result.CANbufferList.push_back(frame);
-
-	// Merge CAN frames from other
-	for (const auto& frame : other.CANbufferList)
-		result.CANbufferList.push_back(frame);
-
-	// Update size field (not used much anymore)
-	result.size = result.CANbufferList.size();
-
-	return result;   // return by VALUE (safe)
-}
-
 bool ECUDataBuffer::operator==(const ECUDataBuffer& other) const
 {
-	// compare simple fields first
-	if (size != other.size) { return false; }
+    // Compare simple fields first
+    if (size != other.size)
+        return false;
 
-	// Compare internal CAN buffer
-	if (CANbufferList.size() != other.CANbufferList.size()) { return false; }
+    // Compare internal CAN buffer sizes
+    if (CANbufferList.size() != other.CANbufferList.size())
+        return false;
 
-	// Compare each CAN frame using CANFrame::operator==
-	for (size_t i = 0; i < CANbufferList.size(); ++i) {
+    // Compare each CAN frame using CANFrame::operator==
+    for (size_t i = 0; i < CANbufferList.size(); ++i)
+    {
+        if (!(CANbufferList[i] == other.CANbufferList[i]))
+            return false;
+    }
 
-		if (CANbufferList[i] != other.CANbufferList[i]) {
-			return false;
-		}
-	}
+    return true;
+}
 
-	return true;
+ECUDataBuffer ECUDataBuffer::operator+(const ECUDataBuffer& other) const
+{
+    ECUDataBuffer result;
+
+    // Merge CAN frames from *this
+    for (const auto& frame : CANbufferList)
+        result.CANbufferList.push_back(frame);
+
+    // Merge CAN frames from other
+    for (const auto& frame : other.CANbufferList)
+        result.CANbufferList.push_back(frame);
+
+    // Update size field (not used much anymore)
+    result.size = result.CANbufferList.size();
+
+    return result;   // return by VALUE (safe)
 }
 
 std::ostream& operator<<(std::ostream& os, const ECUDataBuffer& buffer)
