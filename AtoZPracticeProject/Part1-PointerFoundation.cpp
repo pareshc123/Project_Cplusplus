@@ -1,5 +1,12 @@
 /*
-	Pointer Foundations
+
+	PART 1 — Core Pointer Basics
+
+		Memory addresses (&)
+		Dereferencing (*)
+		Pointer assignment
+		Pointer lifetime & safety
+
 */
 
 
