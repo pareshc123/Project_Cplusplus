@@ -8,3 +8,15 @@
 		Passing arrays to functions using pointers
 
 */
+
+#include <iostream>
+
+using namespace std;
+
+int main() {
+
+
+
+	// End of Program
+	return 0;
+}

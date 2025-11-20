@@ -130,6 +130,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Part2-PointerArrays.cpp" />
+    <ClCompile Include="Part3-PointersFunctions.cpp" />
+    <ClCompile Include="Part4-PointersOOPs.cpp" />
+    <ClCompile Include="Part5-SmartPointers.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
