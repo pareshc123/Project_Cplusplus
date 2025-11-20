@@ -18,5 +18,8 @@
     <ClCompile Include="BasicTreasureHunt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Part1-PointerFoundation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
