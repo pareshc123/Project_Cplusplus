@@ -19,6 +19,27 @@ void udsECUReset();
 void udsReadDID();
 void executeUDSService(unsigned char sid, void (*udsTable[256])());
 
+// Pipeline processing functions
+int normalizeSensor(int v);
+int filterNoise(int v);
+int convertToVoltage(int v);
+int processSensorPipeline(int value, int (*stage)(int));
+
+// FSM states
+void stateIdle();
+void stateRun();
+void stateError();
+
+enum ECUState {
+	IDLE,
+	RUNNING,
+	ERROR
+};
+
+// Next-state logic
+ECUState nextState(ECUState s);
+
+
 using namespace std;
 
 int main() {
@@ -48,6 +69,35 @@ int main() {
     executeUDSService(0x11, udsTable); // reset
     executeUDSService(0x22, udsTable); // read DID
     executeUDSService(0x99, udsTable); // unsupported
+
+	//  ------  Exercise7: Sensor Processing Pipeline using Callback Function:  -------
+	cout << "\nExercise7: Sensor Processing Pipeline using Callback Function:" << endl;
+	
+	int raw = 123;
+
+	cout << "Input sensor: " << raw << endl;
+
+	raw = processSensorPipeline(raw, normalizeSensor);
+	raw = processSensorPipeline(raw, filterNoise);
+	raw = processSensorPipeline(raw, convertToVoltage);
+
+	cout << "Final processed value: " << raw << endl;
+
+	//  ------  Exercise8: Finite State Machine (FSM) using Function Pointers:  -------
+	cout << "\nExercise8: Finite State Machine (FSM) using Function Pointers:" << endl;
+
+	void (*stateFunctions[3])() = {
+		stateIdle,
+		stateRun,
+		stateError
+	};
+
+	ECUState current = IDLE;
+
+	for (int i = 0; i < 3; i++) {
+		stateFunctions[current]();
+		current = nextState(current);
+	}
 
 	// End of Program
 	return 0;
@@ -93,4 +143,43 @@ void executeUDSService(unsigned char sid, void (*udsTable[256])()) {
 		return;
 	}
 	udsTable[sid]();
+}
+
+
+// Pipeline processing functions
+int normalizeSensor(int v) {
+	cout << "  Normalizing...\n";
+	return v / 10;
+}
+int filterNoise(int v) {
+	cout << "  Filtering noise...\n";
+	return v - 2;
+}
+int convertToVoltage(int v) {
+	cout << "  Converting to voltage...\n";
+	return v * 0.1;
+}
+int processSensorPipeline(int value, int (*stage)(int)) {  // Main pipeline executor
+	return stage(value);
+}
+
+// FSM states
+void stateIdle() {
+	cout << "[STATE] IDLE\n";
+}
+void stateRun() {
+	cout << "[STATE] RUNNING\n";
+}
+void stateError() {
+	cout << "[STATE] ERROR\n";
+}
+
+// Next-state logic
+ECUState nextState(ECUState s) {
+	switch (s) {
+	case IDLE:    return RUNNING;
+	case RUNNING: return ERROR;
+	case ERROR:   return ERROR;
+	}
+	return ERROR;
 }
