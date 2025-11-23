@@ -92,6 +92,27 @@ int main() {
 	//  ------  Exercise4: Array of Structs + Pointer Traversal:  -------
 	cout << "\nExercise4: Array of Structs + Pointer Traversal" << endl;
 
+	// Static array of 3 sensors object
+	Sensor sensors[3] = {
+		{1, 10.1f},
+		{2, 20.2f},
+		{3, 30.3f} 
+	};
+
+	// A pointer to the first element of array
+	Sensor* arrPtr = sensors;    // sensors decay to &sensors[0]
+
+	// Using arithmetic (ptr + i) to print all sensors
+	for (int i = 0; i < 3; ++i) {
+		cout << "Sensor[" << i << "]: "
+			<< "ID=" << (arrPtr + i)->id
+			<< ", Reading=" << (arrPtr + i)->reading << endl;
+	}
+
+	//  ------  Exercise5: Function Accepting Pointer to Struct:  -------
+	cout << "\nExercise5: Function Accepting Pointer to Struct" << endl;
+
+
 
 	// End of Program
 	return 0;
