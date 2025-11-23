@@ -38,13 +38,14 @@
 */
 
 #include <iostream>
+using namespace std;
 
 struct Sensor {
 	int id;
 	float reading;
 };
 
-using namespace std;
+void printSensor(const Sensor* s);
 
 int main() {
 
@@ -111,9 +112,18 @@ int main() {
 
 	//  ------  Exercise5: Function Accepting Pointer to Struct:  -------
 	cout << "\nExercise5: Function Accepting Pointer to Struct" << endl;
+	Sensor s4{ 5, 88.8f };
 
-
+	Sensor* argPtr = &s4;
+	printSensor(argPtr);
 
 	// End of Program
 	return 0;
+}
+
+void printSensor(const Sensor* s) {
+
+	cout << "Printing Sensor inside the function:" << endl;
+	cout << "ID=" << (*s).id << " Reading=" << (*s).reading << endl;
+
 }
