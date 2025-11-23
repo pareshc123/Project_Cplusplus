@@ -49,6 +49,16 @@ void printSensor(const Sensor* s);    // function pointer as an argument
 
 Sensor* getMaxReading(Sensor* ptr, int size);
 
+class ECU {
+public:
+	int id;
+	void printID() {
+		cout << "ECU ID: " << id << endl;
+	}
+};
+
+
+
 int main() {
 
 	//  ------  Exercise1: Pointer to Struct:  -------
@@ -140,6 +150,26 @@ int main() {
 		<< "ID=" << maxSensorReading->id
 		<< " Reading=" << maxSensorReading->reading
 		<< endl;
+
+	//  ------  Exercise7: Class + Pointer + Arrow Operator:  -------
+	cout << "\nExercise7: Class + Pointer + Arrow Operator" << endl;
+
+	ECU ecu1{ 500 };
+	ECU* ecu1Ptr = &ecu1;
+
+	// call ECU::printID() via pointer
+	ecu1Ptr->printID();
+
+	//  ------  Exercise8: Dynamic Object of Class + delete:  -------
+	cout << "\nExercise8: Dynamic Object of Class + delete" << endl;
+
+	ECU* ecuPtr = new ECU;
+	ecuPtr->id = 777;
+	cout << "Dynamically allocated ";
+	ecuPtr->printID();
+	cout << "Object Destroyed properly." << endl;
+
+	delete ecuPtr;
 
 	// End of Program
 	return 0;
