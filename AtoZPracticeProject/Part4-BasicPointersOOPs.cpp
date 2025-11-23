@@ -45,7 +45,9 @@ struct Sensor {
 	float reading;
 };
 
-void printSensor(const Sensor* s);
+void printSensor(const Sensor* s);    // function pointer as an argument
+
+Sensor* getMaxReading(Sensor* ptr, int size);
 
 int main() {
 
@@ -112,10 +114,32 @@ int main() {
 
 	//  ------  Exercise5: Function Accepting Pointer to Struct:  -------
 	cout << "\nExercise5: Function Accepting Pointer to Struct" << endl;
+	
 	Sensor s4{ 5, 88.8f };
-
 	Sensor* argPtr = &s4;
+	
 	printSensor(argPtr);
+
+	//  ------  Exercise6: Function Returning a Pointer:  -------
+	cout << "\nExercise6: Function Returning a Pointer" << endl;
+
+	// Create an Array of Sensor
+	Sensor arrSensor[5] = {
+		{10, 55.52f},
+		{23, 45.98f},
+		{85, 37.31f},
+		{12, 89.46f},
+		{05, 38.45f}
+	};
+
+	// Function call
+	Sensor* maxSensorReading = getMaxReading(arrSensor, 5);
+
+	// Print result
+	cout << "Max reading found: "
+		<< "ID=" << maxSensorReading->id
+		<< " Reading=" << maxSensorReading->reading
+		<< endl;
 
 	// End of Program
 	return 0;
@@ -126,4 +150,17 @@ void printSensor(const Sensor* s) {
 	cout << "Printing Sensor inside the function:" << endl;
 	cout << "ID=" << (*s).id << " Reading=" << (*s).reading << endl;
 
+}
+
+Sensor* getMaxReading(Sensor* arrSensor, int size) {
+
+	Sensor* maxvalue = arrSensor + 0;
+
+	for (int i = 1; i < size; ++i) {
+		if (maxvalue->reading < (arrSensor + i)->reading) {
+			maxvalue = arrSensor + i;
+		}
+	}
+	
+	return maxvalue;
 }
