@@ -27,7 +27,7 @@
     <ClCompile Include="Part3-BasicPointersFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Part4-PointersOOPs.cpp">
+    <ClCompile Include="Part4-BasicPointersOOPs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Part5-SmartPointers.cpp">
