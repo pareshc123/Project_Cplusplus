@@ -1,6 +1,6 @@
-
-#include <iostream>
 #include <cstdint>
+#include <iostream>
+
 using namespace std;
 
 // Exercise 1
@@ -17,6 +17,8 @@ struct Temperature {
 	float value;
 	uint32_t timestamp_ms;
 };
+
+void printBuffer(const Temperature* buffer, int size);
 
 int main() {
 
@@ -61,6 +63,25 @@ int main() {
 
 	//  ------  Exercise2: Sensor Buffer (Circular Buffer Simulation):  -------
 	cout << "\nExercise2: Sensor Buffer (Circular Buffer Simulation)" << endl;
+	
+	// 1. Fixed array of 5 temperature samples
+	const int SIZE = 5;
+	Temperature tempBuffer[SIZE];
+	Temperature* tempBufferPtr = tempBuffer;
+
+	for (int i = 0; i < 7; ++i) {
+		tempBufferPtr->value = static_cast<float>(1.23f*rand() / 100) + i;
+		tempBufferPtr->timestamp_ms = 1000 + 100 * i;
+
+		tempBufferPtr++;
+
+		if (tempBufferPtr == tempBuffer + SIZE) {           // 
+			tempBufferPtr = tempBuffer;                    // go back to start
+		}
+
+		printBuffer(tempBuffer, SIZE);
+
+	}
 
 
 	//  ------  Exercise3: Dynamic Allocation of Struct:  -------
@@ -86,4 +107,17 @@ CANFrame* getFrameById(CANFrame* buffer, int size, uint32_t id) {
 	}
 
 	return nullptr;           // no match found
+}
+
+void printBuffer(const Temperature* buffer, int size) {
+
+	cout << " Buffer content (memory order):\n";
+
+	const Temperature* tempPtr = buffer;
+
+	for (int i = 0; i < size; ++i) {
+		cout << "  Value: " << tempPtr->value << ", TimeStamp: " << tempPtr->timestamp_ms << endl;
+		tempPtr++;
+	}
+
 }
