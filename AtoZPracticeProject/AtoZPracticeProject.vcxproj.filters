@@ -36,5 +36,8 @@
     <ClCompile Include="Part3-AdvancedPointersFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Part4-AdvancedOOPs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -138,7 +138,10 @@
     <ClCompile Include="Part3-BasicPointersFunctions.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Part4-BasicPointersOOPs.cpp" />
+    <ClCompile Include="Part4-AdvancedOOPs.cpp" />
+    <ClCompile Include="Part4-BasicPointersOOPs.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Part5-SmartPointers.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
