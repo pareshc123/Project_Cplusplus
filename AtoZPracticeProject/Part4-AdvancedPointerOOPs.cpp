@@ -12,11 +12,14 @@ struct CANFrame {
 
 CANFrame* getFrameById(CANFrame* buffer, int size, uint32_t id);
 
+
 // Exercise 2
 struct Temperature {
 	float value;
 	uint32_t timestamp_ms;
 };
+
+void printBuffer(const Temperature* buffer, int size);
 
 
 // Exercise 3
@@ -42,7 +45,11 @@ void updateVoltage(ECU* e, float newVoltage) {
 	e->voltage = newVoltage;
 }
 
-void printBuffer(const Temperature* buffer, int size);
+
+// Exercise 4
+float* getFuelRow(float (*map)[3], int rowIndex) {
+	return *(map + rowIndex);
+}
 
 int main() {
 
@@ -126,9 +133,22 @@ int main() {
 	cout << "\nAfter updating ECU[1] voltage:" << endl;
 	printAll(ecus, 3);
 
-	//  ------  Exercise4: Array of Structs + Pointer Traversal:  -------
-	cout << "\nExercise4: Array of Structs + Pointer Traversal" << endl;
+	//  ------  Exercise4: Lookup Table (Calibration Table):  -------
+	cout << "\nExercise4: Lookup Table (Calibration Table)" << endl;
 
+	float fuelMap[3][3] = {
+		{5.1f, 6.2f, 7.0f},   // RPM 1000
+		{5.5f, 6.8f, 7.5f},   // RPM 2000
+		{6.0f, 7.0f, 8.0f}    // RPM 3000
+	};
+
+	float* rowPtr = getFuelRow(fuelMap, 1);    // row 1 (RPM = 2000)
+
+	for (int i = 0; i < 3; ++i) {
+		cout << *(rowPtr + i) << " ";
+	}
+
+	cout << endl;
 
 	// End of Program
 	return 0;
