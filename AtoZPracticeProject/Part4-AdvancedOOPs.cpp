@@ -18,6 +18,30 @@ struct Temperature {
 	uint32_t timestamp_ms;
 };
 
+
+// Exercise 3
+class ECU {
+public:
+	int id;
+	float voltage;
+
+	void printStatus() const {
+		cout << "ECU ID: " << id << ", Voltage: " << voltage << " V" << endl;
+	}
+};
+
+// Function to print all ECUs using pointer arithmetic
+void printAll(const ECU* ptr, int size) {
+	for (int i = 0; i < size; i++) {
+		(ptr + i)->printStatus();   // call member function via pointer
+	}
+}
+
+// Function to update voltage of an ECU via pointer
+void updateVoltage(ECU* e, float newVoltage) {
+	e->voltage = newVoltage;
+}
+
 void printBuffer(const Temperature* buffer, int size);
 
 int main() {
@@ -75,7 +99,7 @@ int main() {
 
 		tempBufferPtr++;
 
-		if (tempBufferPtr == tempBuffer + SIZE) {           // 
+		if (tempBufferPtr == tempBuffer + SIZE) {            
 			tempBufferPtr = tempBuffer;                    // go back to start
 		}
 
@@ -84,9 +108,23 @@ int main() {
 	}
 
 
-	//  ------  Exercise3: Dynamic Allocation of Struct:  -------
-	cout << "\nExercise3: Dynamic Allocation of Struct" << endl;
+	//  ------  Exercise3: ECU Object + Pointer to Method:  -------
+	cout << "\nExercise3: ECU Object + Pointer to Method" << endl;
+	// 1. Create array of 3 ECU objects
+	ECU ecus[3] = {
+		{101, 12.5},
+		{102, 13.2},
+		{103, 11.8}
+	};
 
+	cout << "Initial ECU Status:" << endl;
+	printAll(ecus, 3);
+
+	// 2. Update voltage of ECU[1] via pointer
+	updateVoltage(&ecus[1], 14.0);
+
+	cout << "\nAfter updating ECU[1] voltage:" << endl;
+	printAll(ecus, 3);
 
 	//  ------  Exercise4: Array of Structs + Pointer Traversal:  -------
 	cout << "\nExercise4: Array of Structs + Pointer Traversal" << endl;
