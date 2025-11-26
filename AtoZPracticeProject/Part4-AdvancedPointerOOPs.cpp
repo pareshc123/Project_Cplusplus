@@ -19,7 +19,7 @@ struct Temperature {
 	uint32_t timestamp_ms;
 };
 
-void printBuffer(const Temperature* buffer, int size);
+void printBuffer(const Temperature* buffer, int size, int validCount);
 
 
 // Exercise 3
@@ -96,6 +96,7 @@ int main() {
 	cout << "\nExercise2: Sensor Buffer (Circular Buffer Simulation)" << endl;
 	
 	// 1. Fixed array of 5 temperature samples
+	int validCount = 0;                  // how many samples are valid
 	const int SIZE = 5;
 	Temperature tempBuffer[SIZE];
 	Temperature* tempBufferPtr = tempBuffer;
@@ -108,9 +109,15 @@ int main() {
 
 		if (tempBufferPtr == tempBuffer + SIZE) {            
 			tempBufferPtr = tempBuffer;                    // go back to start
+			validCount = SIZE;
 		}
 
-		printBuffer(tempBuffer, SIZE);
+		// Increase valid sample count (max = SIZE)
+		if (validCount < SIZE) {
+			validCount++;
+		}
+
+		printBuffer(tempBuffer, SIZE, validCount);
 
 	}
 
@@ -167,13 +174,13 @@ CANFrame* getFrameById(CANFrame* buffer, int size, uint32_t id) {
 	return nullptr;           // no match found
 }
 
-void printBuffer(const Temperature* buffer, int size) {
+void printBuffer(const Temperature* buffer, int size, int validCount) {
 
 	cout << " Buffer content (memory order):\n";
 
 	const Temperature* tempPtr = buffer;
 
-	for (int i = 0; i < size; ++i) {
+	for (int i = 0; i < validCount; ++i) {
 		cout << "  Value: " << tempPtr->value << ", TimeStamp: " << tempPtr->timestamp_ms << endl;
 		tempPtr++;
 	}
