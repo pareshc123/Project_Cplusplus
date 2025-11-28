@@ -33,6 +33,9 @@
     <ClCompile Include="BasicsSmartPointers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IntermediateSmartPointers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="memory_management.txt" />
