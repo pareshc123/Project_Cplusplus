@@ -66,6 +66,12 @@ struct Motor {
 	~Motor() {};
 };
 
+class File {
+public:
+	File() { cout << "File opened\n"; }
+	~File() { cout << "File closed\n"; }
+};
+
 int main() {
 
 	// Exercise1: Beginner Level - owning a simple Integer
@@ -82,13 +88,18 @@ int main() {
 	rpmPtr2->rpm = 1500;
 	cout << "The speed of Motor after few seconds is: " << rpmPtr2->rpm << endl;
 
-	// Exercise3: unique_ptr automatically deleting
-	cout << "\nExercise3: unique_ptr automatically deleting:" << endl;
+	// Exercise3: Moving unique_ptr
+	cout << "\nExercise3: Moving unique_ptr:" << endl;
+	auto a = make_unique<int>(10);
+	cout << "Before move: a=" << a.get() << ", value=" << *a << endl;
 
+	auto b = std::move(a);
+	cout << "After move:  a=" << a.get() << endl;   // now null
+	cout << "b now owns value=" << *b << endl;
 
-	// Exercise4: Moving unique_ptr
-	cout << "\nExercise4: Moving unique_ptr:" << endl;
-
+	// Exercise4: unique_ptr automatically deleting
+	cout << "\nExercise4: unique_ptr automatically deleting:" << endl;
+	auto filePtr = make_unique<File>();
 
 	return 0;
 }
