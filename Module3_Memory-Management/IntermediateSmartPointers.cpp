@@ -1,3 +1,9 @@
+/*
+	SMART POINTERS — Intermediate Exercises
+	---------------------------------------
+
+*/
+
 #include <iostream>
 #include <memory>
 
@@ -5,7 +11,26 @@ using namespace std;
 
 struct Sensor {
 
-	string name;
+	string name="";
+
+	Sensor() {
+		cout << "Default_Sensor [" << name << "] Created." << endl;
+	}
+
+	Sensor(string n) :name(n) {
+		cout << "Paramterized_Sensor [" << name << "] Created." << endl;
+	}
+	~Sensor() {
+		cout << "Sensor [" << name << "] destroyed." << endl;
+	}
+};
+
+struct ECUDeleter {
+
+	void operator()(int* ptr) const {
+		cout << "ECU Memory freed" << endl;
+		delete ptr;
+	}
 };
 
 int main() {
@@ -13,8 +38,7 @@ int main() {
 	
 	// Exercise1: uisng shared_ptr
 	cout << "\nExercise1: uisng shared_ptr:" << endl;
-	auto shrPtr1 = make_shared<Sensor>();
-	shrPtr1->name = "CameraSensor";
+	auto shrPtr1 = make_shared<Sensor>("CameraSensor");
 	shared_ptr<Sensor> shrPtr2 = shrPtr1;
 	shared_ptr<Sensor> shrPtr3 = shrPtr1;
 	
@@ -40,6 +64,14 @@ int main() {
 	for (int i = 0; i < 5; ++i) {
 		cout << *(arrPtr.get() + i) << " ";
 	}
- 
+	cout << endl;
+	
+	// Exercise4: Custom deleter
+	cout << "\nExercise4: Custom deleter:" << endl;
+	unique_ptr<int, ECUDeleter> ecuptr(new int(55));    // unique_ptr < TYPE , DELETER >
+	cout << "ECU stored value = " << *ecuptr << "\n";
+	
+	cout << "\n--- END OF INTERMEDIATE EXERCISES ---\n\n";
+
 	return 0;
 }
