@@ -32,8 +32,14 @@ int main() {
 
 	// Exercise3: unique_ptr to a dynamic array
 	cout << "\nExercise3: unique_ptr to a dynamic array:" << endl;
-
-
+	auto arrPtr = make_unique<int[]>(5);
+	for (int i = 0; i < 5; ++i) {
+		*(arrPtr.get() + i) = i*10;
+	}
+	cout << "Dynamic Array: ";
+	for (int i = 0; i < 5; ++i) {
+		cout << *(arrPtr.get() + i) << " ";
+	}
  
 	return 0;
 }
