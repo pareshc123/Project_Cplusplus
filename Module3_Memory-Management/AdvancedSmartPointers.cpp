@@ -106,6 +106,19 @@ public:
 };
 
 // Exercise 11
+class ECUCycle {
+public:
+    int id;
+    weak_ptr<ECUCycle> peer;  // weak reference prevents cycle
+
+    ECUCycle(int id) : id(id) {
+        cout << "ECU " << hex << id << " created\n";
+    }
+
+    ~ECUCycle() {
+        cout << "ECU " << hex << id << " destroyed\n";
+    }
+};
 
 
 int main() {
@@ -116,6 +129,7 @@ int main() {
     auto engineECU = ECUFactory::create("EngineECU", 100);
     auto brakeECU = ECUFactory::create("BrakeECU", 200);
     auto bcmECU = ECUFactory::create("BCM_ECU", 300);
+
 
     // ===== EXERCISE 10: CAN bus + shared_ptr =====
     cout << "\n===== EXERCISE 10: CAN bus + shared_ptr =====\n";
@@ -137,8 +151,20 @@ int main() {
     cout << "Reference count at end of main: "
         << CANSharedPtr.use_count() << endl;
 
+
     // ===== EXERCISE 11: weak_ptr CYCLE BREAKING =====
     cout << "\n===== EXERCISE 11: Breaking ECU Cycle with weak_ptr =====\n";
+    // Create two ECUs with shared_ptr
+    shared_ptr<ECUCycle> ecuA = make_shared<ECUCycle>(0x101);
+    shared_ptr<ECUCycle> ecuB = make_shared<ECUCycle>(0x202);
+
+    // Cross-link using weak_ptr
+    ecuA->peer = ecuB;
+    ecuB->peer = ecuA;
+
+    // Print use_count() – should remain 1 each
+    cout << "ECU A use_count: " << ecuA.use_count() << endl;
+    cout << "ECU B use_count: " << ecuB.use_count() << endl;
 
 
     // ===== EXERCISE 12: SENSOR BUFFER (unique_ptr[]) =====
