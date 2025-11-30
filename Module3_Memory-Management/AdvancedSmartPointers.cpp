@@ -121,6 +121,33 @@ public:
 };
 
 
+// Exercise 13
+class Diagnostics {
+
+public:
+    weak_ptr<ECU> ecu;             // Use ECU class from execise 9
+
+    Diagnostics(){
+        cout << "Diagnostics Object created" << endl;
+    }
+    
+    ~Diagnostics() {
+        cout << "Diagnostics destroyer invoked, Object will be destroyed." << endl;
+    }
+
+    void check() {
+        
+        if (auto locked = ecu.lock()) {
+            cout << "Diagnostics: ECU name = " << locked->name << ", ID = " << locked->id << "." << endl;
+        }
+        else {
+            cout << "Diagnostics: ECU not available" << endl;
+        }
+
+    }
+};
+
+
 int main() {
 
     // ===== EXERCISE 9: ECU FACTORY + unique_ptr =====
@@ -185,7 +212,13 @@ int main() {
 
     // ===== EXERCISE 13: Diagnostics Module With weak_ptr =====
     cout << "\n===== EXERCISE 13: Diagnostics Module With weak_ptr =====\n";
+    shared_ptr<ECU> ecu1 = make_shared<ECU>("ECU1", 0x555);
+    shared_ptr<Diagnostics> diagnostics = make_shared<Diagnostics>();
 
+    diagnostics->ecu = ecu1;        //  Pass ecu1 pointer to diagnostics class
+    diagnostics->check();
+    ecu1.reset();
+    diagnostics->check();
 
 
     cout << "\n===== END OF ADVANCED EXERCISES =====\n\n";
