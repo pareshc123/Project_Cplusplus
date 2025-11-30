@@ -168,7 +168,24 @@ int main() {
 
 
     // ===== EXERCISE 12: SENSOR BUFFER (unique_ptr[]) =====
-    cout << "\n===== EXERCISE 12: SENSOR BUFFER (unique_ptr[]) =====\n";
+    cout << "\n===== EXERCISE 12: Sensor Ring Buffer using unique_ptr<float[]> =====\n";
+    unique_ptr<float[]> sensorbuf = make_unique<float[]>(10);
+
+    cout << "Fill the dynamic array with simulated temperature data ..." << endl;
+    for (int i = 0; i < 10; ++i) {
+        sensorbuf[i] = 20.0f + i * 0.5f;
+    }
+
+    cout << "Dynamic Array container: ";
+    for (int i = 0; i < 10; ++i) {
+        cout << *(sensorbuf.get() + i) << " ";
+    }
+    cout << endl;
+
+
+    // ===== EXERCISE 13: Diagnostics Module With weak_ptr =====
+    cout << "\n===== EXERCISE 13: Diagnostics Module With weak_ptr =====\n";
+
 
 
     cout << "\n===== END OF ADVANCED EXERCISES =====\n\n";
