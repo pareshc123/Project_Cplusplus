@@ -3,7 +3,7 @@
     --------------------------------------------
     Exercises Covered:
       9. unique_ptr + ECU factory
-      10. shared_ptr CAN decoder shared by modules
+      10. shared_ptr CAN bus shared by modules
       11. weak_ptr for breaking cyclic ECU references
       12. unique_ptr[] sensor buffer
 
@@ -52,6 +52,62 @@ public:
     }
 };
 
+
+// Exercise 10
+class CANBus {
+public:
+    void send(int id) {
+        cout << "(id = 0x" << hex << id << ") sending CAN Frame" << endl;
+    }
+
+    ~CANBus() {
+        cout << "CANBus destroyed\n";
+    }
+};
+
+// Software Modueles
+class EngineModule {
+
+    shared_ptr<CANBus> bus;
+public:
+    EngineModule(shared_ptr<CANBus> bus) : bus(bus) {
+    }
+
+    void process() {
+        cout << "   Engine module ";
+        bus->send(0x100);
+    }
+};
+
+class ABSModule {
+    shared_ptr<CANBus> bus;
+
+public:
+    ABSModule(shared_ptr<CANBus> bus) : bus(bus){}
+
+    void process() {
+        cout << "   ABS module: ";
+        bus->send(0x200);
+    }
+
+};
+
+class TransmissionModule {
+    shared_ptr<CANBus> bus;
+
+public:
+    TransmissionModule (shared_ptr<CANBus> bus) : bus(bus) {}
+
+    void process() {
+        cout << "   Transmission module: ";
+        bus->send(0x300);
+    }
+
+};
+
+// Exercise 11
+
+
 int main() {
 
     // ===== EXERCISE 9: ECU FACTORY + unique_ptr =====
@@ -61,12 +117,28 @@ int main() {
     auto brakeECU = ECUFactory::create("BrakeECU", 200);
     auto bcmECU = ECUFactory::create("BCM_ECU", 300);
 
-    // ===== EXERCISE 10: CAN DECODER + shared_ptr =====
-    cout << "\n===== EXERCISE 10: CAN DECODER + shared_ptr =====\n";
+    // ===== EXERCISE 10: CAN bus + shared_ptr =====
+    cout << "\n===== EXERCISE 10: CAN bus + shared_ptr =====\n";
+    auto CANSharedPtr = make_shared<CANBus>();
 
+    // Create Modules that share ownership
+    EngineModule eng(CANSharedPtr);
+    TransmissionModule transmission(CANSharedPtr);
+    ABSModule abs(CANSharedPtr);
+
+    cout << "Reference count after module creation: "
+        << CANSharedPtr.use_count() << endl;
+
+    // Simulate CAN message Processing
+    eng.process();
+    transmission.process();
+    abs.process();
+
+    cout << "Reference count at end of main: "
+        << CANSharedPtr.use_count() << endl;
 
     // ===== EXERCISE 11: weak_ptr CYCLE BREAKING =====
-    cout << "\n===== EXERCISE 11: weak_ptr CYCLE BREAKING =====\n";
+    cout << "\n===== EXERCISE 11: Breaking ECU Cycle with weak_ptr =====\n";
 
 
     // ===== EXERCISE 12: SENSOR BUFFER (unique_ptr[]) =====
@@ -75,7 +147,7 @@ int main() {
 
     cout << "\n===== END OF ADVANCED EXERCISES =====\n\n";
     cout << "\nEnd of main()" << endl; 
-    cout << "   ECUs objects will now be destroyed automatically.\n";
+    cout << "All the objects will be destroyed automatically.\n";
 
     // End of Program
     return 0;
