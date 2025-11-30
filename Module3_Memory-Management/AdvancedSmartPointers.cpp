@@ -7,6 +7,11 @@
       11. weak_ptr for breaking cyclic ECU references
       12. unique_ptr[] sensor buffer
 
+    Note: 
+        
+        - As shown in exercise 13, Using { } creates a temporary scope, 
+            and anything inside that scope is destroyed as soon as the closing brace is reached.
+        - This is a very common C++ technique called RAII scope lifetime control.
 */
 
 #include <iostream>
@@ -27,7 +32,7 @@ public:
     }
 
     ECU(string n, int i) : name(n), id(i) {
-        cout << "Parametrized ECU object [" << name << "] with ID: [" << id <<  "] created." << endl;
+        cout << "Parametrized ECU object [" << name << "] with ID [" << id <<  "] created." << endl;
     }
 
     ~ECU() {
@@ -212,17 +217,25 @@ int main() {
 
     // ===== EXERCISE 13: Diagnostics Module With weak_ptr =====
     cout << "\n===== EXERCISE 13: Diagnostics Module With weak_ptr =====\n";
-    shared_ptr<ECU> ecu1 = make_shared<ECU>("ECU1", 0x555);
-    shared_ptr<Diagnostics> diagnostics = make_shared<Diagnostics>();
 
-    diagnostics->ecu = ecu1;        //  Pass ecu1 pointer to diagnostics class
-    diagnostics->check();
-    ecu1.reset();
-    diagnostics->check();
+    Diagnostics diag;
 
 
-    cout << "\n===== END OF ADVANCED EXERCISES =====\n\n";
-    cout << "\nEnd of main()" << endl; 
+    // Creating a temproary scope
+    {
+        shared_ptr<ECU> ecu1 = make_shared<ECU>("ECU1", 0x555);
+        diag.ecu = ecu1;        //  Pass ecu1 pointer to diagnostics class    
+
+        diag.check();
+    }   // <--- ecu goes OUT OF SCOPE here
+    // shared_ptr reference count becomes 0
+    // ECU is destroyed automatically
+
+    diag.check();   // weak_ptr sees expired --> "ECU not available"
+
+    
+    cout << "\n===== END OF ADVANCED EXERCISES =====\n";
+    cout << "\n===== END OF MAIN() =====" << endl; 
     cout << "All the objects will be destroyed automatically.\n";
 
     // End of Program
