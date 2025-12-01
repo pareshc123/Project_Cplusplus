@@ -25,6 +25,19 @@ int main() {
         << ", year: " << p.year
         << ", doors: " << p.numberOfDoors << " }\n";
 
-    cout << "\n=== END OF PROGRAM ===" << endl;
+
+    // 3. Pointer to base class (polymorphism test)
+
+    // 4. Smart Pointer test (modern C++)
+
+    // 5. Array of Cars
+
+    std::cout << "\n=== END OF EXERCISE 1 ===\n";
+
+    // Exericse 2: === Composition ===
+    std::cout << "\n=== Composition Test ===\n";
+
+    std::cout << "\n=== END OF PROGRAM ===" << endl;
+
 
 }
