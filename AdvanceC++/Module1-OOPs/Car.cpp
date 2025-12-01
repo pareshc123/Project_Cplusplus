@@ -1,16 +1,18 @@
 #include "Car.h"
 
-Car::Car():numberOfDoors(0)
+Car::Car()
+    : Vehicle(), numberOfDoors(0)
 {
-	cout << "\nCar [Parent Class] Default Constructor invoked" << endl;
+    std::cout << "[Child Class] Car --- Default Constructor invoked" << std::endl;
 }
 
-Car::Car(string brand, int yr, int numDoors) :Vehicle(brand, yr), numberOfDoors(numDoors)
+Car::Car(const std::string& brand, int yr, int numDoors)
+    : Vehicle(brand, yr), numberOfDoors(numDoors)
 {
-	cout << "\nCar [Child Class] Parametrized Constructor invoked" << endl;
+    std::cout << "[Child Class] Car --- Parameterized Constructor invoked" << std::endl;
 }
 
 Car::~Car()
 {
-	cout << "\nCar [Child Class] Destructor Invoked." << endl;
+    std::cout << "[Child Class] Car --- Destructor invoked" << std::endl;
 }

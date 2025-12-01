@@ -12,6 +12,6 @@ public:
 	int year;
 
 	Vehicle();
-	Vehicle(string brand, int yr);
-	~Vehicle();
+	Vehicle(const std::string& brand, int yr);
+	virtual ~Vehicle();
 };

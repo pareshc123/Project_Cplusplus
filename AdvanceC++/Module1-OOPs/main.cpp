@@ -4,23 +4,27 @@
 int main() {
 
 	// Exericse 1: === Simple Inheritance ===
-	cout << "\n=== Simple Inheritance ===" << endl;
+    std::cout << "\n=== Simple Inheritance Tests ===\n";
 
-	// default constructor
-	Car c;
-	c.brand = "BMW";
-	c.year = 2023;
-	c.numberOfDoors = 4;
+    // 1. Default constructor
+    std::cout << "\n--- Default Constructor Test ---\n";
+    Car c;
+    c.brand = "BMW";
+    c.year = 2023;
+    c.numberOfDoors = 4;
 
-	cout << "The details of your Car {brand: " << c.brand
-		<< ", year: " << c.year << ",} with "
-		<< c.numberOfDoors << " vertical opening doors." << endl;
+    std::cout << "Car Details: { brand: " << c.brand
+        << ", year: " << c.year
+        << ", doors: " << c.numberOfDoors << " }\n";
 
-	// Parametrized constructor invoked
-	Car p{ "Porsche", 2024, 4 };
 
-	cout << "The details of your Car {brand: " << p.brand
-		<< ", year: " << p.year << ",} with "
-		<< p.numberOfDoors << " vertical opening doors." << endl;
+    // 2. Parameterized constructor
+    std::cout << "\n--- Parameterized Constructor Test ---\n";
+    Car p("Porsche", 2024, 4);
+    std::cout << "Car Details: { brand: " << p.brand
+        << ", year: " << p.year
+        << ", doors: " << p.numberOfDoors << " }\n";
+
+    cout << "\n=== END OF PROGRAM ===" << endl;
 
 }
