@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef VEHICLE_H
-#define VEHICLE_H
-
 #include <iostream>
 #include <string>
 
@@ -13,6 +10,8 @@ class Vehicle
 public:
 	std::string brand;
 	int year;
-};
 
-#endif
+	Vehicle();
+	Vehicle(string brand, int yr);
+	~Vehicle();
+};

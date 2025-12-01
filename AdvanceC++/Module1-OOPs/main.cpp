@@ -15,4 +15,12 @@ int main() {
 	cout << "The details of your Car {brand: " << c.brand
 		<< ", year: " << c.year << ",} with "
 		<< c.numberOfDoors << " vertical opening doors." << endl;
+
+	// Parametrized constructor invoked
+	Car p{ "Porsche", 2024, 4 };
+
+	cout << "The details of your Car {brand: " << p.brand
+		<< ", year: " << p.year << ",} with "
+		<< p.numberOfDoors << " vertical opening doors." << endl;
+
 }
