@@ -54,11 +54,7 @@ int main() {
     }
 
     std::cout << "\n=== END OF EXERCISE 1 ===\n";
+    std::cout << "\n=== END OF PROGRAM ===\n" << endl;
 
-    // Exericse 2: === Composition ===
-    std::cout << "\n=== Composition Test ===\n";
-
-    std::cout << "\n=== END OF PROGRAM ===" << endl;
-
-
+    return 0;
 }
