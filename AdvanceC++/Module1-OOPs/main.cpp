@@ -33,6 +33,11 @@ int main() {
     delete vPtr;  // calls Car destructor first and then Vehicle destructor (because virtual!)
 
     // 4. Smart Pointer test (modern C++)
+    std::cout << "\nSmart Pointers (unique_ptr) test\n" << std::endl;
+    unique_ptr<Vehicle> conceptCar = make_unique<Car>("Mercedes", 1998, 2);
+    std::cout << "Accessed through Unique_ptr<Vehicle>: "
+        << conceptCar->brand << ", " << conceptCar->year << std::endl;
+    // automatic car
 
     // 5. Array of Cars
 
