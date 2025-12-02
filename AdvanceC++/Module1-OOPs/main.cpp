@@ -40,6 +40,18 @@ int main() {
     // automatic car
 
     // 5. Array of Cars
+    std::cout << "\nArray of Car Test\n";
+    Car cars[2] = { 
+        Car{"Lambhorgini", 2025, 2}, 
+        Car{"Mistubishi", 2021, 2} 
+    };
+
+    for (int i = 0; i < 2; ++i) 
+    {
+        std::cout << "Car " << i + 1 << ": { brand: " << cars[i].brand
+            << ", year: " << cars[i].year
+            << ", doors: " << cars[i].numberOfDoors << " }\n";
+    }
 
     std::cout << "\n=== END OF EXERCISE 1 ===\n";
 
