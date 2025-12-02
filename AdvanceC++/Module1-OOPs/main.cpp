@@ -27,6 +27,10 @@ int main() {
 
 
     // 3. Pointer to base class (polymorphism test)
+    std::cout << "\n--- Polymorphism Test (Base Pointer --> Derived Object) ---\n";
+    Vehicle* vPtr = new Car("Audi", 2021, 2);
+    std::cout << "Accessed through Vehicle*: " << vPtr->brand << ", " << vPtr->year << std::endl;
+    delete vPtr;  // calls Car destructor first and then Vehicle destructor (because virtual!)
 
     // 4. Smart Pointer test (modern C++)
 
