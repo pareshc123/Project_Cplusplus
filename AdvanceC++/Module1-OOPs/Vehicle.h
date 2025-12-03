@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Engine.h"
+#include <memory>
 
 class Vehicle {
 private:
@@ -24,5 +25,6 @@ public:
     // Utility
     void displayVehicleInfo() const;
 
-    ~Vehicle();
+    virtual ~Vehicle();
+
 };

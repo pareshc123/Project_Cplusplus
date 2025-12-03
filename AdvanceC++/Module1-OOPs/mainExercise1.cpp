@@ -4,6 +4,8 @@
 int main() {
 
 	// Exericse 1: === Simple Inheritance ===
+    std::cout << "\n=== START OF EXERCISE 1 ===\n";
+
     std::cout << "\n=== Simple Inheritance Tests ===\n";
 
     // 1. Default constructor
@@ -34,7 +36,7 @@ int main() {
 
     // 4. Smart Pointer test (modern C++)
     std::cout << "\nSmart Pointers (unique_ptr) test\n" << std::endl;
-    unique_ptr<Vehicle> conceptCar = make_unique<Car>("Mercedes", 1998, 2);
+    std::unique_ptr<Vehicle> conceptCar = std::make_unique<Car>("Mercedes", 1998, 2);
     std::cout << "Accessed through Unique_ptr<Vehicle>: "
         << conceptCar->brand << ", " << conceptCar->year << std::endl;
     // automatic car
@@ -54,7 +56,8 @@ int main() {
     }
 
     std::cout << "\n=== END OF EXERCISE 1 ===\n";
-    std::cout << "\n=== END OF PROGRAM ===\n" << endl;
+
+    std::cout << "\n=== END OF PROGRAM ===\n" << std::endl;
 
     return 0;
 }

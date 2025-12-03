@@ -26,8 +26,12 @@
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="mainExercise1.cpp" />
-    <ClCompile Include="mainExercise2.cpp" />
+    <ClCompile Include="mainExercise1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="mainExercise2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
