@@ -1,33 +1,32 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 class Engine {
-
-	std::string engineType;
-	std::string fuelType;
-	int horsepower;
+private:
+    std::string engineType;
+    std::string fuelType;
+    int horsepower;
 
 public:
+    // Constructors
+    Engine();
+    Engine(const std::string& type, const std::string& fuel, int hp);
 
-	// constructors
-	Engine();
-	Engine(std::string engineType, std::string fuelType, int hp);
-	
-    // Getter and Setters
+    // Setters
+    void setEngineType(const std::string& type);
+    void setFuelType(const std::string& fuel);
+    void setHorsePower(int hp);
 
+    // Getters (const ensures the object is not modified)
+    const std::string& getEngineType() const;
+    const std::string& getFuelType() const;
+    int getHorsePower() const;
 
-	void setEngineType(std::string& engine);
-	std::string getEngineType()const;
+    // Utility
+    void displayEngineInfo() const;
 
-	void setFuelType(std::string& fuel);
-	std::string getFuelType()const;
-
-	void setHorsePower(int& hp);
-	const int getHorsePower()const;
-
-	// Display Engine Information
-	void displayEngineInfo() const;
-
-	~Engine();
+    // Destructor
+    ~Engine();
 };

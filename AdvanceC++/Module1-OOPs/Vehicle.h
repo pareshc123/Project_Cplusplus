@@ -1,20 +1,28 @@
 #pragma once
 
-#include <iostream>
 #include <string>
 #include "Engine.h"
 
-using namespace std;
-
-class Vehicle
-{
-	Engine eng;
+class Vehicle {
+private:
+    Engine eng;       // Composition
 
 public:
-	std::string brand;
-	int year;
+    std::string brand;
+    int year;
 
-	Vehicle();
-	Vehicle(const std::string& brand, int yr);
-	virtual ~Vehicle();
+    // Constructors
+    Vehicle();
+    Vehicle(const std::string& brand, int yr);
+
+    // Engine setup
+    void setEngineInfo(const std::string& type, const std::string& fuel, int hp);
+
+    // Engine getter
+    const Engine& getEngine() const;
+
+    // Utility
+    void displayVehicleInfo() const;
+
+    ~Vehicle();
 };

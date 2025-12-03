@@ -2,13 +2,13 @@
 #include <iostream>
 
 // Define Constructors and destructor
-Engine::Engine() : engineType(" "), fuelType(" "), horsepower(0) {
+Engine::Engine() : engineType("Unknown"), fuelType(" Unknown"), horsepower(0) {
 
 	std::cout << "[Composition Class] Engine --- Default Constructor invoked" << std::endl;
 
 }
 
-Engine::Engine(std::string engineType, std::string fuelType, int hp){
+Engine::Engine(const std::string& engineType, const std::string& fuelType, int hp){
 	
 	std::cout << "[Composition Class] Engine --- Parametrized Constructor invoked" << std::endl;
 
@@ -25,33 +25,35 @@ Engine::~Engine() {
 }
 
 
-// Define getters and Setters
-void Engine::setEngineType(std::string& engine) {
+// Define Setters
+void Engine::setEngineType(const std::string& engineType) {
 	
-	this->engineType = engine;
+	this->engineType = engineType;
 }
 
-std::string Engine::getEngineType() const {
-
-	return engineType;
-}
-
-void Engine::setFuelType(std::string& fuel) {
+void Engine::setFuelType(const std::string& fuel) {
 
 	this->fuelType = fuel;
 }
 
-std::string Engine::getFuelType() const {
-
-	return fuelType;
-}
-
-void Engine::setHorsePower(int& hp) {
+void Engine::setHorsePower(int hp) {
 
 	this->horsepower = hp;
 }
 
-const int Engine::getHorsePower() const {
+
+// Define getters
+const std::string& Engine::getEngineType() const {
+
+	return engineType;
+}
+
+const std::string& Engine::getFuelType() const {
+
+	return fuelType;
+}
+
+int Engine::getHorsePower() const {
 
 	return horsepower;
 }
@@ -60,8 +62,8 @@ const int Engine::getHorsePower() const {
 // Display Engine Information
 void Engine::displayEngineInfo() const {
 
-	std::cout << "Engine details: " << std::endl;
-	std::cout << "   Engine Type: " << engineType << std::endl;
-	std::cout << "   Fuel Type: " << fuelType << std::endl;
-	std::cout << "   HorsePower: " << horsepower << std::endl;
+	std::cout << "Engine details:"
+		<< " Engine Type: " << engineType
+		<< ", Fuel Type: " << fuelType
+		<< ", HorsePower: " << horsepower << std::endl;
 }
