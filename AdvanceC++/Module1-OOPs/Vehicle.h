@@ -23,7 +23,7 @@ public:
     const Engine& getEngine() const;
 
     // Utility
-    void displayVehicleInfo() const;
+    virtual void displayVehicleInfo() const;
 
     virtual ~Vehicle();
 
