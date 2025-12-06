@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Define Constructors and destructor
-Engine::Engine() : engineType("Unknown"), fuelType(" Unknown"), horsepower(0) {
+Engine::Engine() : engineType("Unknown"), fuelType(" Unknown"), horsepower(-1) {
 
 	std::cout << "[Composition Class] Engine --- Default Constructor invoked" << std::endl;
 
@@ -65,5 +65,12 @@ void Engine::displayEngineInfo() const {
 	std::cout << "Engine details:"
 		<< " Engine Type: " << engineType
 		<< ", Fuel Type: " << fuelType
-		<< ", HorsePower: " << horsepower << std::endl;
+		<< ", HorsePower: ";
+
+	if (horsepower < 0) {
+		std::cout << "N/A" << std::endl;
+	}
+	else {
+		std::cout << horsepower << std::endl;
+	}
 }
