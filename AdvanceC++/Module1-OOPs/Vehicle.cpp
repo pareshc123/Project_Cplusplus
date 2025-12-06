@@ -12,6 +12,12 @@ Vehicle::Vehicle(const std::string& brand, int yr)
     std::cout << "[Parent Class] Vehicle --- Parameterized Constructor invoked" << std::endl;
 }
 
+Vehicle::Vehicle(const std::string& brand, int yr, const Engine& e)
+    : brand(brand), year(yr), eng(e)
+{
+    std::cout << "[Parent Class] Vehicle --- Parameterized Constructor invoked" << std::endl;
+}
+
 Vehicle::~Vehicle()
 {
     std::cout << "[Parent Class] Vehicle --- Destructor invoked" << std::endl;

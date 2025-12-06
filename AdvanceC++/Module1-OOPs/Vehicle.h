@@ -15,6 +15,7 @@ public:
     // Constructors
     Vehicle();
     Vehicle(const std::string& brand, int yr);
+    Vehicle(const std::string& brand, int yr, const Engine& e);
 
     // Engine setup
     void setEngineInfo(const std::string& type, const std::string& fuel, int hp);

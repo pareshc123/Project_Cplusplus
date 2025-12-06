@@ -9,6 +9,7 @@ public:
 
     Car();                                                 // Default constructor
     Car(const std::string& brand, int yr, int numDoors);   // Parameterized constructor
+    Car(const std::string& brand, int yr, int numDoors, const Engine& e);
 
     void displayVehicleInfo() const override;
 

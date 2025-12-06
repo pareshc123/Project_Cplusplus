@@ -35,9 +35,9 @@ int main() {
 
     std::cout << "=== Invoke Class function using CAR Class via pointer Array ===" << std::endl;
     Car cars[3] = {
-    Car("BMW", 2020, 4),
+    Car("BMW", 2020, 4, Engine("V12", "Hydrogen", 256)),
     Car("Audi", 2021, 2),
-    Car("Mercedes", 2022, 4)
+    Car("Mercedes", 2022, 4, Engine("V4", "Gasoline", 120))
     };
 
     Car* ptr = cars;

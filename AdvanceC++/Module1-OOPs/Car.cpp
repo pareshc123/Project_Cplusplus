@@ -12,6 +12,12 @@ Car::Car(const std::string& brand, int yr, int numDoors)
     std::cout << "[Child Class] Car --- Parameterized Constructor invoked" << std::endl;
 }
 
+Car::Car(const std::string& brand, int yr, int numDoors, const Engine& e)
+    : Vehicle(brand, yr, e), numberOfDoors(numDoors)
+{
+    std::cout << "[Child Class] Car --- Parameterized Constructor invoked" << std::endl;
+}
+
 void Car::displayVehicleInfo() const
 {
     std::cout << "\nCar Brand: " << brand
