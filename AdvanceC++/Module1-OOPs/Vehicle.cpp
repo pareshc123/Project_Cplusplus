@@ -32,7 +32,7 @@ const Engine& Vehicle::getEngine() const {
 
 // Display vehicle info
 void Vehicle::displayVehicleInfo() const {
-    std::cout << "Vehicle Brand: " << brand
+    std::cout << "\nVehicle Brand: " << brand
         << ", Year: " << year << "\n";
 
     eng.displayEngineInfo();
