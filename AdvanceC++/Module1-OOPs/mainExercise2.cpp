@@ -23,7 +23,7 @@ int main() {
 
     std::cout << std::endl;
 
-    std::cout << "Invoke Class function using CAR Class via pointer: " << std::endl;
+    std::cout << "\nInvoke Class function using CAR Class via pointer: " << std::endl;
     Vehicle* vehPtr = new Car(" ", 0, 0);       // random information about car
     vehPtr->brand = "Mercedes";
     vehPtr->year = 2021;
@@ -31,8 +31,19 @@ int main() {
     vehPtr->displayVehicleInfo();
     delete vehPtr;
 
-    std::cout << "Invoke Class function using CAR Class via pointer Array: " << std::endl;
+    std::cout << std::endl;
 
+    std::cout << "\nInvoke Class function using CAR Class via pointer Array: " << std::endl;
+    Car cars[3] = {
+    Car("BMW", 2020, 4),
+    Car("Audi", 2021, 2),
+    Car("Mercedes", 2022, 4)
+    };
+
+    Car* ptr = cars;
+    for (int i = 0; i < 3; ++i) {
+        (ptr + i)->displayVehicleInfo();
+    }
 
     std::cout << "\n=== END OF EXERCISE 2 ===\n";
 
