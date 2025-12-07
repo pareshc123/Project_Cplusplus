@@ -12,6 +12,7 @@ public:
     Car(const std::string& brand, int yr, int numDoors, const Engine& e);
 
     void displayVehicleInfo() const override;
+    std::string getType() const override;
 
     ~Car() override;                                                // Destructor
 };

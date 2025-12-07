@@ -21,10 +21,17 @@ Car::Car(const std::string& brand, int yr, int numDoors, const Engine& e)
 void Car::displayVehicleInfo() const
 {
     std::cout << "\nCar Brand: " << brand
-        << ", Year: " << year << "\n";
+        << ", Year: " << year 
+        << ", Num of Doors: " << numberOfDoors <<  "\n";
 
     getEngine().displayEngineInfo();   
 }
+
+std::string Car::getType() const {
+
+    return "Class Car";
+}
+
 
 Car::~Car()
 {

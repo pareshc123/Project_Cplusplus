@@ -3,6 +3,7 @@
 #include <string>
 #include "Engine.h"
 #include <memory>
+#include <typeinfo>
 
 class Vehicle {
 private:
@@ -25,6 +26,7 @@ public:
 
     // Utility
     virtual void displayVehicleInfo() const;
+    virtual std::string getType() const = 0;        // pure virtual function (Make Vehicle an abstract class)
 
     virtual ~Vehicle();
 
