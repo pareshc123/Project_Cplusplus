@@ -62,7 +62,7 @@ int Engine::getHorsePower() const {
 // Display Engine Information
 void Engine::displayEngineInfo() const {
 
-	std::cout << "Engine details:"
+	std::cout << "    Engine details:"
 		<< " Engine Type: " << engineType
 		<< ", Fuel Type: " << fuelType
 		<< ", HorsePower: ";

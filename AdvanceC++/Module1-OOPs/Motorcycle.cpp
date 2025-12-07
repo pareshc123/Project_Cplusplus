@@ -42,18 +42,17 @@ Motorcycle::Motorcycle(const std::string& brand, int yr, const Engine& e, BikeTy
 
 void Motorcycle::displayVehicleInfo() const
 {
-    std::cout << "Motorcycle Brand: " << brand
-        << ", Year: " << year << "\n";
-
-    std::cout << "Type: " << bikeTypeToString(bikeType) << "\n";
-    std::cout << "Number of Wheels: " << numOfWheels(bikeType) << "\n";
+    std::cout << "\n    Brand: " << brand
+        << ", Year: " << year
+        << ", Type: " << bikeTypeToString(bikeType)
+        << "Number of Wheels: " << numOfWheels(bikeType) << "\n";
 
     getEngine().displayEngineInfo();
 }
 
 std::string Motorcycle::getType() const
 {
-    return "Motorcycle";
+    return "Class Motorcycle";
 }
 
 Motorcycle::~Motorcycle()

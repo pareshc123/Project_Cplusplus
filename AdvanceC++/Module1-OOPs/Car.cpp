@@ -20,7 +20,7 @@ Car::Car(const std::string& brand, int yr, int numDoors, const Engine& e)
 
 void Car::displayVehicleInfo() const
 {
-    std::cout << "\nCar Brand: " << brand
+    std::cout << "\n    Brand: " << brand
         << ", Year: " << year 
         << ", Num of Doors: " << numberOfDoors <<  "\n";
 
