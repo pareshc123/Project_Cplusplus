@@ -93,145 +93,119 @@
 */
 
 // Class to demonstrate stack unwinding through destructor calls
-class Resource {
+class Resource { 
     
     std::string name;
 
-public:
-    Resource(const std::string& name) :name(name) {
-        std::cout << "[Resource] Constructor called: " << name << std::endl;
-    }
+public: 
+    Resource(const std::string& name) :name(name) { 
+        std::cout << "[Resource] Constructor called: " << name << std::endl; 
+    } 
 
-    ~Resource() {
-        std::cout << "[Resource] Destructor called: " << name << std::endl;
-    }
+    ~Resource() { 
+        std::cout << "[Resource] Destructor called: " << name << std::endl; 
+    } 
 };
 
-// Function that throws different exception types
+
+
+// EXERCISE 1 — Basic multiple exception types
 void testSimpleExceptions(int errorType) {
 
-    Resource local("LocalResource");   // will be destroyed during stackwinding
+    Resource local("LocalResource");   // destroyed during stack unwinding
 
-    if (errorType == 1)
-        throw std::runtime_error("Runtime Error Occurred!");
-
-    if (errorType == 2)
-        throw std::logic_error("Logic Error Occurred!");
-
-    if (errorType == 3)
-        throw "Unknown C-style exception!";
+    if (errorType == 1) throw std::runtime_error("Runtime Error Occurred!");
+    if (errorType == 2) throw std::logic_error("Logic Error Occurred!");
+    if (errorType == 3) throw "Unknown C-style exception!";
 
     std::cout << "No exception thrown.\n";
-
 }
 
 
-// Function that throws error but destructor not getting deleted
-void testRawPointerExceptions(int errorType, bool& flag) {
 
-    Resource *test = new Resource("PointerResource");   // will not be destroyed during stackwinding
+// EXERCISE 2 — Raw pointers DO NOT get cleaned on exception
+void testRawPointerExceptions(int errorType, bool& destroyedCorrectly) {
 
-    if (errorType == 1)
-        throw std::runtime_error("Runtime Error Occurred!");
+    Resource* test = new Resource("PointerResource");
 
-    if (errorType == 2)
-        throw std::logic_error("Logic Error Occurred!");
+    if (errorType == 1) throw std::runtime_error("Runtime Error Occurred!");
+    if (errorType == 2) throw std::logic_error("Logic Error Occurred!");
+    if (errorType == 3) throw "Unknown C-style exception!";
 
-    if (errorType == 3)
-        throw "Unknown C-style exception!";
-
-    std::cout << "No exception thrown.\n";
-
-    flag = true;         // once code is here the flag turns to zero
+    destroyedCorrectly = true;
     delete test;
-
 }
 
-// Function demonstrating stack unwinding + smart pointers
-void testSmartPointerException(int errorType)
-{
-    std::cout << "Creating local Resource on stack...\n";
+
+
+// EXERCISE 3 — Smart pointers ensure cleanup even during exceptions
+void testSmartPointerException(int errorType) {
+
     Resource local("LocalResource");
 
-    std::cout << "Creating multiple Resource on heap using unique_ptr...\n";
-    
-    std::unique_ptr<Resource> safePtr1(new Resource("HeapResource1"));
+    auto safePtr1 = std::make_unique<Resource>("HeapResource1");
     auto safePtr2 = std::make_unique<Resource>("HeapResource2");
-    
-    /*
-        When an exception is thrown, all the three objects MUST be destroyed :
-          * local is destroyed (stack unwinding)
-          * safePtr automatically deletes HeapResource
-     */
 
-    if (errorType == 1)
-        throw std::runtime_error("Runtime Error Occurred!");
-
-    if (errorType == 2)
-        throw std::logic_error("Logic Error Occurred!");
-
-    if (errorType == 3)
-        throw "Unknown C-style exception!";
+    if (errorType == 1) throw std::runtime_error("Runtime Error Occurred!");
+    if (errorType == 2) throw std::logic_error("Logic Error Occurred!");
+    if (errorType == 3) throw "Unknown C-style exception!";
 
     std::cout << "No exception thrown.\n";
-
 }
 
-// Main demonstrating multiple catch blocks + stack unwinding
+
+
 int main() {
 
-    std::cout << "\n=== EXERCISE1: MULTIPLE CATCH BLOCKS + STACK UNWINDING DEMO ===" << std::endl;
+    std::cout << "\n=== EXERCISE 1: MULTIPLE CATCH BLOCKS + STACK UNWINDING ===\n";
 
-    for (int error = 0; error <= 3; ++error) {
+    for (int err = 0; err <= 3; ++err) {
 
         try {
-            std::cout << "\n ==== Calling Exceptions (" << error << ") ====\n";
-            testSimpleExceptions(error);
+            std::cout << "\n--- Calling testSimpleExceptions(" << err << ") ---\n";
+            testSimpleExceptions(err);
         }
         catch (const std::runtime_error& e) {
-            std::cout << "[CATCH] Runtime Error handled: " << e.what() << std::endl;
+            std::cout << "[CATCH] Runtime Error: " << e.what() << '\n';
         }
         catch (const std::logic_error& e) {
-            std::cout << "[CATCH] Logic Error handled: " << e.what() << std::endl;
+            std::cout << "[CATCH] Logic Error: " << e.what() << '\n';
         }
         catch (const std::exception& e) {
-            std::cout << "[CATCH] General std::exception handled: " << e.what() << std::endl;
+            std::cout << "[CATCH] std::exception: " << e.what() << '\n';
         }
         catch (...) {
-            std::cout << "[CATCH] Unknown exception caught!" << std::endl;
+            std::cout << "[CATCH] Unknown exception\n";
         }
     }
 
-    std::cout << "\n\n=== EXERCISE 2: New Pointer + STACK UNWINDING DEMO ===" << std::endl;
 
-    int error = 1;
-    bool flag = false;    // if pointer will be deleted, then turn flag True
 
-    try {
-        std::cout << "\n ==== Calling Pointer Exceptions (" << error << ") ====\n";
-        testRawPointerExceptions(error, flag);
-    }
-    catch (const std::runtime_error& e) {
-        std::cout << "[CATCH] Runtime Error handled: " << e.what() << std::endl;
-        
-    }
-    if (!flag) {
-        std::cout << "Class [Resource] Destructor not called. Pointer not Deleted --> Memory leaked!!" << std::endl;
-    }
-    else {
-        std::cout << "Class [Resource] Destructor called. Pointer Deleted --> No Memory leak!!" << std::endl;
-    }
+    std::cout << "\n\n=== EXERCISE 2: RAW POINTER LEAK DEMONSTRATION ===\n";
 
-    std::cout << "\n\n=== EXERCISE 3: Smart Pointer + STACK UNWINDING DEMO ===" << std::endl;
-    int err = 1;
+    bool destroyedCorrectly = false;
 
     try {
-        std::cout << "\n ==== Calling Pointer Exceptions (" << error << ") ====\n";
-        testSmartPointerException(err);
+        testRawPointerExceptions(1, destroyedCorrectly);
+    }
+    catch (...) {
+        std::cout << "[CATCH] Exception caught.\n";
+    }
+
+    if (!destroyedCorrectly)
+        std::cout << "PointerResource NOT destroyed --> Memory leaked!\n";
+    else
+        std::cout << "PointerResource destroyed --> No leak.\n";
+
+
+
+    std::cout << "\n\n=== EXERCISE 3: SMART POINTER SAFE CLEANUP ===\n";
+
+    try {
+        testSmartPointerException(1);
     }
     catch (const std::runtime_error& e) {
-        std::cout << "[CATCH] Runtime Error handled: " << e.what() << std::endl;
-
+        std::cout << "[CATCH] Runtime Error: " << e.what() << '\n';
     }
 
     return 0;
