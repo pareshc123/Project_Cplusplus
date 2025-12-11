@@ -82,6 +82,25 @@ void log(Level lvl, const std::string& msg) {
     std::cout << "[" << L << "]" << msg << std::endl;
 }
 
+
+// ----------------------------- Record --------------------------------
+class Record {
+
+};
+
+
+// ----------------------------- FileReader --------------------------------
+class FileReader {
+
+};
+
+
+// ----------------------------- RecordProcessor --------------------------------
+class RecordProcessor {
+
+};
+
+
 int main() {
 
     // End of Program
