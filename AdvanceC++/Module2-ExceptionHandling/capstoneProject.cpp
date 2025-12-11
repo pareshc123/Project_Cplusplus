@@ -4,6 +4,8 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <random>
+#include <chrono>
 
 /*
 	================================================================================
@@ -83,9 +85,41 @@ void log(Level lvl, const std::string& msg) {
 }
 
 
+// ----------------------------- Random utilities -------------------------------
+class Random {
+
+private:
+    std::mt19937 eng;
+    std::bernoulli_distribution distrBool;
+
+public:
+    Random()
+        : eng(static_cast<unsigned>(std::chrono::steady_clock::now().time_since_epoch().count())),
+        distrBool(0.8)  {}
+
+    // return true (success) or false (failure)
+    bool success() { return distrBool(eng); }
+
+    // roll with given probability
+    bool roll(double prob) {
+        std::bernoulli_distribution d(prob);
+        return d(eng);
+    }
+
+};
+
 // ----------------------------- Record --------------------------------
 class Record {
 
+private:
+    int id_;
+
+public:
+
+    // Constructing a Record may fail (e.g., parse error)
+    explicit Record(int id, Random& rd) : id_(id) {
+
+    }
 };
 
 
