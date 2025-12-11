@@ -72,6 +72,16 @@ struct TooManyErrors : public std::runtime_error {
 };
 
 
+// ----------------------------- Utility: simple Logger -------------------------
+enum class Level {Info, Warn, Error, Security};
+void log(Level lvl, const std::string& msg) {
+
+    const char* L = (lvl == Level::Info ? "Info" : lvl == Level::Warn ? "Warn" :
+        lvl == Level::Error ? "Error" : "Security");
+    
+    std::cout << "[" << L << "]" << msg << std::endl;
+}
+
 int main() {
 
     // End of Program
