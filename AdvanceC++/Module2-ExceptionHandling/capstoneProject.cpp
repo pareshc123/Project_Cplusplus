@@ -108,6 +108,24 @@ public:
 
 };
 
+
+// ----------------------------- Resource for RAII demo -------------------------
+class Resource {
+
+private:
+    std::string name_;
+
+public:
+    explicit Resource(const std::string name) : name_(name) {
+        std::cout << "Resource constructor: " << name_ << std::endl;
+    }
+
+    ~Resource() noexcept {
+        std::cout << "Resource destructor: " << name_ << std::endl;
+    }
+};
+
+
 // ----------------------------- Record --------------------------------
 class Record {
 
