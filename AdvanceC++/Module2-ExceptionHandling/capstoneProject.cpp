@@ -1,3 +1,10 @@
+// capstone_exceptions.cpp
+
+#include <iostream>
+#include <string>
+#include <memory>
+#include <vector>
+
 /*
 	================================================================================
     CAPSTONE PROJECT: COMPLETE C++ EXCEPTION HANDLING DEMONSTRATION
@@ -45,3 +52,28 @@
     ================================================================================
 
 */
+
+// ----------------------------- Custom Exceptions -----------------------------
+struct FileOpenError :public std::runtime_error {
+    explicit FileOpenError(const std::string& msg) : std::runtime_error(msg){}
+};
+
+struct BadRecordError : public std::runtime_error {
+
+    explicit BadRecordError(const std::string& msg) : std::runtime_error(msg){}
+
+    // Convenience constructor with bad record id
+    explicit BadRecordError(int id)
+        : std::runtime_error(std::string("BadRecordError: record id=") + std::to_string(id)) {}
+};
+
+struct TooManyErrors : public std::runtime_error {
+    explicit TooManyErrors(const std::string& msg) : std::runtime_error(msg) {}
+};
+
+
+int main() {
+
+    // End of Program
+    return 0;
+}
