@@ -314,7 +314,7 @@ int main() {
     std::cout << "=== Capstone: Exception Handling Demo ===\n";
 
     // 1) RAW pointer leak demo (intentional demonstration)
-    rawPointerLeakDemo();
+    // rawPointerLeakDemo();
 
     // 2) Try to create FileReader (simulate success and failure)
     std::cout << "\n--- Creating FileReader (successful) ---\n";
