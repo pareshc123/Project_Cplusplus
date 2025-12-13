@@ -311,6 +311,49 @@ void noexceptDemo() {
 // ----------------------------- main -----------------------------
 int main() {
 
-    // End of Program
+    std::cout << "=== Capstone: Exception Handling Demo ===\n";
+
+    // 1) RAW pointer leak demo (intentional demonstration)
+    rawPointerLeakDemo();
+
+    // 2) Try to create FileReader (simulate success and failure)
+    std::cout << "\n--- Creating FileReader (successful) ---\n";
+    try {
+        auto reader = std::make_unique<FileReader>(false); // false => do not simulate open fail
+        RecordProcessor rp(std::move(reader), 3); // threshold = 3
+
+        // process 10 records - some will randomly fail
+        try {
+            rp.processRecords(10);
+        }
+        catch (const BadRecordError& bre) {
+            // rethrown BadRecordError from inner loop (escalated)
+            std::cout << "[MAIN] Caught escalated BadRecordError: " << bre.what() << "\n";
+        }
+        catch (const TooManyErrors& tme) {
+            std::cout << "[MAIN] Too many errors: " << tme.what() << "\n";
+        }
+        catch (const std::exception& e) {
+            std::cout << "[MAIN] std::exception: " << e.what() << "\n";
+        }
+    }
+    catch (const FileOpenError& fe) {
+        std::cout << "[MAIN] FileOpenError while creating FileReader: " << fe.what() << "\n";
+    }
+
+    // 3) Simulate FileReader constructor throwing
+    std::cout << "\n--- Creating FileReader (simulate constructor failure) ---\n";
+    try {
+        auto readerFail = std::make_unique<FileReader>(true); // true => simulate open fail
+        (void)readerFail;
+    }
+    catch (const FileOpenError& fe) {
+        std::cout << "[MAIN] Caught FileOpenError: " << fe.what() << "\n";
+    }
+
+    // 4) noexcept demonstration
+    noexceptDemo();
+
+    std::cout << "\n=== Capstone demo finished ===\n";
     return 0;
 }
