@@ -281,6 +281,34 @@ void rawPointerLeakDemo() {
 }
 
 
+// ----------------------------- noexcept demonstration ------------------------
+int add_noexcept(int a, int b) noexcept {
+    return a + b;
+}
+
+int add_may_throw(int a, int b) {
+    // trivial but non-noexcept
+    return a + b;
+}
+
+void noexceptDemo() {
+    std::cout << "\n--- noexcept demo ---\n";
+
+    std::cout << "noexcept(add_noexcept): " << std::boolalpha << noexcept(add_noexcept(1, 2)) << "\n";
+    std::cout << "noexcept(add_may_throw): " << std::boolalpha << noexcept(add_may_throw(1, 2)) << "\n";
+
+    // Example showing why you should not mark things noexcept unless sure:
+    // The following code is *commented* because it will terminate the program:
+    //
+    // void willTerminate() noexcept { throw std::runtime_error("boom"); }
+    // willTerminate(); // calling this will call std::terminate() immediately
+    //
+    // If you want to experiment, uncomment the two lines above and run the program
+    // to observe immediate termination (not catchable).
+}
+
+
+// ----------------------------- main -----------------------------
 int main() {
 
     // End of Program
