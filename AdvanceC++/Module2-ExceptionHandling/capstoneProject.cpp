@@ -260,6 +260,27 @@ public:
 };
 
 
+// ----------------------------- Small RAW pointer leak demo --------------------
+void rawPointerLeakDemo() {
+
+    std::cout << "\n === RAW POINTER LEAK DEMO (do not use in real code) ===\n";
+
+    int* ptr = new int[10];
+    std::cout << "Allocated int[10] at " << static_cast<void*> (ptr) << std::endl;
+
+    // Simulate an exception happening *before* delete[] p:
+    try {
+        throw std::runtime_error("Simulated error before deleting raw pointer");
+        delete[] ptr; // never reached
+    }
+    catch (...) {
+        std::cout << "Caught exception - but raw pointer was never deleted -> leak demonstrated\n";
+        // Intentionally not deleting p to demonstrate leak (do NOT copy this pattern)
+    }
+    // In real code, use smart pointers or ensure deletion in catch/finally style
+}
+
+
 int main() {
 
     // End of Program
