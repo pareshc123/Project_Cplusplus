@@ -116,7 +116,7 @@ private:
     std::string name_;
 
 public:
-    explicit Resource(const std::string name) : name_(name) {
+    explicit Resource(const std::string name) : name_(name) { 
         std::cout << "Resource constructor: " << name_ << std::endl;
     }
 
@@ -137,19 +137,83 @@ public:
     // Constructing a Record may fail (e.g., parse error)
     explicit Record(int id, Random& rd) : id_(id) {
 
+        if (!rd.roll(0.75)) {       // 75% success, 0.25% fail
+            throw BadRecordError(id_);
+        }
+
+        // Initialization success
     }
+
+    int get_id() const noexcept { return id_; }
+
 };
 
 
 // ----------------------------- FileReader --------------------------------
 class FileReader {
 
+public:
+    // Constructor attempts to "open" the file.Simulate failure randomly.
+    explicit FileReader(bool simulateFail = false) {
+    
+        if (simulateFail) {
+            throw FileOpenError("Failed to open data source (simulated).");
+        }
+
+        log(Level::Info, "FileReader: opened data source successfully.");
+    }
+
+    // Destructor must be noexcept
+    ~FileReader() noexcept {
+        // cleanup resources if any
+        log(Level::Info, "[Destructor] FileReader: closed Data source.");
+    }
+
+    // Simulate reading a raw record id from source; will return id
+    int readRecordId(int index) {
+
+        // For demo: return index(could be anything)
+        return index;
+    }
 };
 
 
 // ----------------------------- RecordProcessor --------------------------------
 class RecordProcessor {
 
+private:
+    std::unique_ptr<FileReader> reader_;
+    int errorThreshold_;
+
+public:
+
+    explicit RecordProcessor(std::unique_ptr<FileReader> reader, int errorThreshold = 4)
+        : reader_(std::move(reader)), errorThreshold_(errorThreshold) 
+    {
+        if (!reader_) throw FileOpenError("RecordProcessor: invalid FileReader");
+    }
+
+    // process `count` records. Demonstrates nested try/catch, rethrow and modification.
+
+    void processRecords(int count) {
+        Random rd;
+        int errorCount = 0;
+        std::vector<std::unique_ptr<Record>> processed;   // keep successfull records (just demo)
+        processed.reserve(static_cast<size_t>(count > 0 ? count : 0));
+
+        for (int i = 0; i < count; ++i) {
+
+            // A nested try/catch per-record so we can continue after a failed record.
+            try {
+
+                // read raw id (simulate)
+                int id = reader_->readRecordId(i);
+            }
+            catch{
+
+            }
+        }
+    }
 };
 
 
