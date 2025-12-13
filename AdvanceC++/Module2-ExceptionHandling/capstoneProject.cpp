@@ -6,6 +6,7 @@
 #include <vector>
 #include <random>
 #include <chrono>
+#include <sstream>
 
 /*
 	================================================================================
@@ -208,10 +209,35 @@ public:
 
                 // read raw id (simulate)
                 int id = reader_->readRecordId(i);
-            }
-            catch{
 
+                // Attempt to construct a Record (may throw BadRecordError)
+                // NOTE: constructor may throw; if it does, stack unwinding ensures local objects are cleaned
+                auto r = std::make_unique<Record>(id, rd);
+
+                // Record Successfully constructed - add to processed
+                processed.push_back(std::move(r));
+                log(Level::Info, std::string("Processed Record id = ") + std::to_string(id));
             }
+            catch (BadRecordError& ex) {
+
+                // We can handle some record-level locally
+                ++errorCount;
+                std::ostringstream oss;
+                oss << "RecordProcessor: failed to process record " << i << " (" << ex.what() << ")"
+                    << " [errorCount=" << errorCount << "]";
+                log(Level::Info, oss.str());
+
+                // If too many errors, augment the exception and rethrow to outer scope
+                if (errorCount > errorThreshold_) {
+                    // Modify the original exception object (caught by reference), then rethrow
+
+                    ex = BadRecordError(std::string("[Escalated] too many bad records; last id = ") + std::to_string(i));
+                    throw;  // rethrow original (now modified) exception object
+                }
+
+                // else: continue processing other records
+            }
+            
         }
     }
 };
