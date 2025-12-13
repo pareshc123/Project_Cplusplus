@@ -237,8 +237,25 @@ public:
 
                 // else: continue processing other records
             }
-            
+            catch (const std::exception& ex) {
+
+                // catch-all for other std::exceptions that might happen during record processing
+                ++errorCount;
+                log(Level::Error, std::string("RecordProcessor: std::exception while processing: ") + ex.what());
+
+                if (errorCount > errorThreshold_) {
+                    // convert to specific escalation and throw
+                    throw TooManyErrors("Too many processing errors - aborting processing.");
+                }
+            }
+            // NOTE: no catch(...) here so truly unknown exceptions will propagate
         }
+
+        // Finished processing loop
+        std::ostringstream summary;
+        summary << "RecordProcessor: completed. Success=" << processed.size() << ", Errors=" << errorCount;
+        log(Level::Info, summary.str());
+
     }
 };
 
