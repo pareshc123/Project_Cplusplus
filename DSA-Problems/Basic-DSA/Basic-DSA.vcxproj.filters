@@ -24,5 +24,8 @@
     <ClCompile Include="P3-BinaryToDecimal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="KSizedSubarrayMaximum-POTD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
