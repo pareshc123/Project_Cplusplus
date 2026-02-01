@@ -12,7 +12,7 @@ int main() {
 
 		dec += (str[i] - '0') * exponent;
 
-		exponent >>= 1;    // Right Bit shifting ()
+		exponent >>= 1;    // Right Bit shifting ( exponent = exponent >> 1)
 	}
 
 	std::cout << "dec: " << dec << std::endl;
