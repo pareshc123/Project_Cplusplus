@@ -32,6 +32,33 @@
 
 using namespace std;
 
+vector<int> maxOfSubarrays(vector<int>& arr, int k) {
+	// code here
+
+	int n = arr.size();
+	vector<int> outputArr;
+
+	for (int i = 0; i <= n - k; i++) {
+
+		int currentMax = arr[i];   // reset for each window
+
+		for (int j = i; j < i + k; j++) {
+			if (arr[j] > currentMax) {
+				currentMax = arr[j];
+			}
+		}
+
+		outputArr.push_back(currentMax);
+	}
+
+	// print result
+	for (int x : outputArr) {
+		cout << x << " ";
+	}
+
+	return outputArr;
+}
+
 int main() {
 
 	vector<int> arr = { 1, 2, 3, 1, 4, 5, 2, 3, 6 };
@@ -61,6 +88,9 @@ int main() {
 	for (int x : outputArr) {
 		cout << x << " ";
 	}
+	cout << endl;
+
+	vector<int> optimalArr = maxOfSubarrays(arr, k);
 
 	return 0;
 }
