@@ -21,5 +21,8 @@
     <ClCompile Include="P2-SwapTheNumbers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P3-BinaryToDecimal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
