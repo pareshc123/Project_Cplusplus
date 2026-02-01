@@ -29,13 +29,30 @@ int main() {
 	cin >> a >> b;
 
 	// Write Code to Swap
-
+	cout << "\nMethod1: Using temp Variable" << endl;
 	int temp;
 	temp = b;
 	b = a;
 	a = temp;
 
-	cout << a << " " << b << endl;
+	cout << "Output Method1: ";
+	cout << a << " " << b << "\n" << endl;
+
+	cout << "Method2: Using Arithmetic Operation" << endl;
+	a = a + b;
+	b = a - b;
+	a = a - b;
+	
+	cout << "Output Method2: ";
+	cout << a << " " << b << "\n" << endl;
+
+	cout << "Method3: Using Bitwise XOR operation" << endl;
+	a = a ^ b;
+	b = a ^ b;
+	a = a ^ b;
+	
+	cout << "Output Method3: ";
+	cout << a << " " << b << "\n" << endl;
 
 	return 0;
 }
