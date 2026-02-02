@@ -42,5 +42,8 @@
     <ClCompile Include="P8-TypeConversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P9-ArithmeticOperations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
