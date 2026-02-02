@@ -27,5 +27,8 @@
     <ClCompile Include="KSizedSubarrayMaximum-POTD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P5-FindElementAtIndex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
