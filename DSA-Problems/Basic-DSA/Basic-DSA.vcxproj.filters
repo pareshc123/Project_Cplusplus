@@ -39,5 +39,8 @@
     <ClCompile Include="P7-DecisionMaking_If-Else.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P8-TypeConversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
