@@ -51,5 +51,8 @@
     <ClCompile Include="P11-LastDigitOfANumber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P12-BitwiseOperations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
