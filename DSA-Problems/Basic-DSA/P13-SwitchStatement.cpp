@@ -54,5 +54,6 @@ int main() {
     int number;
     cin >> number;
     string result = utility(number);
+    cout << result << endl;
     return 0;
 }
