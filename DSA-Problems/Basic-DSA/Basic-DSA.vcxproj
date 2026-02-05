@@ -135,7 +135,10 @@
     <ClCompile Include="P11-LastDigitOfANumber.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P12-BitwiseOperations.cpp" />
+    <ClCompile Include="P12-BitwiseOperations.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="P15-PrintSquare.cpp" />
     <ClCompile Include="P2-SwapTheNumbers.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
