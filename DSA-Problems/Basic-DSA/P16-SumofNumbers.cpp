@@ -19,3 +19,14 @@
 
 */
 
+#include <iostream>
+
+int main() {
+	int n;
+	std::cin >> n;
+
+	int ans = 0;
+	ans = (n * (n + 1)) / 2;
+	return ans;
+
+}
