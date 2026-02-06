@@ -63,5 +63,8 @@
     <ClCompile Include="P14-reverseString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P16-SumofNumbers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
