@@ -66,5 +66,8 @@
     <ClCompile Include="P16-SumofNumbers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="p17-whileLoop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
