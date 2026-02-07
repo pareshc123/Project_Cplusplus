@@ -153,7 +153,10 @@
     <ClCompile Include="p17-whileLoop.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="P18-SumOfNumbers_Adv.cpp" />
+    <ClCompile Include="P18-SumOfNumbers_Adv.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="P19-TableDifference.cpp" />
     <ClCompile Include="P2-SwapTheNumbers.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
