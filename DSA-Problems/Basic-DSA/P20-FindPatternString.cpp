@@ -15,6 +15,11 @@
 		Time Complexity: O(n)
 		Auxiliary Space: O(1)
 
+	In the code you will find three appraoches,
+		* Naive (classic)
+		* KMP
+		* function from STL
+
 	NOTE:
 		KMP (Knuth–Morris–Pratt) is a string pattern matching algorithm.
 		It is used to find a pattern inside a text efficiently.
@@ -71,7 +76,7 @@ int findPatternNaive(string& s, string& p) {
 
 }
 
-int findPatternKMP() {
+int findPatternKMP(string& s, string& p) {
 
 	return -1;
 }
@@ -89,10 +94,12 @@ int main(){
 
 	string s6 = "llo";
 
-	int res3 = findPatternNaive(s1, s3);
-	cout << res3 << endl;
+	//int res3 = findPatternNaive(s1, s3);
+	//cout << res3 << endl;
 
-	//int res1 = findPatternNaive(s1, s2);
+	int res1 = findPatternKMP(s1, s2);
+	cout << res1 << endl;
+	// 
 	//int res1 = findPatternNaive(s1, s3);
 	//int res1 = findPatternNaive(s1, s4);
 
