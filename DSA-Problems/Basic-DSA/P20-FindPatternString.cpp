@@ -44,36 +44,30 @@ int findPatternSTL(string& s, string& p) {
 }
 
 int findPatternNaive(string& s, string& p) {
+	
 	// Manual (naive approach without KMP)
 
-	// Chcek if string s is sgreater than p
-	if (s.length() < p.length()) {
+	int sN = s.length();
+	int pN = p.length();
 
-		return -1;
-	}
+	// Chcek if string s is sgreater than p
+	if (sN < pN) return -1;
+
 	// now check the pattern
-	for (int i = 0; i < s.length(); ++i) {
-		int sTemp = i;
+	for (int i = 0; i < sN - pN; ++i) {
+		
 		int pTemp = 0;
 		
-		while (pTemp < p.length() and (s.length() - i > p.length())) {
-			
-			cout << "s[sTemp]: " << s[sTemp] << ", p[pTemp]: " << p[pTemp] << endl;
-			if (s[sTemp] != p[pTemp]) {
-				break;
-			}
-			else {
-				++sTemp;
-				++pTemp;
+		while (pTemp < pN && s[i + pTemp] == p[pTemp]) {
+			++pTemp;
+		}
 
-				if (pTemp == p.length()) {
+		if (pTemp == pN) {
 
-					return i;
-				}
-			}
+			return i; // Pattern found
 		}
 	}
-	return -1;
+	return -1;    // pattern not found
 
 }
 
@@ -87,14 +81,15 @@ int main(){
 	string s1 = "Geekforgeeks";
 
 	string s2 = "Geek";
-	string s3 = "ksfo";
+	string s3 = "kfo";
 	string s4 = "Geeks";
 
 
 	string s5 = "Hello";
+
 	string s6 = "llo";
 
-	int res3 = findPatternNaive(s1, s4);
+	int res3 = findPatternNaive(s1, s3);
 	cout << res3 << endl;
 
 	//int res1 = findPatternNaive(s1, s2);
