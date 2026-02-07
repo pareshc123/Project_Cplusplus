@@ -25,13 +25,12 @@
 int gcd(int a, int b) {
     // code here to calculate and return gcd of a and b
 
-    if (a == 0) {
-        return b;
-    }
+	// base case
+	if (a == b) return a;
 
-    if (b == 0) {
-        return a;
-    }
+    if (a == 0) return b;
+
+    if (b == 0) return a;
 
     if (a > b) {
         return gcd(a - b, b);
@@ -39,10 +38,13 @@ int gcd(int a, int b) {
     else {
         return gcd(a, b - a);
     }
+}
 
+int gcdOptimized(int a, int b) {
+	int res = (b == 0) ? a : gcd(b, a % b);
+	return res;
 }
 
 int main() {
-
 	int res = gcd(18, 24);
 }
