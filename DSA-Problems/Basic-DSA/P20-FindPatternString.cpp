@@ -40,7 +40,7 @@ using namespace std;
 int findPatternSTL(string& s, string& p) {
 	// code here
 
-	int res = s.find(p);
+	size_t res = s.find(p);
 	if (res != string::npos) {
 		return res;
 	}
@@ -52,8 +52,8 @@ int findPatternNaive(string& s, string& p) {
 	
 	// Manual (naive approach without KMP)
 
-	int sN = s.length();
-	int pN = p.length();
+	size_t sN = s.length();
+	size_t pN = p.length();
 
 	// Chcek if string s is sgreater than p
 	if (sN < pN) return -1;

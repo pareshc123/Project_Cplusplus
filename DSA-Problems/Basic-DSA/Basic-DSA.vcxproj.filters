@@ -78,5 +78,8 @@
     <ClCompile Include="P20-FindPatternString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P21-cppOperations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
