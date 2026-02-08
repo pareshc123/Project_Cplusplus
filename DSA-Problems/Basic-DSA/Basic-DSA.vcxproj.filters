@@ -90,5 +90,8 @@
     <ClCompile Include="P24-Divisor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P25-SliceTheString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
