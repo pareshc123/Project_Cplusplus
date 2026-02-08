@@ -93,5 +93,8 @@
     <ClCompile Include="P25-SliceTheString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P26-STL_Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
