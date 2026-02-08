@@ -172,6 +172,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="P23-basicDataTypes.cpp" />
+    <ClCompile Include="P24-Divisor.cpp" />
     <ClCompile Include="P3-BinaryToDecimal.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
