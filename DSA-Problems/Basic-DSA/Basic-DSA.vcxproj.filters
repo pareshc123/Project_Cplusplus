@@ -84,5 +84,8 @@
     <ClCompile Include="P22-GCD-HCF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="P23-basicDataTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
