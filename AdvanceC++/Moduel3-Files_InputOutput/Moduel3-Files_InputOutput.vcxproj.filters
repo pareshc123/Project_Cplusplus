@@ -18,5 +18,8 @@
     <ClCompile Include="basicFiles-IO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="basicsFileSystemLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
