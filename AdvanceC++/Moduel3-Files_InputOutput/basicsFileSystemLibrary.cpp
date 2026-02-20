@@ -27,9 +27,27 @@
 #include<string>
 #include<filesystem>
 
+using namespace std;
 namespace fs = std::filesystem;
 
 
+void ex1PathIntelligenc(fs::path dir) {
+
+	cout << "The Full Path is: " << dir << endl;
+	cout << "The File fullName is: " << dir.filename() << endl;
+	cout << "The File extension is: " << dir.extension() << endl;
+	cout << "The File stem is: " << dir.stem() << endl;
+	cout << "The File Parent directory is: " << dir.parent_path() << endl;
+
+	cout << "The New file Name is: " << dir.replace_filename("ecu1_2026_02_19_secure.log") << endl;
+
+}
+
+
 int main() {
-	return 0;
+	
+	cout << "======= Exerice 1: Path Intelligence =======" << endl;
+	fs::path path1{"vehicle_logs/can_logs/ecu1_2026_02_19.log"};
+	ex1PathIntelligenc(path1);
+
 }
