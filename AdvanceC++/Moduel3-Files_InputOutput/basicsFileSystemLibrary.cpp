@@ -49,8 +49,30 @@ void ex1PathIntelligenc(fs::path dir) {
 
 void ex2setupLogStructure();           // exercise 2: declaration
 
-void ex3IterateOverDirectory() {
+void ex3IterateOverDirectory(fs::path dir) {
 
+	if (!fs::exists(dir)) {
+		cout << "[ERROR] Directory doesnt exists: " << dir << endl;
+		return;
+	}
+
+	int count = 0;
+
+	for (const auto& file : fs::directory_iterator(dir)) {
+
+		if (file.path().extension() == ".log") {
+			cout << "[Processing] " 
+				 << file.path().filename() 
+				 << ", File Size: " << fs::file_size(file) 
+				 << endl;
+			++count;
+		}
+		else if (file.path().extension() == ".exe") {
+			cout << "[Warning] Unknown file identified " << file.path().filename() << endl;
+		}
+	}
+
+	cout << "Total log files processed: " << count << endl;
 }
 
 std::string getFileWithCurrentTimeStamp(const std::string& prefix, 
@@ -95,7 +117,8 @@ int main() {
 	ex2setupLogStructure();
 
 	cout << "======= Exerice 3: Iterate Over Directory =======" << endl;
-	ex3IterateOverDirectory();
+	fs::path path2 = { "Vehicle_logs/CAN" };
+	ex3IterateOverDirectory(path2);
 
 	return 0;
 
