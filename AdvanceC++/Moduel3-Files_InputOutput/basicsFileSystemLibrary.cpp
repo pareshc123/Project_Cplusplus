@@ -23,12 +23,16 @@
 
 */
 
-#include<iostream>
+#include<chrono>
 #include<string>
 #include<vector>
+#include<sstream>
+#include<iostream>
 #include<filesystem>
 
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
 namespace fs = std::filesystem;
 
 
@@ -43,28 +47,68 @@ void ex1PathIntelligenc(fs::path dir) {
 
 }
 
-void ex2setupLogStructure();
+void ex2setupLogStructure();           // exercise 2: declaration
+
+void ex3IterateOverDirectory() {
+
+}
+
+std::string getFileWithCurrentTimeStamp(const std::string& prefix, 
+								const std::string& extension) {
+
+	using namespace std::chrono;
+
+	// get current time as time_t
+	auto now = system_clock::now();
+
+	std::time_t t = system_clock::to_time_t(now);
+
+	// convert to local time
+	std::tm local{};
+
+#ifdef _WIN32  // <-- This macro is defined on ALL Windows platforms
+	localtime_s(&local, &t);  // Windows (32-bit or 64-bit)
+#else
+	localtime_r(&t, &local);  // Linux/Mac
+#endif
+
+
+	// Format: YYYY-MM-DD_HH-MM-SS
+	std::ostringstream oss;
+
+	oss << prefix << '_'
+		<< std::put_time(&local, "%Y-%m-%d_%H-%M-%S")
+		<< extension;
+
+	return oss.str();
+
+}
 
 int main() {
 	
 	cout << "======= Exerice 1: Path Intelligence =======" << endl;
-	fs::path path1{"vehicle_logs/can_logs/ecu1_2026_02_19.log"};
+	std::string filename = getFileWithCurrentTimeStamp("ECUID-1", ".log");
+	fs::path path1{"vehicle_logs/can_logs/" + filename};
 	ex1PathIntelligenc(path1);
 
 	cout << "======= Exerice 2: Automotive Log Directory Setup =======" << endl;
 	ex2setupLogStructure();
 
+	cout << "======= Exerice 3: Iterate Over Directory =======" << endl;
+	ex3IterateOverDirectory();
+
 	return 0;
 
 }
 
-void ex2setupLogStructure() {
+void ex2setupLogStructure() {                             // exercise 2: definition
 
 	// Define the subdirectories under vehicle_logs/
-	const vector<string> subdirs = {
+	const std::vector<std::string> subdirs = {
 		"Vehicle_logs/CAN",
 		"Vehicle_logs/UDS",
 		"Vehicle_logs/Firmware",
+		"Vehicle_logs/ECU-Logs",
 	};
 
 	std::error_code ec;
@@ -83,4 +127,5 @@ void ex2setupLogStructure() {
 		}
 	}
 
+	cout << endl;
 }
