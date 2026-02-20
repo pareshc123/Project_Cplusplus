@@ -27,6 +27,7 @@
 #include<string>
 #include<vector>
 #include<sstream>
+#include <cstdint>
 #include<iostream>
 #include<filesystem>
 
@@ -36,47 +37,8 @@ using std::endl;
 namespace fs = std::filesystem;
 
 
-void ex1PathIntelligenc(fs::path dir) {
-
-	cout << "The Full Path is: " << dir << endl;
-	cout << "The File fullName is: " << dir.filename() << endl;
-	cout << "The File extension is: " << dir.extension() << endl;
-	cout << "The File stem is: " << dir.stem() << endl;
-	cout << "The File Parent directory is: " << dir.parent_path() << endl;
-	cout << "The New file Name is: " << dir.replace_filename("ecu1_2026_02_19_secure.log") << "\n" << endl;
-
-}
-
-void ex2setupLogStructure();           // exercise 2: declaration
-
-void ex3IterateOverDirectory(fs::path dir) {
-
-	if (!fs::exists(dir)) {
-		cout << "[ERROR] Directory doesnt exists: " << dir << endl;
-		return;
-	}
-
-	int count = 0;
-
-	for (const auto& file : fs::directory_iterator(dir)) {
-
-		if (file.path().extension() == ".log") {
-			cout << "[Processing] " 
-				 << file.path().filename() 
-				 << ", File Size: " << fs::file_size(file) 
-				 << endl;
-			++count;
-		}
-		else if (file.path().extension() == ".exe") {
-			cout << "[Warning] Unknown file identified " << file.path().filename() << endl;
-		}
-	}
-
-	cout << "Total log files processed: " << count << endl;
-}
-
-std::string getFileWithCurrentTimeStamp(const std::string& prefix, 
-								const std::string& extension) {
+std::string getFileWithCurrentTimeStamp(const std::string& prefix,
+	const std::string& extension) {
 
 	using namespace std::chrono;
 
@@ -106,23 +68,18 @@ std::string getFileWithCurrentTimeStamp(const std::string& prefix,
 
 }
 
-int main() {
-	
-	cout << "======= Exerice 1: Path Intelligence =======" << endl;
-	std::string filename = getFileWithCurrentTimeStamp("ECUID-1", ".log");
-	fs::path path1{"vehicle_logs/can_logs/" + filename};
-	ex1PathIntelligenc(path1);
 
-	cout << "======= Exerice 2: Automotive Log Directory Setup =======" << endl;
-	ex2setupLogStructure();
+void ex1PathIntelligenc(fs::path dir) {
 
-	cout << "======= Exerice 3: Iterate Over Directory =======" << endl;
-	fs::path path2 = { "Vehicle_logs/CAN" };
-	ex3IterateOverDirectory(path2);
-
-	return 0;
+	cout << "The Full Path is: " << dir << endl;
+	cout << "The File fullName is: " << dir.filename() << endl;
+	cout << "The File extension is: " << dir.extension() << endl;
+	cout << "The File stem is: " << dir.stem() << endl;
+	cout << "The File Parent directory is: " << dir.parent_path() << endl;
+	cout << "The New file Name is: " << dir.replace_filename("ecu1_2026_02_19_secure.log") << "\n" << endl;
 
 }
+
 
 void ex2setupLogStructure() {                             // exercise 2: definition
 
@@ -152,3 +109,110 @@ void ex2setupLogStructure() {                             // exercise 2: definit
 
 	cout << endl;
 }
+
+
+void ex3IterateOverDirectory(fs::path dir) {
+
+	if (!fs::exists(dir) || !fs::is_directory(dir)) {
+		cout << "[ERROR] Directory doesnt exists: " << dir << "\n" << endl;
+		return;
+	}
+
+	int count = 0;
+
+	for (const auto& file : fs::directory_iterator(dir)) {
+
+		if (file.path().extension() == ".log") {
+			cout << "[Processing] " 
+				 << file.path().filename() 
+				 << ", File Size: " << fs::file_size(file)
+
+				 << endl;
+			++count;
+		}
+		else if (file.path().extension() == ".exe") {
+			cout << "[Warning] Unknown file identified " << file.path().filename() << endl;
+		}
+	}
+
+	cout << "Total log files processed: " << count << "\n" << endl;
+}
+
+
+bool ex4isSafeSize(const fs::path& file, std::uintmax_t maxSize) {
+
+	std::error_code ec;
+
+	// Get file size safely (non-throwing)
+	std::uintmax_t size = fs::file_size(file, ec);
+
+	if (ec) {
+		// File doesn't exist or access denied --> safe by default
+		cout << "[INFO]  Cannot read " << file << ": "
+			 << ec.message() << endl;
+		return true;
+	}
+
+	// Check if oversized
+	if (size > maxSize) {
+		std::cout << "[WARNING] OVERSIZED:  " << file
+			<< "(" << size << " bytes > " << maxSize << " bytes)\n";
+		return false;
+	}
+
+	std::cout << "[OK]  " << file << " (" << size << " bytes) \n";
+	return true;
+
+}
+
+// Convenience wrapper for 1MB limit
+bool ex4isSafeLogFile(const fs::path& file) {
+
+	/*
+		1B = 8 bits (2^3),
+		1KB (Kilo-Bytes) = 1024 (2^10),
+		1MB (Mega-Bytes) = 1024KB = 1024 * 1024 (2^20),
+		1GB (Giga-Bytes) = 1024MB = 1024 * 1024 * 1024 (2^30)
+		
+		constexpr = "Compile-time constant". The compiler calculates it at compile time, not runtime.
+		Benefits:
+			- Faster (no runtime calculation)
+			- Type safer (compiler checks math)
+			- Optimizer friendly
+	*/
+
+	constexpr std::uintmax_t ONE_MB = 1024 * 1024;
+	return ex4isSafeSize(file, ONE_MB);
+}
+
+
+int main() {
+	
+	cout << "======= Exerice 1: Path Intelligence =======" << endl;
+	std::string filename = getFileWithCurrentTimeStamp("ECUID-1", ".log");
+	fs::path path1{"vehicle_logs/can_logs/" + filename};
+	ex1PathIntelligenc(path1);
+
+	cout << "======= Exerice 2: Automotive Log Directory Setup =======" << endl;
+	ex2setupLogStructure();
+
+	cout << "======= Exerice 3: Iterate Over Directory =======" << endl;
+	fs::path path2 = { "Vehicle_logs/CAN" };
+	ex3IterateOverDirectory(path2);
+
+	cout << "======= Exerice 4: File Size Protection Check =======" << endl;
+	// Test small files (safe)
+	ex4isSafeLogFile("vehicle_logs/CAN/frame1.log");     // ~1KB --> OK
+	ex4isSafeLogFile("vehicle_logs/CAN/frame2.log");     // ~1KB --> OK
+	ex4isSafeLogFile("vehicle_logs/CAN/notes.txt");      // ~300B --> OK
+
+	// Test non - existent(safe)
+	ex4isSafeLogFile("vehicle_logs/CAN/missing.log");
+
+	// Test oversized (WARNING)
+	ex4isSafeLogFile("vehicle_logs/CAN/huge_log.log");   // >1MB --> WARNING
+
+	return 0;
+
+}
+
