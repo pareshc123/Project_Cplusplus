@@ -27,7 +27,8 @@
 #include<string>
 #include<vector>
 #include<sstream>
-#include <cstdint>
+#include<cstdint>
+#include<iomanip>
 #include<iostream>
 #include<filesystem>
 
@@ -186,6 +187,55 @@ bool ex4isSafeLogFile(const fs::path& file) {
 }
 
 
+struct AuditResult {
+	size_t totalFiles = 0;
+	size_t totalDirs = 0;
+};
+
+void ex5AuditScanner(const fs::path& dir, AuditResult& result) {
+
+	if (!fs::exists(dir) || !fs::is_directory(dir)) {
+		cout << "[ERROR] Directory doesnt exists: " << dir << "\n" << endl;
+		return;
+	}
+
+	std::error_code ec;
+
+	// Recursive scan with skip_permission_denied
+	for (auto it = fs::recursive_directory_iterator(dir, fs::directory_options::skip_permission_denied, ec); 
+				it != fs::recursive_directory_iterator(); ++it) {
+
+		const auto& entry = *it;
+		const auto& path = entry.path();
+
+		// Skip if error occurred
+		if (ec) {
+			std::cout << "[SKIP] " << path << ": " << ec.message() << '\n';
+			ec.clear();
+			it.increment(ec);  // Skip this entry
+			continue;
+		}
+
+		// Print formatted audit info
+		if (entry.is_directory()) {
+			std::cout << "[DIR ] " << std::left << std::setw(50) << path
+				<< " (directory)" << '\n';
+			++result.totalDirs;
+		}
+		else if (entry.is_regular_file()) {
+			std::uintmax_t size = fs::file_size(path, ec);
+			std::cout << "[FILE] " << std::left << std::setw(50) << path
+				<< "(" << size << " bytes)\n";
+			++result.totalFiles;
+		}
+		else {
+			std::cout << "[OTHER] " << std::left << std::setw(50) << path
+				<< "(symlink/special)" << '\n';
+		}
+	}
+}
+
+
 int main() {
 	
 	cout << "======= Exerice 1: Path Intelligence =======" << endl;
@@ -211,6 +261,16 @@ int main() {
 
 	// Test oversized (WARNING)
 	ex4isSafeLogFile("vehicle_logs/CAN/huge_log.log");   // >1MB --> WARNING
+	cout << endl;
+
+	cout << "======= Exerice 5 - Recursive Audit Scanner =======" << endl;
+	AuditResult result;
+	fs::path root = "vehicle_logs";
+	ex5AuditScanner(root, result);
+	std::cout << "\n=== AUDIT SUMMARY ===\n";
+	std::cout << "Total Files: " << result.totalFiles << '\n';
+	std::cout << "Total Dirs:  " << result.totalDirs << '\n';
+	std::cout << "Total Items: " << (result.totalFiles + result.totalDirs) << '\n';
 
 	return 0;
 
