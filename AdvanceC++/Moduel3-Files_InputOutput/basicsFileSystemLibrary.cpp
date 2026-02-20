@@ -236,6 +236,50 @@ void ex5AuditScanner(const fs::path& dir, AuditResult& result) {
 }
 
 
+struct secureDeleteResult {
+	size_t totalFiles = 0;
+};
+
+
+void ex6deleteOldLogs(const fs::path& dir, secureDeleteResult& result) {
+
+	if (!fs::exists(dir) || !fs::is_directory(dir)) {
+		cout << "[ERROR] Directory doesnt esists: " << dir << endl;
+		return;
+	}
+
+	std::error_code ec;
+	for (auto it = fs::recursive_directory_iterator(dir, fs::directory_options::skip_permission_denied, ec); 
+		it != fs::recursive_directory_iterator(); ++it) {
+
+		const auto& entry = *it;
+		const auto& path = entry.path();
+
+		// Skip if error occurred
+		if (ec) {
+			std::cout << "[SKIP] " << path << ": " << ec.message() << '\n';
+			ec.clear();
+			it.increment(ec);  // Skip this entry
+			continue;
+		}
+
+		// Scanning for log files:
+		if (entry.is_regular_file() && path.extension() == ".log") {
+			++result.totalFiles;
+			fs::remove(path, ec);
+			if (!ec && !fs::exists(path)) {
+				cout << "[DELETED] " << "Successfully deleted File \"" << path.filename() << "\"" << endl;
+			}
+			else {
+				cout << "[FAILED] " << "Failed to delete File \"" << path.filename() << "\": " 
+					<< ec.message() << endl;
+			}
+			ec.clear();   // reset for the next file
+		}
+	}
+}
+
+
 int main() {
 	
 	cout << "======= Exerice 1: Path Intelligence =======" << endl;
@@ -270,8 +314,15 @@ int main() {
 	std::cout << "\n=== AUDIT SUMMARY ===\n";
 	std::cout << "Total Files: " << result.totalFiles << '\n';
 	std::cout << "Total Dirs:  " << result.totalDirs << '\n';
-	std::cout << "Total Items: " << (result.totalFiles + result.totalDirs) << '\n';
+	std::cout << "Total Items: " << (result.totalFiles + result.totalDirs) << '\n' << endl;
 
+	cout << "======= Exerice 6 - Secure Deletion System =======" << endl;
+	secureDeleteResult result2;
+	fs::path root2 = "vehicle_logs";
+	ex6deleteOldLogs(root2, result2);
+	std::cout << "\n=== SECURE DELETION SUMMARY ===\n";
+	std::cout << "Total log Files deleted: " << result2.totalFiles << '\n';
+	
 	return 0;
 
 }
