@@ -23,11 +23,10 @@
 
 */
 
-#include<chrono>
 #include<string>
 #include<vector>
 #include<cstdint>
-#include<iomanip>
+#include<fstream>
 #include<iostream>
 
 #include"fileOperations.h"
@@ -251,68 +250,121 @@ bool rotateLogIfNeeded(const fs::path& logFile, std::uintmax_t maxSizeKB = 500) 
 
 	std::error_code ec;
 
-	return 1;
+	// Check if file exists
+	if (!fs::exists(logFile, ec)) {
+		std::cout << "[INFO] Log file doesn't exist: " << logFile.filename() << '\n';
+		return false;
+	}
+
+	// Current Size
+	std::uintmax_t size = fs::file_size(logFile, ec);
+	if (ec) {
+		std::cerr << "[ERROR] Cannot read size: " << ec.message() << '\n';
+		return false;
+	}
+
+	std::uintmax_t maxSizeBytes = maxSizeKB * 1024;
+
+	if (size > maxSizeBytes) {
+		cout << "[ROTATE] " << logFile.filename()
+			<< " (" << size << " bytes > " << maxSizeBytes << " bytes) \n";
+
+		// Generate backup name: frame.log --> frame_backup_1.log
+		fs::path backupFile = logFile.parent_path() /
+			(logFile.stem().string() + "_1" + logFile.extension().string());
+
+		// Rename (atomic operation)
+		fs::rename(logFile, backupFile, ec);
+		if (ec) {
+			std::cerr << "[ERROR] Rename failed: " << ec.message() << '\n';
+			return false;
+		}
+
+		std::cout << "[OK] Renamed to: " << backupFile.filename() << '\n';
+
+		// Create fresh empty log
+		std::ofstream newLog(logFile);
+		if (newLog) {
+			newLog.close();
+			std::cout << "[OK] Created fresh log: " << logFile.filename() << '\n';
+			return true;
+		}
+		else {
+			std::cerr << "[ERROR] Failed to create new log\n";
+			return false;
+		}
+	}
+	std::cout << "[OK] Log safe: " << logFile.filename()
+		<< " (" << size << " bytes < " << maxSizeBytes << " bytes)\n";
+	return true;
 
 }
 
+// Convenience function for default 500KB
+bool checkAndRotate(const fs::path& logFile) {
+	return rotateLogIfNeeded(logFile, 500);  // 500 KB
+}
 
 int main() {
 	
-	cout << "======= Exerice 1: Path Intelligence =======" << endl;
-	std::string filename = getFileWithCurrentTimeStamp("ECUID-1", ".log");
-	fs::path path1{"vehicle_logs/can_logs/" + filename};
-	ex1PathIntelligenc(path1);
+	//cout << "======= Exerice 1: Path Intelligence =======" << endl;
+	//std::string filename = getFileWithCurrentTimeStamp("ECUID-1", ".log");
+	//fs::path path1{"vehicle_logs/can_logs/" + filename};
+	//ex1PathIntelligenc(path1);
 
-	cout << "======= Exerice 2: Automotive Log Directory Setup =======" << endl;
-	ex2setupLogStructure();
+	//cout << "======= Exerice 2: Automotive Log Directory Setup =======" << endl;
+	//ex2setupLogStructure();
 
-	cout << "======= Exerice 3: Iterate Over Directory =======" << endl;
-	fs::path path2 = { "vehicle_logs/CAN" };
-	ex3IterateOverDirectory(path2);
+	//cout << "======= Exerice 3: Iterate Over Directory =======" << endl;
+	//fs::path path2 = { "vehicle_logs/CAN" };
+	//ex3IterateOverDirectory(path2);
 
-	cout << "======= Exerice 4: File Size Protection Check =======" << endl;
-	// Test small files (safe)
-	ex4isSafeLogFile("vehicle_logs/CAN/frame1.log");     // ~1KB --> OK
-	ex4isSafeLogFile("vehicle_logs/CAN/frame2.log");     // ~1KB --> OK
-	ex4isSafeLogFile("vehicle_logs/CAN/notes.txt");      // ~300B --> OK
+	//cout << "======= Exerice 4: File Size Protection Check =======" << endl;
+	//// Test small files (safe)
+	//ex4isSafeLogFile("vehicle_logs/CAN/frame1.log");     // ~1KB --> OK
+	//ex4isSafeLogFile("vehicle_logs/CAN/frame2.log");     // ~1KB --> OK
+	//ex4isSafeLogFile("vehicle_logs/CAN/notes.txt");      // ~300B --> OK
 
-	// Test non - existent(safe)
-	ex4isSafeLogFile("vehicle_logs/CAN/missing.log");
+	//// Test non - existent(safe)
+	//ex4isSafeLogFile("vehicle_logs/CAN/missing.log");
 
-	// Test oversized (WARNING)
-	ex4isSafeLogFile("vehicle_logs/CAN/huge_log.log");   // >1MB --> WARNING
-	cout << endl;
+	//// Test oversized (WARNING)
+	//ex4isSafeLogFile("vehicle_logs/CAN/huge_log.log");   // >1MB --> WARNING
+	//cout << endl;
 
-	cout << "======= Exerice 5 - Recursive Audit Scanner =======" << endl;
-	AuditResult result;
-	fs::path root = "vehicle_logs";
-	ex5AuditScanner(root, result);
-	std::cout << "\n=== AUDIT SUMMARY ===\n";
-	std::cout << "Total Files: " << result.totalFiles << '\n';
-	std::cout << "Total Dirs:  " << result.totalDirs << '\n';
-	std::cout << "Total Items: " << (result.totalFiles + result.totalDirs) << '\n' << endl;
+	//cout << "======= Exerice 5 - Recursive Audit Scanner =======" << endl;
+	//AuditResult result;
+	//fs::path root = "vehicle_logs";
+	//ex5AuditScanner(root, result);
+	//std::cout << "\n=== AUDIT SUMMARY ===\n";
+	//std::cout << "Total Files: " << result.totalFiles << '\n';
+	//std::cout << "Total Dirs:  " << result.totalDirs << '\n';
+	//std::cout << "Total Items: " << (result.totalFiles + result.totalDirs) << '\n' << endl;
 
-	cout << "======= Exerice 6 - Secure Deletion System =======" << endl;
-	secureDeleteResult result2;
-	fs::path root2 = "vehicle_logs";
-	ex6deleteOldLogs(root2, result2);
-	std::cout << "\n=== SECURE DELETION SUMMARY ===\n";
-	std::cout << "Total log Files deleted: " << result2.totalFiles << '\n' << endl;
+	//cout << "======= Exerice 6 - Secure Deletion System =======" << endl;
+	//secureDeleteResult result2;
+	//fs::path root2 = "vehicle_logs";
+	//ex6deleteOldLogs(root2, result2);
+	//std::cout << "\n=== SECURE DELETION SUMMARY ===\n";
+	//std::cout << "Total log Files deleted: " << result2.totalFiles << '\n' << endl;
 	
 
 	cout << "======= Exercise 7 - MINI Log Rotation System =======" << endl;
-	fs::path logFile = fs::path("vehicle_logs") / getFileWithCurrentTimeStamp("CANframe", ".log");
+	fs::path logFile1 = fs::path("vehicle_logs/CAN") / getFileWithCurrentTimeStamp("CANframe", ".log");
 
 	// Test 1: Small file (safe)
+	createCANFrameLog(logFile1, 200);
+	checkAndRotate(logFile1);
 
 	// Test 2: Make it huge first
 	std::cout << "\[TEST] Creating huge CANframe.log...\n";
-	{
-
-
-	}
+	
+	fs::path logFile2 = fs::path("vehicle_logs/CAN") / getFileWithCurrentTimeStamp("CANframe", ".log");
+	createCANFrameLog(logFile2, 15000);
+	checkAndRotate(logFile2);
 
 	// Test 3: Now rotate!
+	checkAndRotate(logFile2);
 
 	return 0;
 
