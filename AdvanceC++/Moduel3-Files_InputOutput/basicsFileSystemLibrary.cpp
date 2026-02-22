@@ -26,48 +26,15 @@
 #include<chrono>
 #include<string>
 #include<vector>
-#include<sstream>
 #include<cstdint>
 #include<iomanip>
 #include<iostream>
-#include<filesystem>
+
+#include"fileOperations.h"
 
 using std::cout;
 using std::cin;
 using std::endl;
-namespace fs = std::filesystem;
-
-
-std::string getFileWithCurrentTimeStamp(const std::string& prefix,
-	const std::string& extension) {
-
-	using namespace std::chrono;
-
-	// get current time as time_t
-	auto now = system_clock::now();
-
-	std::time_t t = system_clock::to_time_t(now);
-
-	// convert to local time
-	std::tm local{};
-
-#ifdef _WIN32  // <-- This macro is defined on ALL Windows platforms
-	localtime_s(&local, &t);  // Windows (32-bit or 64-bit)
-#else
-	localtime_r(&t, &local);  // Linux/Mac
-#endif
-
-
-	// Format: YYYY-MM-DD_HH-MM-SS
-	std::ostringstream oss;
-
-	oss << prefix << '_'
-		<< std::put_time(&local, "%Y-%m-%d_%H-%M-%S")
-		<< extension;
-
-	return oss.str();
-
-}
 
 
 void ex1PathIntelligenc(fs::path dir) {
@@ -86,10 +53,10 @@ void ex2setupLogStructure() {                             // exercise 2: definit
 
 	// Define the subdirectories under vehicle_logs/
 	const std::vector<std::string> subdirs = {
-		"Vehicle_logs/CAN",
-		"Vehicle_logs/UDS",
-		"Vehicle_logs/Firmware",
-		"Vehicle_logs/ECU-Logs",
+		"vehicle_logs/CAN",
+		"vehicle_logs/UDS",
+		"vehicle_logs/Firmware",
+		"vehicle_logs/ECU-Logs",
 	};
 
 	std::error_code ec;
@@ -280,6 +247,15 @@ void ex6deleteOldLogs(const fs::path& dir, secureDeleteResult& result) {
 }
 
 
+bool rotateLogIfNeeded(const fs::path& logFile, std::uintmax_t maxSizeKB = 500) {
+
+	std::error_code ec;
+
+	return 1;
+
+}
+
+
 int main() {
 	
 	cout << "======= Exerice 1: Path Intelligence =======" << endl;
@@ -291,7 +267,7 @@ int main() {
 	ex2setupLogStructure();
 
 	cout << "======= Exerice 3: Iterate Over Directory =======" << endl;
-	fs::path path2 = { "Vehicle_logs/CAN" };
+	fs::path path2 = { "vehicle_logs/CAN" };
 	ex3IterateOverDirectory(path2);
 
 	cout << "======= Exerice 4: File Size Protection Check =======" << endl;
@@ -321,8 +297,23 @@ int main() {
 	fs::path root2 = "vehicle_logs";
 	ex6deleteOldLogs(root2, result2);
 	std::cout << "\n=== SECURE DELETION SUMMARY ===\n";
-	std::cout << "Total log Files deleted: " << result2.totalFiles << '\n';
+	std::cout << "Total log Files deleted: " << result2.totalFiles << '\n' << endl;
 	
+
+	cout << "======= Exercise 7 - MINI Log Rotation System =======" << endl;
+	fs::path logFile = fs::path("vehicle_logs") / getFileWithCurrentTimeStamp("CANframe", ".log");
+
+	// Test 1: Small file (safe)
+
+	// Test 2: Make it huge first
+	std::cout << "\[TEST] Creating huge CANframe.log...\n";
+	{
+
+
+	}
+
+	// Test 3: Now rotate!
+
 	return 0;
 
 }
