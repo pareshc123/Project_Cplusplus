@@ -32,7 +32,7 @@ void createCANFrameLog(fs::path& filePath, std::uintmax_t fileSizeKB) {
     }
 
     file.close();
-    std::cout << " [INFO] Created file \"" << filePath.filename() 
+    std::cout << "[INFO] Created file \"" << filePath.filename() 
               << " (" << (fs::file_size(filePath)) <<  " bytes)\" at " << filePath << "\n";
  
 }
