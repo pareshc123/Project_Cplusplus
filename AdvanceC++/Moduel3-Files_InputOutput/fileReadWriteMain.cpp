@@ -174,5 +174,26 @@ fs::path BASE_DIR{ "vehicle_logs" };
 
 int main() {
 
+    cout << "========== Exericse1: Byte-Level Writer ==========";
+    std::ofstream output{ BASE_DIR / "bytes.bin", std::ios::binary };
+    output << "A";
+    output << "a";
+    output << 1;
+    output << 25;
+    output << 10000;
+
+    output.put(0x01);
+    output.put(0x02);
+    output.put(0x03);
+    output.put(0x04);
+
+    cout << "\n========== Exericse1: ==========";
+
+
+    cout << "\n========== Exericse1: ==========";
+
+
+    cout << "\n========== Exericse1: ==========";
+
     return 0;
 }
