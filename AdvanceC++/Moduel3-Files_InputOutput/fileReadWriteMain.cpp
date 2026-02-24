@@ -174,18 +174,33 @@ fs::path BASE_DIR{ "vehicle_logs" };
 
 int main() {
 
-    cout << "========== Exericse1: Byte-Level Writer ==========";
+    cout << "========== Exericse1: Byte-Level Writer ==========\n";
     std::ofstream output{ BASE_DIR / "bytes.bin", std::ios::binary };
-    output << "A";
-    output << "a";
-    output << 1;
-    output << 25;
-    output << 10000;
+    if (!output.is_open()) {
+        cout << "Cannot Open the file bytes.bin\n";
+        return -1;
+    }
 
     output.put(0x01);
     output.put(0x02);
     output.put(0x03);
-    output.put(0x04);
+    output.put(0xFF);
+
+    output.close();
+
+    std::ifstream input{ BASE_DIR / "bytes.bin", std::ios::binary };
+    if (!input.is_open()) {
+        cout << "Cannot Open the file bytes.bin\n";
+        return -1;
+    }
+    
+    int byte;
+    while ((byte = input.get()) != EOF) {
+        std::cout << byte << "\n";
+    }
+
+    input.close();
+
 
     cout << "\n========== Exericse1: ==========";
 
