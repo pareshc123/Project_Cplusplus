@@ -171,13 +171,38 @@ using std::cout;
 
 fs::path BASE_DIR{ "vehicle_logs" };
 
+bool checkFileOPenWrite(std::ofstream& file_w) {
+
+    if (!file_w.is_open()) {
+
+        cout << "Cannot open the file for writing.\n";
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool checkFileOPenRead(std::ifstream& file_r) {
+
+    if (!file_r.is_open()) {
+
+        cout << "Cannot open the file for reading.\n";
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 
 int main() {
 
     cout << "========== Exericse1: Byte-Level Writer ==========\n";
-    std::ofstream output{ BASE_DIR / "bytes.bin", std::ios::binary };
-    if (!output.is_open()) {
-        cout << "Cannot Open the file bytes.bin\n";
+    fs::path file = BASE_DIR / "bytes.bin";
+    std::ofstream output{ file, std::ios::binary };
+    bool value = checkFileOPenWrite(output);
+    if (!value) {
         return -1;
     }
 
@@ -210,9 +235,9 @@ int main() {
 
     output.close();
 
-    std::ifstream input{ BASE_DIR / "bytes.bin", std::ios::binary };
-    if (!input.is_open()) {
-        cout << "Cannot Open the file bytes.bin\n";
+    std::ifstream input{ file, std::ios::binary };
+    bool value = checkFileOPenRead(input);
+    if (!value) {
         return -1;
     }
     
@@ -224,8 +249,11 @@ int main() {
     input.close();
 
 
-    cout << "\n========== Exericse1: ==========";
+    cout << "\n========== Exercise 2 - Seek & Patch ==========";
+    std::ofstream fileOpBin{ BASE_DIR / "bytes1.bin", std::ios::binary };
+    
 
+    fileOpBin.close();
 
     cout << "\n========== Exericse1: ==========";
 
