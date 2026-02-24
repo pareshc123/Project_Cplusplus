@@ -181,10 +181,32 @@ int main() {
         return -1;
     }
 
-    output.put(0x01);
+    output.put(0x01);   // put() writes 1 byte only
     output.put(0x02);
     output.put(0x03);
     output.put(0xFF);
+    int x = 255;
+    output.put(x); 
+    output.put(0x12345678);  // Wrong outputs --> 120
+    /*
+        In hex: 12 34 56 78
+        In dec: 305419896
+
+        But remember:
+            put() only writes 1 byte.
+            So what does it take?  --> It takes the lowest 8 bits only.
+            Lowest byte of: 0x12345678 is 0x78
+        when converted to dec we get --> 
+            7 × 16 = 112
+            8 = 8
+            112 + 8 = 120
+
+        ******************  Hence, FINAL RULES  ******************  
+            Writing 1 single byte	         put()
+            Writing multiple bytes	         write()
+            Writing formatted text	         <<
+
+    */
 
     output.close();
 
