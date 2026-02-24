@@ -171,48 +171,26 @@ using std::cout;
 
 fs::path BASE_DIR{ "vehicle_logs" };
 
-bool checkFileOPenWrite(std::ofstream& file_w) {
-
-    if (!file_w.is_open()) {
-
-        cout << "Cannot open the file for writing.\n";
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-bool checkFileOPenRead(std::ifstream& file_r) {
-
-    if (!file_r.is_open()) {
-
-        cout << "Cannot open the file for reading.\n";
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
 
 int main() {
 
     cout << "========== Exericse1: Byte-Level Writer ==========\n";
     fs::path file = BASE_DIR / "bytes.bin";
-    std::ofstream output{ file, std::ios::binary };
-    bool value = checkFileOPenWrite(output);
-    if (!value) {
+
+    std::ofstream output1{ file, std::ios::binary };
+    if (!output1.is_open()) {
+        std::cout << "Cannot open file for writing\n";
         return -1;
     }
 
-    output.put(0x01);   // put() writes 1 byte only
-    output.put(0x02);
-    output.put(0x03);
-    output.put(0xFF);
+    output1.put(0x01);   // put() writes 1 byte only
+    output1.put(0x02);
+    output1.put(0x03);
+    output1.put(0xFF);
     int x = 255;
-    output.put(x); 
-    output.put(0x12345678);  // Wrong outputs --> 120
+    output1.put(x); 
+    output1.put(0x12345678);  // Wrong outputs --> 120
+    
     /*
         In hex: 12 34 56 78
         In dec: 305419896
@@ -233,27 +211,70 @@ int main() {
 
     */
 
-    output.close();
+    output1.close();
 
-    std::ifstream input{ file, std::ios::binary };
-    bool value = checkFileOPenRead(input);
-    if (!value) {
+    std::ifstream input1{ file, std::ios::binary };
+    if (!input1.is_open()) {
+        std::cout << "Cannot open file for reading\n";
         return -1;
     }
-    
+
     int byte;
-    while ((byte = input.get()) != EOF) {
+    while ((byte = input1.get()) != EOF) {
         std::cout << byte << "\n";
     }
 
-    input.close();
+    input1.close();
 
 
-    cout << "\n========== Exercise 2 - Seek & Patch ==========";
-    std::ofstream fileOpBin{ BASE_DIR / "bytes1.bin", std::ios::binary };
-    
+    cout << "\n========== Exercise 2 - Seek & Patch ==========\n";
+    fs::path file2 = BASE_DIR / "bytes1.bin";
 
-    fileOpBin.close();
+    // Step 1: Create and write 10 integers
+    std::ofstream output2(file2, std::ios::binary);
+    if (!output2.is_open()) {
+        std::cout << "Cannot open file for writing\n";
+        return -1;
+    }
+
+    int numbers[10] = { 10,20,30,40,50,60,70,80,90,100 };
+
+    for (int i = 0; i < 10; i++) {
+        output2.write(reinterpret_cast<char*>(&numbers[i]), sizeof(int));
+    }
+
+    output2.close();
+
+    // Step 2: Reopen file for update (read + write)
+    std::fstream fileio(file2, std::ios::binary | std::ios::in | std::ios::out);
+    if (!fileio.is_open()) {
+        std::cout << "Cannot open file for patching\n";
+        return -1;
+    }
+
+    // Modify the 5th integer (index 4)
+    int newValue = 999;
+
+    std::streampos offset = 4 * sizeof(int);
+    fileio.seekp(offset);
+
+    fileio.write(reinterpret_cast<char*>(&newValue), sizeof(int));
+
+    fileio.close();
+
+    // Step 3: Read everything back
+    std::ifstream input2(file2, std::ios::binary);
+    if (!input2.is_open()) {
+        std::cout << "Cannot open file for reading\n";
+        return -1;
+    }
+
+    int value;
+    while (input2.read(reinterpret_cast<char*>(&value), sizeof(int))) {
+        std::cout << value << "\n";
+    }
+
+    input2.close();
 
     cout << "\n========== Exericse1: ==========";
 
