@@ -160,14 +160,72 @@
             - Always read from memory. Never assume it stays the same.
 
 */
-	
+
+#include<array>
 #include <iostream>
 #include <fstream>
+#include <random>
+#include <sstream>
+#include <iomanip>
 #include <filesystem>
 
 namespace fs = std::filesystem;
 
 using std::cout;
+
+class CANFrame {
+
+public:
+
+    uint32_t id;
+    uint8_t  dlc;
+    std::array<uint8_t, 8>  data{};
+
+    CANFrame() : id(0), dlc(0), data{ 0 } {}
+
+    CANFrame(uint32_t id, uint8_t dlc, const std::array<uint8_t, 8>& data)
+        : id(id), dlc(dlc <= 8 ? dlc : 8), data(data) {
+    }
+
+    static CANFrame createRandomCANFrame() {
+
+        std::random_device rd;
+        std::mt19937 eng(rd());
+
+        std::uniform_int_distribution<unsigned int> idDist(0x000, 0x7FFF);
+        std::uniform_int_distribution<unsigned int> dlcDist(0x0, 0x8);
+        std::uniform_int_distribution<unsigned int> dataDist(0x00, 0xFF);
+
+        uint32_t id = idDist(eng);
+        uint8_t dlc = static_cast<uint8_t>(dlcDist(eng));
+        std::array<uint8_t, 8> m_data{};
+        for (uint8_t i = 0; i < dlc; ++i) {
+            m_data[i] = static_cast<uint8_t>(dataDist(eng));
+        }
+
+        return CANFrame(id, dlc, m_data);
+
+    }
+
+     // Print CAN Frame
+    std::string toString()
+    {
+        std::ostringstream oss;
+        oss << "ID: 0x" << std::hex << std::uppercase << id
+            << " DLC: " << std::dec << static_cast<int>(dlc)
+            << " Data: ";
+
+        for (size_t i = 0; i < dlc; ++i)
+        {
+            oss << std::hex << std::setw(2) << std::setfill('0')
+                << static_cast<int>(data[i]) << " ";
+        }
+
+        return oss.str();
+    }
+
+};
+
 
 fs::path BASE_DIR{ "vehicle_logs/Binary"};
 
@@ -331,7 +389,9 @@ int main() {
 
     binFileI.close();
 
-    cout << "\n========== Exercise 4 - Binary CAN Logger ==========";
+    cout << "\n========== Exercise 4 - Binary CAN Logger ==========\n";
+    CANFrame frame1 = CANFrame::createRandomCANFrame();
+    std::cout << frame1.toString() << "\n";
 
     return 0;
 }
