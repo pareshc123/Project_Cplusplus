@@ -169,7 +169,7 @@ namespace fs = std::filesystem;
 
 using std::cout;
 
-fs::path BASE_DIR{ "vehicle_logs" };
+fs::path BASE_DIR{ "vehicle_logs/Binary"};
 
 
 int main() {
@@ -276,10 +276,62 @@ int main() {
 
     input2.close();
 
-    cout << "\n========== Exericse1: ==========";
+    cout << "\n========== Exercise 3 - Binary Int vs Text Int ==========\n";
+    std::ofstream textFile{ BASE_DIR / "textFile.txt" };
+    std::ofstream binFile{ BASE_DIR / "binFile.bin", std::ios::binary };
 
+    if (!textFile.is_open()) {
+        cout << "Cannot open the text file\n";
+        return -1;
+    }
 
-    cout << "\n========== Exericse1: ==========";
+    if (!binFile.is_open()) {
+        cout << "Cannot open the Binary file\n";
+        return -1;
+    }
+
+    int x1 = 305419896;
+
+    // write to text file
+    textFile << x1;
+
+    // write to Binary file
+    binFile.write(reinterpret_cast<char*>(&x1), sizeof(int));
+
+    textFile.close();
+    binFile.close();
+
+    // Compare the file sizes:
+    std::uintmax_t textSize = fs::file_size(BASE_DIR / "textFile.txt");
+    std::uintmax_t binSize = fs::file_size(BASE_DIR / "binFile.bin");
+
+    if (binSize < textSize) {
+        cout << "Text File is bigger than Binary file for value: " << x1 << "\n";
+        cout << "SIZE: Text File (\"" << textSize << "\"), BINARY File (\"" << binSize << "\")\n";
+    }
+    else {
+        cout << "Binary File is bigger than Text File for value: " << x1 << "\n";
+        cout << "SIZE: Text File (\"" << textSize << "\"), BINARY File (\"" << binSize << "\")\n";
+    }
+    
+
+    // Read the Binary file:
+    std::ifstream binFileI{ BASE_DIR / "binFile.bin", std::ios::binary };
+
+    if (!binFileI.is_open()) {
+        cout << "Failed to read from the binary file\n";
+        return -1;
+    }
+
+    unsigned char byteBin;  // byte-by-byte reading
+
+    while (binFileI.read(reinterpret_cast<char*>(&byteBin), 1)) {
+        cout << std::hex << int(byteBin) << "\n";
+    }
+
+    binFileI.close();
+
+    cout << "\n========== Exercise 4 - Binary CAN Logger ==========";
 
     return 0;
 }
