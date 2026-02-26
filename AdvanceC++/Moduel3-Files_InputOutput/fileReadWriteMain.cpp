@@ -418,17 +418,21 @@ int main() {
     while (true) {
 
         // 1. Read ID (4 bytes)
-        if (!canRFile.read(reinterpret_cast<char*>(&tempFrame.id),
-            sizeof(tempFrame.id)))
+        if (!canRFile.read(reinterpret_cast<char*>(&tempFrame.id), sizeof(tempFrame.id)))
             break;   // stop at EOF
 
         // 2. Read DLC (1 byte)
-        canRFile.read(reinterpret_cast<char*>(&tempFrame.dlc),
-            sizeof(tempFrame.dlc));
+        if (!canRFile.read(reinterpret_cast<char*>(&tempFrame.dlc), sizeof(tempFrame.dlc)))
+            break;
+
+        if (tempFrame.dlc > 8) {
+            cout << "Corrupted frame detected!\n";
+            break;
+        }
 
         // 3. Read DATA (dlc bytes)
-        canRFile.read(reinterpret_cast<char*>(tempFrame.data.data()),
-            tempFrame.dlc);
+        if (!canRFile.read(reinterpret_cast<char*>(tempFrame.data.data()), tempFrame.dlc))
+            break;
 
         cout << "\nRead successful:\n";
         cout << tempFrame.toString() << "\n";
