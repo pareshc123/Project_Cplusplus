@@ -390,8 +390,45 @@ int main() {
     binFileI.close();
 
     cout << "\n========== Exercise 4 - Binary CAN Logger ==========\n";
+    cout << "Generated CAN Frame: ";
+
     CANFrame frame1 = CANFrame::createRandomCANFrame();
     std::cout << frame1.toString() << "\n";
+    
+    /*std::cout << "ID: 0x" << std::hex << std::uppercase << frame1.id << "\n";
+    std::cout << "DLC: " << static_cast<int>(frame1.dlc) << "\n";
+    std::cout << "Data: ";
+    for (uint8_t i = 0; i < static_cast<int>(frame1.dlc); ++i) {
+        std::cout << std::hex << static_cast<int>(frame1.data[i]) << ", ";
+    }*/
+
+    // write can frame in binary
+    std::ofstream canOfile{ BASE_DIR / "canBinFile.bin", std::ios::binary };
+    if (!canOfile.is_open()) {
+        cout << "Failed to create new binary file for CAN.\n";
+        return -1;
+    }
+
+    canOfile.write(reinterpret_cast<char*>(&frame1), sizeof(CANFrame));
+    canOfile.close();
+
+    std::ifstream canRFile{ BASE_DIR / "canBinFile.bin", std::ios::binary };
+    if (!canRFile.is_open()) {
+        cout << "Failed to create new binary file for CAN.\n";
+        return -1;
+    }
+
+    CANFrame tempFrame;
+    if (canRFile.read(reinterpret_cast<char*>(&tempFrame), sizeof(CANFrame))) {
+        cout << "\nRead successful:\n";
+        cout << tempFrame.toString() << "\n";
+    }
+    else {
+        cout << "\nRead failed!\n";
+    }
+
+    canRFile.close();
+
 
     return 0;
 }
