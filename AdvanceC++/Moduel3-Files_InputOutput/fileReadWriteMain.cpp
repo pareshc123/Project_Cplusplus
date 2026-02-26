@@ -394,13 +394,6 @@ int main() {
 
     CANFrame frame1 = CANFrame::createRandomCANFrame();
     std::cout << frame1.toString() << "\n";
-    
-    /*std::cout << "ID: 0x" << std::hex << std::uppercase << frame1.id << "\n";
-    std::cout << "DLC: " << static_cast<int>(frame1.dlc) << "\n";
-    std::cout << "Data: ";
-    for (uint8_t i = 0; i < static_cast<int>(frame1.dlc); ++i) {
-        std::cout << std::hex << static_cast<int>(frame1.data[i]) << ", ";
-    }*/
 
     // write can frame in binary
     std::ofstream canOfile{ BASE_DIR / "canBinFile.bin", std::ios::binary };
@@ -409,7 +402,10 @@ int main() {
         return -1;
     }
 
-    canOfile.write(reinterpret_cast<char*>(&frame1), sizeof(CANFrame));
+    // to avoid padding we should add each element seperately
+    canOfile.write(reinterpret_cast<char*>(&frame1.id), sizeof(frame1.id));
+    canOfile.write(reinterpret_cast<char*>(&frame1.dlc), sizeof(frame1.dlc));
+    canOfile.write(reinterpret_cast<char*>(frame1.data.data()), frame1.dlc);
     canOfile.close();
 
     std::ifstream canRFile{ BASE_DIR / "canBinFile.bin", std::ios::binary };
@@ -419,12 +415,23 @@ int main() {
     }
 
     CANFrame tempFrame;
-    if (canRFile.read(reinterpret_cast<char*>(&tempFrame), sizeof(CANFrame))) {
+    while (true) {
+
+        // 1. Read ID (4 bytes)
+        if (!canRFile.read(reinterpret_cast<char*>(&tempFrame.id),
+            sizeof(tempFrame.id)))
+            break;   // stop at EOF
+
+        // 2. Read DLC (1 byte)
+        canRFile.read(reinterpret_cast<char*>(&tempFrame.dlc),
+            sizeof(tempFrame.dlc));
+
+        // 3. Read DATA (dlc bytes)
+        canRFile.read(reinterpret_cast<char*>(tempFrame.data.data()),
+            tempFrame.dlc);
+
         cout << "\nRead successful:\n";
         cout << tempFrame.toString() << "\n";
-    }
-    else {
-        cout << "\nRead failed!\n";
     }
 
     canRFile.close();
