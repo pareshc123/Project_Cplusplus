@@ -211,8 +211,12 @@ public:
     std::string toString()
     {
         std::ostringstream oss;
-        oss << "ID: 0x" << std::hex << std::uppercase << id
-            << " DLC: " << std::dec << static_cast<int>(dlc)
+        oss << "ID: 0x"
+            << std::hex << std::uppercase
+            << std::setw(4) << std::setfill('0')
+            << id
+            << " DLC: "
+            << std::dec << static_cast<int>(dlc)
             << " Data: ";
 
         for (size_t i = 0; i < dlc; ++i)
@@ -389,14 +393,14 @@ int main() {
 
     binFileI.close();
 
-    cout << "\n========== Exercise 4 - Binary CAN Logger ==========\n";
-    cout << "Generated CAN Frame: ";
+    cout << "\n========== Exercise 4 - Binary CAN Logger Single Frame ==========\n";
+    cout << "Generated Frame: ";
 
     CANFrame frame1 = CANFrame::createRandomCANFrame();
     std::cout << frame1.toString() << "\n";
 
     // write can frame in binary
-    std::ofstream canOfile{ BASE_DIR / "canBinFile.bin", std::ios::binary };
+    std::ofstream canOfile{ BASE_DIR / "SingleCANBinFile.bin", std::ios::binary };
     if (!canOfile.is_open()) {
         cout << "Failed to create new binary file for CAN.\n";
         return -1;
@@ -408,7 +412,7 @@ int main() {
     canOfile.write(reinterpret_cast<char*>(frame1.data.data()), frame1.dlc);
     canOfile.close();
 
-    std::ifstream canRFile{ BASE_DIR / "canBinFile.bin", std::ios::binary };
+    std::ifstream canRFile{ BASE_DIR / "SingleCANBinFile.bin", std::ios::binary };
     if (!canRFile.is_open()) {
         cout << "Failed to create new binary file for CAN.\n";
         return -1;
@@ -434,11 +438,54 @@ int main() {
         if (!canRFile.read(reinterpret_cast<char*>(tempFrame.data.data()), tempFrame.dlc))
             break;
 
-        cout << "\nRead successful:\n";
+        cout << "Read successful: ";
         cout << tempFrame.toString() << "\n";
     }
 
     canRFile.close();
+
+    cout << "\n========== Exercise 5 - Binary CAN Logger Multiple Frame ==========\n";
+    // Write 50 frames
+    std::ofstream mOfile("multipleCANBinFile.bin", std::ios::binary);
+
+    for (int i = 0; i < 50; i++) {
+        CANFrame frame = CANFrame::createRandomCANFrame();
+
+        mOfile.write(reinterpret_cast<char*>(&frame.id), sizeof(frame.id));
+        mOfile.write(reinterpret_cast<char*>(&frame.dlc), sizeof(frame.dlc));
+        mOfile.write(reinterpret_cast<char*>(frame.data.data()), frame.dlc);
+        cout << "Generated Frame: " << frame.toString() << "\n";
+    }
+
+    mOfile.close();
+
+    std::ifstream mIfile("multipleCANBinFile.bin", std::ios::binary);
+
+    CANFrame firstFrame;
+    CANFrame lastFrame;
+    CANFrame temp;
+
+    int count = 0;
+
+    while (true) {
+        if (!mIfile.read(reinterpret_cast<char*>(&temp.id), sizeof(temp.id)))
+            break;
+
+        mIfile.read(reinterpret_cast<char*>(&temp.dlc), sizeof(temp.dlc));
+        mIfile.read(reinterpret_cast<char*>(temp.data.data()), temp.dlc);
+
+        if (count == 0)
+            firstFrame = temp;
+
+        lastFrame = temp;
+        count++;
+    }
+
+    mIfile.close();
+
+    std::cout << "Total frames read: " << std::dec << count << "\n";
+    std::cout << "First: " << firstFrame.toString() << "\n";
+    std::cout << "Last: " << lastFrame.toString() << "\n";
 
 
     return 0;
