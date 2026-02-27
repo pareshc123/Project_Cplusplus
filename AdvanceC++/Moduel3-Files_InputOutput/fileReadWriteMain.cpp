@@ -211,12 +211,9 @@ public:
     std::string toString()
     {
         std::ostringstream oss;
-        oss << "ID: 0x"
-            << std::hex << std::uppercase
-            << std::setw(4) << std::setfill('0')
-            << id
-            << " DLC: "
-            << std::dec << static_cast<int>(dlc)
+        oss << std::uppercase << std::hex;
+        oss << "ID: 0x" << std::setw(4) << std::setfill('0') << id
+            << " DLC: " << std::dec << static_cast<int>(dlc)
             << " Data: ";
 
         for (size_t i = 0; i < dlc; ++i)
@@ -231,10 +228,9 @@ public:
 };
 
 
-fs::path BASE_DIR{ "vehicle_logs/Binary"};
-
-
 int main() {
+
+    fs::path BASE_DIR{ "vehicle_logs/Binary" };
 
     cout << "========== Exericse1: Byte-Level Writer ==========\n";
     fs::path file = BASE_DIR / "bytes.bin";
@@ -446,7 +442,7 @@ int main() {
 
     cout << "\n========== Exercise 5 - Binary CAN Logger Multiple Frame ==========\n";
     // Write 50 frames
-    std::ofstream mOfile("multipleCANBinFile.bin", std::ios::binary);
+    std::ofstream mOfile(BASE_DIR / "multipleCANBinFile.bin", std::ios::binary);
 
     for (int i = 0; i < 50; i++) {
         CANFrame frame = CANFrame::createRandomCANFrame();
@@ -459,7 +455,7 @@ int main() {
 
     mOfile.close();
 
-    std::ifstream mIfile("multipleCANBinFile.bin", std::ios::binary);
+    std::ifstream mIfile(BASE_DIR / "multipleCANBinFile.bin", std::ios::binary);
 
     CANFrame firstFrame;
     CANFrame lastFrame;
@@ -487,6 +483,61 @@ int main() {
     std::cout << "First: " << firstFrame.toString() << "\n";
     std::cout << "Last: " << lastFrame.toString() << "\n";
 
+    cout << "\n========== Exercise 6 - Secure Binary Log Format ==========\n";
+    std::ofstream secFile{ BASE_DIR / "SecureBinFile.bin", std::ios::binary };
+
+    uint32_t secCount = 25;
+
+    // write record count first
+    secFile.write(reinterpret_cast<char*>(&secCount), sizeof(secCount));
+
+    for (uint32_t i = 0; i < secCount; ++i)
+    {
+        CANFrame secFrame = CANFrame::createRandomCANFrame();
+
+        secFile.write(reinterpret_cast<char*>(&secFrame), sizeof(CANFrame));
+
+        cout << "Generated Frame: " << secFrame.toString() << "\n";
+    }
+
+    secFile.close();
+    
+    std::ifstream secFileI{ BASE_DIR / "SecureBinFile.bin", std::ios::binary };
+
+    uint32_t tempCount;
+    secFileI.read(reinterpret_cast<char*>(&tempCount), sizeof(tempCount));
+
+    std::uintmax_t actualFileSize = fs::file_size(BASE_DIR / "SecureBinFile.bin");
+
+    std::uintmax_t expectedFileSize = sizeof(uint32_t) + tempCount * sizeof(CANFrame);
+
+    if (actualFileSize != expectedFileSize)
+    {
+        cout << "CORRUPTED FILE\n";
+        secFileI.close();
+        return -1;
+    }
+
+    CANFrame secfirstFrame;
+    CANFrame seclastFrame;
+    CANFrame sectempFrame;
+
+    uint32_t readCount = 0;
+
+    while (secFileI.read(reinterpret_cast<char*>(&sectempFrame), sizeof(CANFrame)))
+    {
+        if (readCount == 0)
+            secfirstFrame = sectempFrame;
+
+        seclastFrame = sectempFrame;
+        readCount++;
+    }
+
+    secFileI.close();
+
+    cout << "Total frames read: " << readCount << "\n";
+    cout << "First: " << secfirstFrame.toString() << "\n";
+    cout << "Last: " << seclastFrame.toString() << "\n";
 
     return 0;
 }
