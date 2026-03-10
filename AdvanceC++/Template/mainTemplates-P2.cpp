@@ -91,6 +91,19 @@ public:
 	}
 };
 
+
+// Exercise 4
+struct DiagnosticMessage {
+	uint8_t serviceID;
+	std::vector<uint8_t> payload;
+};
+
+template<typename T>
+DiagnosticMessage createMessage(uint8_t sid, T&& payload) {
+
+	return DiagnosticMessage{ sid, std::forward<T>(payload) };
+}
+
 int main() {
 	
 	cout << "============ Exercise 1 - CAN Message Wrapper ============" << endl;
@@ -105,7 +118,7 @@ int main() {
 	);
 
 
-	cout << "============ Exercise 2 - SOME/IP Payload Builder ============" << endl;
+	cout << "\n============ Exercise 2 - SOME/IP Payload Builder ============" << endl;
 	cout << "Case 1 (lvalue): Copy Payload" << endl;
 	std::vector<uint8_t> v(data.begin(), data.end());         // array to vector
 	Seralizer::serilaize(v);
@@ -114,13 +127,33 @@ int main() {
 	Seralizer::serilaize(std::vector<uint8_t>{1, 2, 3, 4, 5, 6, 7, 8});
 	
 
-	cout << "============ Exercise 3 - Secure Key Wrapper ============" << endl;
+	cout << "\n============ Exercise 3 - Secure Key Wrapper ============" << endl;
 	cout << "Case 1 (lvalue): Copy Key" << endl;
 	std::string secKey{ "54s!H&as5#" };
 	SecureKey sec(secKey);
 
 	cout << "Case 2 (rvalue): move temp key" << endl;
 	SecureKey secM(std::string("54s!!%6s^45"));
+
+
+	cout << "\n============ Exercise 4 - Diagnostic Message Factory ============" << endl;
+	std::cout << "Case 1: lvalue payload (copy)\n";
+
+	std::vector<uint8_t> existingPayload{ 0x01, 0x02, 0x03 };
+
+	DiagnosticMessage udsmsg = createMessage(0x10, existingPayload);
+
+	std::cout << "Payload size: " << udsmsg.payload.size() << std::endl;
+	std::cout << "Original payload size: " << existingPayload.size() << std::endl;
+
+	std::cout << "\nCase 2: rvalue payload (move)\n";
+
+	DiagnosticMessage msg2 =
+		createMessage(0x22, std::vector<uint8_t>{0xAA, 0xBB, 0xCC});
+
+	std::cout << "Payload size: " << msg2.payload.size() << std::endl;
+
+	cout << "\n============ Exercise 5 - ECU Event Publisher ============" << endl;
 
 	return 0;
 }
