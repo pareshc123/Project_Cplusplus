@@ -27,6 +27,7 @@
 #include<cstdint>
 #include<array>
 #include<vector>
+#include<utility>
 
 using std::cout;
 using std::endl;
@@ -70,6 +71,26 @@ public:
 };
 
 
+// Exercise 3
+class SecureKey {
+
+	/*
+	Without forwarding --> temporary key -> copy into object (2 key copies in RAM)
+	Bad for Security, --> perfect forwarding ensures, move key
+	*/
+
+private:
+	std::vector<uint8_t> sKey;
+
+public:
+	template<typename T>
+	SecureKey(T&& key)
+	{
+		auto&& k = std::forward<T>(key);
+		sKey = std::vector<uint8_t>(k.begin(), k.end());
+	}
+};
+
 int main() {
 	
 	cout << "============ Exercise 1 - CAN Message Wrapper ============" << endl;
@@ -78,7 +99,7 @@ int main() {
 	CanMessage msg(0x123, data);
 
 	cout << "Case 2 (rvalue): move payload" << endl;
-	CanMessage msg(
+	CanMessage msg1(
 		0x123,
 		std::array<uint8_t, 8>{1, 2, 3, 4, 5, 6, 7, 8}
 	);
@@ -86,22 +107,20 @@ int main() {
 
 	cout << "============ Exercise 2 - SOME/IP Payload Builder ============" << endl;
 	cout << "Case 1 (lvalue): Copy Payload" << endl;
-	Seralizer sData;
-	sData.serilaize(data);
+	std::vector<uint8_t> v(data.begin(), data.end());         // array to vector
+	Seralizer::serilaize(v);
 
 	cout << "Case 2 (rvalue): move payload" << endl;
-	Seralizer sData;
-	sData.serilaize(std::array<uint8_t, 8>{1, 2, 3, 4, 5, 6, 7, 8});
+	Seralizer::serilaize(std::vector<uint8_t>{1, 2, 3, 4, 5, 6, 7, 8});
 	
 
 	cout << "============ Exercise 3 - Secure Key Wrapper ============" << endl;
-	cout << "Case 1 (lvalue): Copy Payload" << endl;
-	Seralizer sData;
-	sData.serilaize(data);
+	cout << "Case 1 (lvalue): Copy Key" << endl;
+	std::string secKey{ "54s!H&as5#" };
+	SecureKey sec(secKey);
 
-	cout << "Case 2 (rvalue): move payload" << endl;
-	Seralizer sData;
-	sData.serilaize(std::array<uint8_t, 8>{1, 2, 3, 4, 5, 6, 7, 8});
+	cout << "Case 2 (rvalue): move temp key" << endl;
+	SecureKey secM(std::string("54s!!%6s^45"));
 
 	return 0;
 }
