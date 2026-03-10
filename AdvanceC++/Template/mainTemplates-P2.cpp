@@ -28,6 +28,7 @@
 #include<array>
 #include<vector>
 #include<utility>
+#include<string>
 
 using std::cout;
 using std::endl;
@@ -104,6 +105,62 @@ DiagnosticMessage createMessage(uint8_t sid, T&& payload) {
 	return DiagnosticMessage{ sid, std::forward<T>(payload) };
 }
 
+
+// Exericse 5: Variadic template
+class EventPublisher
+{
+public:
+
+	// public API used by application
+	template<typename... Args>
+	void publish(Args&&... args)
+	{
+		std::cout << "Publishing event...\n";
+
+		// forward arguments to internal send function
+		send(std::forward<Args>(args)...);
+	}
+
+private:
+
+	// simulate network sending
+	template<typename... Args>
+	void send(Args&&... args)
+	{
+		std::vector<uint8_t> networkBuffer;
+
+		// fold expression packs arguments
+		(append(networkBuffer, std::forward<Args>(args)), ...);
+
+		std::cout << "Event sent. Payload size: "
+			<< networkBuffer.size()
+			<< " bytes\n";
+	}
+
+	// append integer data
+	void append(std::vector<uint8_t>& buffer, uint32_t value)
+	{
+		buffer.push_back(value & 0xFF);
+		buffer.push_back((value >> 8) & 0xFF);
+		buffer.push_back((value >> 16) & 0xFF);
+		buffer.push_back((value >> 24) & 0xFF);
+	}
+
+	// append string data
+	void append(std::vector<uint8_t>& buffer, const std::string& str)
+	{
+		buffer.insert(buffer.end(), str.begin(), str.end());
+	}
+
+	// append raw byte payload
+	void append(std::vector<uint8_t>& buffer, const std::vector<uint8_t>& payload)
+	{
+		buffer.insert(buffer.end(), payload.begin(), payload.end());
+	}
+};
+
+
+
 int main() {
 	
 	cout << "============ Exercise 1 - CAN Message Wrapper ============" << endl;
@@ -153,7 +210,25 @@ int main() {
 
 	std::cout << "Payload size: " << msg2.payload.size() << std::endl;
 
+
 	cout << "\n============ Exercise 5 - ECU Event Publisher ============" << endl;
+	EventPublisher publisher;
+
+	std::cout << "===== Example 5.1: Sensor Event =====\n";
+
+	uint32_t timestamp = 100123;
+	std::string sensorName = "WheelSpeed";
+	std::vector<uint8_t> sensorPayload{ 0x11, 0x22, 0x33 };
+
+	publisher.publish(timestamp, sensorName, sensorPayload);
+
+	std::cout << "\n===== Example 5.2: Temporary Payload =====\n";
+
+	publisher.publish(
+		200555,
+		std::string("EngineTemp"),
+		std::vector<uint8_t>{0xAA, 0xBB}
+	);
 
 	return 0;
 }
