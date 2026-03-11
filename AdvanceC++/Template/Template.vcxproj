@@ -130,6 +130,13 @@
     </ClCompile>
     <ClCompile Include="mainTemplates-P2.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="MessageStack.hpp" />
+    <ClInclude Include="MessageTypes.hpp" />
+    <ClInclude Include="SecureBuffer.hpp" />
+    <ClInclude Include="Serializer.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
