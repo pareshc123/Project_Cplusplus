@@ -26,3 +26,10 @@
 */
 
 
+#include "MessageStack.hpp"
+
+int main() {
+
+	MessageStack<int, 5> msg;
+	return 0;
+}
