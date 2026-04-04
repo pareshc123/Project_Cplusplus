@@ -1,6 +1,24 @@
 /*
 	
 	Description for templates:
+	When Instantiation Happens
+		1. Function call
+			-> Max(3, 5);
+		
+		2. Taking function address
+			-> auto ptr = &Max<int>;
+		
+		3. Explicit Instantiation
+			-> template char Max(char, char);    
+			(Note: In normal case, when you invoke/call the function only then compiler generates the function but here
+				we Force compiler to generate it)
+		
+		4. Explicit Specialization
+			-> template<>
+			   char Max<char>(char a, char b);
+
+	Note: Templates are included in Header files
+			becasue Templates are generated at compile-time --> compiler needs full code.
 
 */
 
