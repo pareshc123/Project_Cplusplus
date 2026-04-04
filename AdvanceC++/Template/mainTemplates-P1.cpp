@@ -35,6 +35,10 @@ T add(T a, T b) {
 	return a + b;
 }
 
+// Explicit instantiation
+template int add<int>(int, int);
+template double add<double>(double, double);
+template char add<char>(char, char);
 
 // Exercise 2: Explicit specialization
 template<typename T>
@@ -110,6 +114,13 @@ int main() {
 
 	cout << "Size of canFrame object: " << sizeof(canFrame) << endl;
 	cout << "Size of canFDFrame object: " << sizeof(canFDFrame) << endl;
+
+	cout << "\n================ Exercise5: Function Pointer Instantiation ================" << endl;
+
+	// Taking address of template function --> forces instantiation
+	int(*maxIntPtr)(int, int) = add<int>;
+
+	cout << "Function pointer call add<int>(2,3): " << maxIntPtr(2, 3) << endl;
 
     return 0;
 }
