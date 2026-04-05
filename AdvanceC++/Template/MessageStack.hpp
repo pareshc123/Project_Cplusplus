@@ -44,6 +44,11 @@ public:
 			return false;
 		}
 	}
+
+	static MessageStack Create() {
+		return MessageStack;
+	}
+
 };
 
 
