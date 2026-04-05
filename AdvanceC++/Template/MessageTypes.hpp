@@ -1,7 +1,9 @@
 #include<cstdint>
 #include<array>
+#include<vector>
 #include<utility>
 
+// CAN  Message
 struct CANFrame {
 	uint32_t id;
 	uint8_t dlc;
@@ -14,9 +16,32 @@ class CANMessage {
 
 public:
 	template <typename T>
-	CANMessage(uint32_t m_id, uint8_t m_dlc, T&& m_payload) 
-		: frame{ m_id, m_dlc, std::forward<T>(m_pyload)}
+	CANFrame& createCANMessage(uint32_t m_id, uint8_t m_dlc, T&& m_payload) 
 	{
-
+		return frame{ m_id, m_dlc, std::forward<T>(m_pyload) };
 	}
 };
+
+
+// Diagnostic message
+struct DiagnosticMessage {
+	uint8_t serviceID;
+	std::vector<uint8_t> diagPayload;
+};
+
+template<typename T>
+DiagnosticMessage& createDiagMessage(uint8_t sid, T&& payload) {
+
+	return DiagnosticMessage{ sid, std::forward<T>(payload) };
+}
+
+// ethernet payload
+struct EthernetMessage {
+	std::vector<uint8_t> ethPayload;
+};
+
+template<typename T>
+EthernetMessage& createEthernetMessage(T&& eth_payload) {
+
+	return EthernetMessage{ std::forward<T>(eth_payload) };
+}
