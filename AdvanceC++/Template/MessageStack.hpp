@@ -51,11 +51,11 @@ public:
 	}
 
 	bool isEmpty() const {
-		return topIndex == -1;
+		return idx_pos == -1;
 	}
 
 	bool isFull() const {
-		return topIndex == static_cast<int32_t>(SIZE) - 1;
+		return idx_pos == static_cast<int32_t>(SIZE) - 1;
 	}
 
 	static MessageStack Create() {

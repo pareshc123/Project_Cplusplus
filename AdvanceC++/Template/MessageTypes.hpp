@@ -1,3 +1,4 @@
+#pragma once
 #include<cstdint>
 #include<array>
 #include<vector>
@@ -14,9 +15,9 @@ class CANMessage {
 
 public:
 	template <typename T>
-	CANFrame createCANMessage(uint32_t m_id, uint8_t m_dlc, T&& m_payload) 
+	CANFrame createCANMessage(uint32_t m_id, uint8_t m_dlc, T&& payload) 
 	{
-		return CANFrame{ m_id, m_dlc, std::forward<T>(m_pyload) };
+		return CANFrame{ m_id, m_dlc, std::forward<T>(payload) };
 	}
 };
 

@@ -7,33 +7,41 @@ class MessageStack<T, 8> {
 
 private:
     T buffer[8]{};
-    int32_t topIndex{ -1 };
+    int32_t idx_pos{ -1 };
 
 public:
+
+    MessageStack() = default;
+
+    MessageStack(const MessageStack& other) : idx_pos(other.idx_pos) {
+        for (int i = 0; i <= idx_pos; ++i) {
+            buffer[i] = other.buffer[i];
+        }
+    }
 
     void push(const T& message) {
         // Optimized path (no extra branching/logging)
         Validator<T>::validate(message);
         SecurityPolicy<T>::check(message);
 
-        if (topIndex >= 7) return;
+        if (idx_pos >= 7) return;
 
-        buffer[++topIndex] = message;
+        buffer[++idx_pos] = message;
     }
 
     void pop() {
-        if (topIndex >= 0) --topIndex;
+        if (idx_pos >= 0) --idx_pos;
     }
 
     const T& top() const {
-        return buffer[topIndex];
+        return buffer[idx_pos];
     }
 
     bool isEmpty() const {
-        return topIndex == -1;
+        return idx_pos == -1;
     }
 
     bool isFull() const {
-        return topIndex == 7;
+        return idx_pos == 7;
     }
 };
