@@ -24,7 +24,7 @@ public:
 	}
 
 	void push(const T& message) {
-		if (idx_pos >= SIZE) {
+		if (idx_pos >= SIZE -1) {
 			cout << "Stack Overflow!\n";
 			return;
 		}
@@ -41,7 +41,7 @@ public:
 		
 	}
 
-	bool isEmpty() {
+	bool isEmpty() const {
 
 		if (idx_pos == -1) {
 			cout << "The Message Stack is currently empty.\n";
