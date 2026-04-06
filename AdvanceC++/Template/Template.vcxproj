@@ -140,6 +140,7 @@
     <ClInclude Include="MessageTypes.hpp" />
     <ClInclude Include="SecureBuffer.hpp" />
     <ClInclude Include="Serializer.hpp" />
+    <ClInclude Include="Validator.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
