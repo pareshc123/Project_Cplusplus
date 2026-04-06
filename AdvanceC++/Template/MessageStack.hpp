@@ -15,6 +15,14 @@ public:
 		cout << "MessageStack: Default constructor Invoked\n";
 	}
 
+	// copy constructor fo safe copying
+	MessageStack(const MessageStack& other) : idx_pos(other.idx_pos) 
+	{
+		for (int i = 0; i <= idx_pos; ++i) {
+			Buffer[i] = other.Buffer[i];
+		}
+	}
+
 	void push(const T& message) {
 		if (idx_pos >= SIZE) {
 			cout << "Stack Overflow!\n";
@@ -46,7 +54,7 @@ public:
 	}
 
 	static MessageStack Create() {
-		return MessageStack;
+		return MessageStack();
 	}
 
 };
