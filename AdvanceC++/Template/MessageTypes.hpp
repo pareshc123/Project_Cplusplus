@@ -12,13 +12,11 @@ struct CANFrame {
 
 class CANMessage {
 
-	CANFrame frame;
-
 public:
 	template <typename T>
-	CANFrame& createCANMessage(uint32_t m_id, uint8_t m_dlc, T&& m_payload) 
+	CANFrame createCANMessage(uint32_t m_id, uint8_t m_dlc, T&& m_payload) 
 	{
-		return frame{ m_id, m_dlc, std::forward<T>(m_pyload) };
+		return CANFrame{ m_id, m_dlc, std::forward<T>(m_pyload) };
 	}
 };
 
@@ -30,7 +28,7 @@ struct DiagnosticMessage {
 };
 
 template<typename T>
-DiagnosticMessage& createDiagMessage(uint8_t sid, T&& payload) {
+DiagnosticMessage createDiagMessage(uint8_t sid, T&& payload) {
 
 	return DiagnosticMessage{ sid, std::forward<T>(payload) };
 }
@@ -41,7 +39,7 @@ struct EthernetMessage {
 };
 
 template<typename T>
-EthernetMessage& createEthernetMessage(T&& eth_payload) {
+EthernetMessage createEthernetMessage(T&& eth_payload) {
 
 	return EthernetMessage{ std::forward<T>(eth_payload) };
 }
