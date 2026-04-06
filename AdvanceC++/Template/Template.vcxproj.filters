@@ -44,5 +44,8 @@
     <ClInclude Include="Validator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MessageStack_specialized.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

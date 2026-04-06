@@ -8,9 +8,11 @@
 			src/
 			 |--- MessageTypes.hpp
 			 |--- MessageStack.hpp
+			 |--- MessageStack_specialized.hpp
 			 |--- Logger.hpp
 			 |--- Serializer.hpp
 			 |--- SecureBuffer.hpp
+			 |--- Validator.hpp
 			 |___ main.cpp
 
 	Think of something used internally in middleware supporting:
@@ -30,6 +32,15 @@
 
 int main() {
 
-	MessageStack<int, 5> msg;
+	MessageStack<CANFrame, 64> canStack;
+
+	CANFrame frame{ 0x123, 8, {1,2,3,4,5,6,7,8} };
+	canStack.push(frame);
+
+	MessageStack<DiagnosticMessage, 32> diagStack;
+
+	DiagnosticMessage dmsg{ 0x27, {0x01, 0x02} };
+	diagStack.push(dmsg);
+
 	return 0;
 }
