@@ -1,5 +1,9 @@
-#include<cstdint>
-#include<iostream>
+#pragma once
+#include <cstdint>
+#include <iostream>
+#include "MessageTypes.hpp"
+#include "Validator.hpp"
+#include "SecureBuffer.hpp"
 
 using std::cout;
 
@@ -7,7 +11,7 @@ template <typename T, size_t SIZE>
 class MessageStack {
 
 	T Buffer[SIZE] = {};
-	int idx_pos{ -1 };
+	int32_t idx_pos{ -1 };
 
 public:
 
@@ -24,17 +28,22 @@ public:
 	}
 
 	void push(const T& message) {
-		if (idx_pos >= SIZE -1) {
-			cout << "Stack Overflow!\n";
+
+		Validator<T>::validate(message);    
+		SecurityPolicy<T>::check(message);   
+
+		if (isFull()) {
+			std::cout << "Stack Overflow!\n";
 			return;
 		}
+
 		Buffer[++idx_pos] = message;
 	}
 
 	void pop();
 
 	const T& top() const {
-		if (idx_pos < 0) {
+		if (isEmpty()) {
 			throw std::out_of_range("Stack is empty");
 		}
 		return Buffer[idx_pos];
@@ -42,15 +51,11 @@ public:
 	}
 
 	bool isEmpty() const {
+		return topIndex == -1;
+	}
 
-		if (idx_pos == -1) {
-			cout << "The Message Stack is currently empty.\n";
-			return true;
-		}
-		else {
-			cout << "The Message Stack is not empty.\n";
-			return false;
-		}
+	bool isFull() const {
+		return topIndex == static_cast<int32_t>(SIZE) - 1;
 	}
 
 	static MessageStack Create() {
@@ -69,8 +74,8 @@ public:
 
 template <typename T, size_t SIZE>
 void MessageStack<T, SIZE>::pop() {
-	if (idx_pos < 0) {
-		std::cout << "Stack underflow!\n";
+	if (MessageStack::isEmpty()) {
+		std::cout << "Stack Underflow!\n";
 		return;
 	}
 	--idx_pos;
