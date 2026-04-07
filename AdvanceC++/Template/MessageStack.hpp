@@ -8,6 +8,10 @@
 
 using std::cout;
 
+template <typename T>
+using ValidatorFunc = void (*)(const T&);
+
+
 template <typename T, size_t SIZE>
 class MessageStack {
 	static_assert(std::is_trivially_copyable<T>::value,
@@ -34,6 +38,20 @@ public:
 
 		Validator<T>::validate(message);    
 		SecurityPolicy<T>::check(message);   
+
+		if (isFull()) {
+			std::cout << "Stack Overflow!\n";
+			return;
+		}
+
+		Buffer[++idx_pos] = message;
+	}
+
+	void push(const T& message, ValidatorFunc<T> validator) {
+
+		validator(message);  // callback
+
+		SecurityPolicy<T>::check(message);
 
 		if (isFull()) {
 			std::cout << "Stack Overflow!\n";

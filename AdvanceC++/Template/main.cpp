@@ -38,6 +38,13 @@ using EthStack = MessageStack<EthernetMessage, 128>;
 template<typename T>
 using SmallStack = MessageStack<T, 16>;
 
+
+void customCANValidator(const CANFrame& msg) {
+	if (msg.id == 0) {
+		std::cout << "Invalid CAN ID !\n";
+	}
+}
+
 int main() {
 
 	// geneic way of defining message stack
@@ -46,6 +53,8 @@ int main() {
 	CANFrame frame{ 0x123, 8, {1,2,3,4,5,6,7,8} };
 	canStack.push(frame);
 
+	// callback -> function pointer
+	canStack.push(frame, customCANValidator);
 
 	//MessageStack<DiagnosticMessage, 32> diagStack;
 
