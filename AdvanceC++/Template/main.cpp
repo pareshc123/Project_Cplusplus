@@ -38,12 +38,21 @@ using EthStack = MessageStack<EthernetMessage, 128>;
 template<typename T>
 using SmallStack = MessageStack<T, 16>;
 
-
+// function pointer
 void customCANValidator(const CANFrame& msg) {
 	if (msg.id == 0) {
 		std::cout << "Invalid CAN ID !\n";
 	}
 }
+
+// function object --> Functor
+struct CANValidatorFunctor {
+	void operator()(const CANFrame& msg) {
+		if (msg.id == 0) {
+			std::cout << "Invalid CAN ID !\n";
+		}
+	}
+};
 
 int main() {
 
@@ -51,24 +60,35 @@ int main() {
 	MessageStack<CANFrame, 64> canStack;
 
 	CANFrame frame{ 0x123, 8, {1,2,3,4,5,6,7,8} };
+	// Static behavior
 	canStack.push(frame);
 
 	// callback -> function pointer
 	canStack.push(frame, customCANValidator);
 
-	//MessageStack<DiagnosticMessage, 32> diagStack;
+	// callback -> functor aka function object
+	CANValidatorFunctor canfunc;
+	canStack.push(frame, canfunc);
 
-	//DiagnosticMessage dmsg{ 0x27, {0x01, 0x02} };
-	//diagStack.push(dmsg);
+	/*
+	  below is just an example for other types, they will fail at static_assert() since diagnosticMessage 
+	  and EthernetMessage has std::vector<>
 
-	//// using alias
-	//EthStack ethstack;
-	//EthernetMessage ethmsg = { std::vector<uint8_t>{1, 2, 3, 4} };
-	//ethstack.push(ethmsg);
+	MessageStack<DiagnosticMessage, 32> diagStack;
+
+	DiagnosticMessage dmsg{ 0x27, {0x01, 0x02} };
+	diagStack.push(dmsg);
+
+	// using alias
+	EthStack ethstack;
+	EthernetMessage ethmsg = { std::vector<uint8_t>{1, 2, 3, 4} };
+	ethstack.push(ethmsg);
 
 	// exampple of template alias
 	SmallStack<CANFrame> s1;
-	// SmallStack<DiagnosticMessage> s2;
+	SmallStack<DiagnosticMessage> s2;
+	
+	*/
 
 	return 0;
 }

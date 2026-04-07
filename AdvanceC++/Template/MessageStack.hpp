@@ -34,6 +34,7 @@ public:
 		}
 	}
 
+	// generic push
 	void push(const T& message) {
 
 		Validator<T>::validate(message);    
@@ -47,9 +48,25 @@ public:
 		Buffer[++idx_pos] = message;
 	}
 
+	// callback -> function pointer
 	void push(const T& message, ValidatorFunc<T> validator) {
 
 		validator(message);  // callback
+
+		SecurityPolicy<T>::check(message);
+
+		if (isFull()) {
+			std::cout << "Stack Overflow!\n";
+			return;
+		}
+
+		Buffer[++idx_pos] = message;
+	}
+
+	// callback -> functor
+	template<typename ValidatorFunc>
+	void push(const T& message, ValidatorFunc validator) {
+		validator(message);
 
 		SecurityPolicy<T>::check(message);
 
