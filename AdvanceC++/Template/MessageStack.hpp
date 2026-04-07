@@ -1,15 +1,18 @@
 #pragma once
 #include <cstdint>
 #include <iostream>
-#include "MessageTypes.hpp"
+#include <type_traits>
 #include "Validator.hpp"
+#include "MessageTypes.hpp"
 #include "SecureBuffer.hpp"
 
 using std::cout;
 
 template <typename T, size_t SIZE>
 class MessageStack {
-
+	static_assert(std::is_trivially_copyable<T>::value,
+		"MessageStack requires trivially copyable types");
+	static_assert(SIZE > 0, "Stack size must be > 0");
 	T Buffer[SIZE] = {};
 	int32_t idx_pos{ -1 };
 

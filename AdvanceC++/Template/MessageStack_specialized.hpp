@@ -6,6 +6,7 @@ template<typename T>
 class MessageStack<T, 8> {
 
 private:
+    static_assert(std::is_trivially_copyable<T>::value, "MessageStack requires trivially copyable types");
     T buffer[8]{};
     int32_t idx_pos{ -1 };
 

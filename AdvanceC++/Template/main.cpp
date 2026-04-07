@@ -28,7 +28,8 @@
 */
 
 #include<vector>
-#include "MessageStack.hpp"
+#include "MessageStack_specialized.hpp"
+// #include "MessageStack.hpp"
 
 // Message type alias
 using EthStack = MessageStack<EthernetMessage, 128>;
@@ -46,19 +47,19 @@ int main() {
 	canStack.push(frame);
 
 
-	MessageStack<DiagnosticMessage, 32> diagStack;
+	//MessageStack<DiagnosticMessage, 32> diagStack;
 
-	DiagnosticMessage dmsg{ 0x27, {0x01, 0x02} };
-	diagStack.push(dmsg);
+	//DiagnosticMessage dmsg{ 0x27, {0x01, 0x02} };
+	//diagStack.push(dmsg);
 
-	// using alias
-	EthStack ethstack;
-	EthernetMessage ethmsg = { std::vector<uint8_t>{1, 2, 3, 4} };
-	ethstack.push(ethmsg);
+	//// using alias
+	//EthStack ethstack;
+	//EthernetMessage ethmsg = { std::vector<uint8_t>{1, 2, 3, 4} };
+	//ethstack.push(ethmsg);
 
 	// exampple of template alias
 	SmallStack<CANFrame> s1;
-	SmallStack<DiagnosticMessage> s2;
+	// SmallStack<DiagnosticMessage> s2;
 
 	return 0;
 }
