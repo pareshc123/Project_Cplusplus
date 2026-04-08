@@ -70,25 +70,32 @@ int main() {
 	CANValidatorFunctor canfunc;
 	canStack.push(frame, canfunc);
 
-	/*
-	  below is just an example for other types, they will fail at static_assert() since diagnosticMessage 
-	  and EthernetMessage has std::vector<>
-
-	MessageStack<DiagnosticMessage, 32> diagStack;
-
-	DiagnosticMessage dmsg{ 0x27, {0x01, 0x02} };
-	diagStack.push(dmsg);
-
-	// using alias
-	EthStack ethstack;
-	EthernetMessage ethmsg = { std::vector<uint8_t>{1, 2, 3, 4} };
-	ethstack.push(ethmsg);
-
-	// exampple of template alias
-	SmallStack<CANFrame> s1;
-	SmallStack<DiagnosticMessage> s2;
-	
-	*/
+	// implement lambda expression
+	canStack.push(frame, [](const CANFrame& frame) {
+		if (frame.id == 0x123) {
+			std::cout << "Lambda: Important CAN ID!\n";
+		}
+	});
 
 	return 0;
 }
+
+/*
+  below is just an example for other types, they will fail at static_assert() since diagnosticMessage
+  and EthernetMessage has std::vector<>
+
+MessageStack<DiagnosticMessage, 32> diagStack;
+
+DiagnosticMessage dmsg{ 0x27, {0x01, 0x02} };
+diagStack.push(dmsg);
+
+// using alias
+EthStack ethstack;
+EthernetMessage ethmsg = { std::vector<uint8_t>{1, 2, 3, 4} };
+ethstack.push(ethmsg);
+
+// exampple of template alias
+SmallStack<CANFrame> s1;
+SmallStack<DiagnosticMessage> s2;
+
+*/
