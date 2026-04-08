@@ -59,23 +59,32 @@ int main() {
 	// geneic way of defining message stack
 	MessageStack<CANFrame, 64> canStack;
 
-	CANFrame frame{ 0x123, 8, {1,2,3,4,5,6,7,8} };
+	CANFrame frame1{ 0x00, 8, {1,2,3,4,5,6,7,8} };
 	// Static behavior
-	canStack.push(frame);
+	canStack.push(frame1);
 
-	// callback -> function pointer
-	canStack.push(frame, customCANValidator);
+	// callback -> function pointer (check via callback fucntion)
+	CANFrame invalid_frame1{ 0x00, 6, {1,2,3,4,5,8} };
+	canStack.push(invalid_frame1, customCANValidator);
+
+	// callback -> function pointer (check via Valiadtor.hpp)
+	CANFrame invalid_frame2{ 0xff, 9, {1,2,3,4,5,6,7,8} };
+	canStack.push(invalid_frame2, customCANValidator);
 
 	// callback -> functor aka function object
+	CANFrame frame2{ 0x22, 5, {1,2,3,7,8} };
 	CANValidatorFunctor canfunc;
-	canStack.push(frame, canfunc);
+	canStack.push(frame2, canfunc);
 
 	// implement lambda expression
-	canStack.push(frame, [](const CANFrame& frame) {
+	CANFrame frame3{ 0x123, 3, {1,4,8} };
+	canStack.push(frame3, [](const CANFrame& frame) {
 		if (frame.id == 0x123) {
 			std::cout << "Lambda: Important CAN ID!\n";
 		}
 	});
+
+	// print the complete stack
 
 	return 0;
 }

@@ -64,7 +64,7 @@ public:
 	void push(const T& message, ValidatorFunc<T> validator) {
 
 		validator(message);  // callback
-
+		Validator<T>::validate(message);
 		SecurityPolicy<T>::check(message);
 
 		if (isFull()) {
@@ -79,7 +79,7 @@ public:
 	template<typename ValidatorFunc>
 	void push(const T& message, ValidatorFunc validator) {
 		validator(message);
-
+		Validator<T>::validate(message);
 		SecurityPolicy<T>::check(message);
 
 		if (isFull()) {

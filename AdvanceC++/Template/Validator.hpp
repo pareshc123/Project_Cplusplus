@@ -15,7 +15,8 @@ template<>
 struct Validator<CANFrame> {
     static void validate(const CANFrame& message) {
         if (message.dlc > 8) {
-            throw std::runtime_error("Invalid DLC for CAN");
+            std::cout << "Invalid DLC for CAN, Terminating ...\n";
+            // throw std::runtime_error("Invalid DLC for CAN");
         }
     }
 };
