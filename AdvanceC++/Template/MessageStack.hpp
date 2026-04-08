@@ -34,9 +34,10 @@ public:
 		}
 	}
 
-	// generic push
+	// generic push --> Enforces mandatory rules, cannot be skipped e.g. This is ECU-level safety validation
 	void push(const T& message) {
 
+		// 1. core validation (mandatory)
 		Validator<T>::validate(message);    
 		SecurityPolicy<T>::check(message);   
 
@@ -48,7 +49,18 @@ public:
 		Buffer[++idx_pos] = message;
 	}
 
-	// callback -> function pointer
+	/*
+	Why we need callbaks ?
+		Role of Callback(Flexible Layer)
+			Custom / optional logic
+			Example :
+		Debug checks
+			Logging
+			Feature - specific rules  
+		This is application - level behavior
+	*/
+
+	// callback -> function pointer 
 	void push(const T& message, ValidatorFunc<T> validator) {
 
 		validator(message);  // callback
@@ -63,7 +75,7 @@ public:
 		Buffer[++idx_pos] = message;
 	}
 
-	// callback -> functor
+	// callback -> functor --> inline, faster and can provide state logics like 'count'
 	template<typename ValidatorFunc>
 	void push(const T& message, ValidatorFunc validator) {
 		validator(message);
