@@ -28,6 +28,7 @@
 */
 
 #include<vector>
+#include<memory>
 #include "MessageStack_specialized.hpp"
 // #include "MessageStack.hpp"
 
@@ -89,6 +90,20 @@ int main() {
 		}
 	});
 
+	// using generealized capture w.r.t pointer (you use std::move)
+	CANFrame frame4{ 0x222, 3, {1,4,8} };
+	auto filterPtr = std::make_shared<uint32_t>(filterID);
+	std::cout << "1: " << *filterPtr << std::endl;
+	*filterPtr = 0x222;
+	std::cout << "2: " << *filterPtr << std::endl;
+	canStack.push(frame4, [&count, id = filterPtr](const CANFrame& frame) mutable {
+		count++;
+		if (frame.id == *id) {
+			std::cout << "Lambda: second Important CAN ID!\n";
+		}
+		});
+
+	std::cout << "3: " << *filterPtr << std::endl;
 	// print the complete stack
 
 	return 0;
