@@ -73,13 +73,18 @@ int main() {
 
 	// callback -> functor aka function object
 	CANFrame frame2{ 0x22, 5, {1,2,3,7,8} };
-	CANValidatorFunctor canfunc;
-	canStack.push(frame2, canfunc);
+	// CANValidatorFunctor canfunc;
+	// canStack.push(frame2, canfunc);
+	canStack.push(frame2, CANValidatorFunctor{});
+
+	int count = 2;  // since we have already pushed 2 frames manually
+	uint32_t filterID = 0x123;
 
 	// implement lambda expression
 	CANFrame frame3{ 0x123, 3, {1,4,8} };
-	canStack.push(frame3, [](const CANFrame& frame) {
-		if (frame.id == 0x123) {
+	canStack.push(frame3, [&count, filterID](const CANFrame& frame) mutable {
+		count++;
+		if (frame.id == filterID) {
 			std::cout << "Lambda: Important CAN ID!\n";
 		}
 	});
