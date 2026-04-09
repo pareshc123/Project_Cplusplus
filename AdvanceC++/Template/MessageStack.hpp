@@ -76,8 +76,8 @@ public:
 	}
 
 	// callback -> functor --> inline, faster and can provide state logics like 'count'
-	template<typename ValidatorFunc>
-	void push(const T& message, ValidatorFunc validator) {
+	template<typename CAllbackFuncObj>
+	void push(const T& message, CAllbackFuncObj validator) {
 		validator(message);
 		Validator<T>::validate(message);
 		SecurityPolicy<T>::check(message);
